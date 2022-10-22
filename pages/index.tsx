@@ -9,42 +9,58 @@ const Home: NextPage = () => {
   const [openMenubar, setOpenMenubar] = React.useState(false);
 
   return (
-    <div className={styles.topNavigation} id="a">
-      <a href="">
-        <img
-          className={styles.logo}
-          alt="logo"
-          src="https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg"
-        />
-      </a>
-      <div className="space" />
-      <div className={styles.navLinks} id="c">
-        <a href="pieces">
-          Pieces
-          {/* <LinkedIn /> */}
+    <>
+      <div className={styles.topNavigation} id="a">
+        <a href="">
+          <img
+            className={styles.logo}
+            alt="logo"
+            src="https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg"
+          />
         </a>
-        <a href="about">About</a>
-        <a href="join">Join</a>
+        <div className="space" />
+        <div className={styles.navLinks} id="c">
+          <a href="pieces">
+            Pieces
+            {/* <LinkedIn /> */}
+          </a>
+          <a href="about">About</a>
+          <a href="join">Join</a>
+        </div>
+        <div
+          className={styles.hamburgerIcon}
+          id="b"
+          onClick={() => {
+            // alert("clicked");
+            let sidebar = document.querySelector("#c");
+            // alert(sidebar);
+            let toggle = document.querySelector("#b");
+            if (openMenubar) {
+              sidebar?.classList.add("collapsed");
+            } else {
+              sidebar?.classList.remove("collapsed");
+            }
+            setOpenMenubar(!openMenubar);
+          }}
+        >
+          <MenuIcon className={styles.hamburger} id="d" />
+        </div>
       </div>
-      <div
-        className={styles.hamburgerIcon}
-        id="b"
-        onClick={() => {
-          // alert("clicked");
-          let sidebar = document.querySelector("#c");
-          // alert(sidebar);
-          let toggle = document.querySelector("#b");
-          if (openMenubar) {
-            sidebar?.classList.add("collapsed");
-          } else {
-            sidebar?.classList.remove("collapsed");
-          }
-          setOpenMenubar(!openMenubar);
-        }}
-      >
-        <MenuIcon className={styles.hamburger} id="d" />
+
+      {/* HOME PAGE CONTENT */}
+      <div className={styles.homeContent}>
+        <div className={styles.homeContentTitle}>Carte Blanche</div>
+        <div className={styles.homeContentText}>
+          [kahrt blanch] French for “white card”
+        </div>
+        <div className={styles.homeContentText}>
+          (n.) complete freedom to act as one wishes
+        </div>
+        <div className={styles.homeContentButtonContainer}>
+          <button className={styles.homeContentButton}>Dive in</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

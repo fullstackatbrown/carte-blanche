@@ -69,3 +69,74 @@
     height: 100%;
   }
 }
+
+/* HOME PAGE CONTENT */
+
+.homeContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0;
+  min-height: 100vh;
+  text-transform: lowercase;
+  font-family: "Inknut Antiqua, serif";
+  font-size: 3.5rem;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.85),
+      rgba(255, 255, 255, 0.85)
+    ),
+    url(https://www.pngkey.com/png/full/434-4345150_ink-splatter-ink.png);
+}
+
+.homeContent div {
+  padding: 0 15%;
+  line-height: 1.5;
+}
+
+.homeContentTitle {
+  font-weight: bold;
+  margin: 0;
+}
+
+.homeContentText {
+  font-size: 2rem;
+}
+
+.homeContentButton {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  text-transform: lowercase;
+  font-family: "Inknut Antiqua, serif";
+  font-size: 1.5rem;
+  border-radius: 50px;
+}
+
+.homeContentButton:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  transform: rotate(10deg) scale(1.5);
+}
+
+@media screen and (max-width: 480px) {
+  .homeContent div {
+    padding: 0 2rem;
+  }
+  .homeContentTitle {
+    font-size: 2rem;
+  }
+  .homeContentText {
+    font-size: 1.2rem;
+  }
+  .homeContentButtonContainer {
+    display: flex;
+    align-items: center;
+    padding-top: 3rem;
+  }
+  .homeContentButton {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+  }
+}
