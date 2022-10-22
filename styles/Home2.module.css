@@ -1,0 +1,71 @@
+.topNavigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: 4rem;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  color: white;
+  text-transform: lowercase;
+  font-family: "Inknut Antiqua, serif";
+  font-size: 1.5rem;
+}
+
+.topNavigation a {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 3rem;
+  margin: auto;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 2rem;
+}
+
+.navLinks a:after {
+  content: "●";
+  font-size: 1.5rem;
+  padding: 0 1.5rem;
+  cursor: auto;
+}
+
+.navLinks a:last-child:after {
+  content: none;
+  padding: 0;
+}
+
+.hamburgerIcon {
+  display: none;
+}
+
+.hamburgerIcon {
+  height: 4rem;
+  width: 4rem;
+}
+
+@media (max-width: 480px) {
+  .navLinks {
+    display: none;
+  }
+  .hamburgerIcon {
+    display: block;
+  }
+
+  .hamburger {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+}
