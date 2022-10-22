@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 enum userRole {
     Admin = 0,
-    Writer = 1
+    Writer = 1,
+    Reader = 2
 };
 
 enum contentType {
