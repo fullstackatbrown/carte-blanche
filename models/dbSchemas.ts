@@ -42,4 +42,4 @@ const contentSchema = new Schema({
 });
 
 export const User = model("User", userSchema);
-export const Content = model("Content", contentSchema);
+export const Content = model("`Content", contentSchema);
