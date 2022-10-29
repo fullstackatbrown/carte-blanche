@@ -33,17 +33,9 @@ const contentSchema = new Schema({
         type: contentType,
         required: true
     },
-    textContent: {
+    content: {
         type: String,
-        required: false
-    },
-    imgContent: {
-        type: String,
-        required: false
-    },
-    vidContent: {
-        type: String,
-        required: false
+        required: true
     },
     column: {
         type: contentColumn,
@@ -59,4 +51,17 @@ const contentSchema = new Schema({
     }
 });
 
-export const Content = model("Content", contentSchema);
+export interface IContent {
+    _id?: string,
+    userID: number,
+    contentID: number,
+    title: string,
+    author: any,
+    nodeType: contentType,
+    content: string,
+    column: contentColumn,
+    dateCreated: Date,
+    lastUpdated: Date
+}
+
+export const Content = model<IContent>("Content", contentSchema);
