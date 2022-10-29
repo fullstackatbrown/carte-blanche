@@ -18,7 +18,15 @@ const Home: NextPage = () => {
         />
       </a>
       <div className="space" />
-      <div className={styles.navLinks} id="c">
+      <div className={styles.navLinks}>
+        <a href="pieces">
+          Pieces
+          {/* <LinkedIn /> */}
+        </a>
+        <a href="about">About</a>
+        <a href="join">Join</a>
+      </div>
+	  <div className={styles.navLinksMini} id="c">
         <a href="pieces">
           Pieces
           {/* <LinkedIn /> */}
@@ -32,13 +40,7 @@ const Home: NextPage = () => {
         onClick={() => {
           // alert("clicked");
           let sidebar = document.querySelector("#c");
-          // alert(sidebar);
-          let toggle = document.querySelector("#b");
-          if (openMenubar) {
-            sidebar?.classList.add("collapsed");
-          } else {
-            sidebar?.classList.remove("collapsed");
-          }
+          sidebar!.classList.toggle(styles.open);
           setOpenMenubar(!openMenubar);
         }}
       >
