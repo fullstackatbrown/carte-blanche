@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
 enum userRole {
     Admin = 0,
@@ -18,7 +18,7 @@ enum contentColumn {
     Right = 2
 };
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     userID: Number,
     name: String,
     email: String,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     submissions: Array<Number>
 });
 
-const contentSchema = new mongoose.Schema({
+const contentSchema = new Schema({
     userID: Number,
     contentID: Number,
     title: String,
@@ -41,4 +41,5 @@ const contentSchema = new mongoose.Schema({
     lastUpdated: Date
 });
 
-export {userSchema, contentSchema}
+export const User = model("User", userSchema);
+export const Content = model("Content", contentSchema);
