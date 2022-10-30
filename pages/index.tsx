@@ -8,6 +8,7 @@ import React from "react";
 const Home: NextPage = () => {
     return (
         <>
+            {/* Navigation Bar */}
             <div className={styles.topNavigation}>
                 <a href="">
                     <img
