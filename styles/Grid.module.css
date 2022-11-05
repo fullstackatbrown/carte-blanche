@@ -1,0 +1,17 @@
+.componentContainer {
+    margin: 20px;
+    outline: 3px solid gray;
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.cellImage {
+    height: auto;
+    max-height: 200px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+
+    outline: 3px solid tan;
+    border-radius: 25px;
+}
