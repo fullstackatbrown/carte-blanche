@@ -1,32 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSession, getSession, GetSessionParams } from "next-auth/react";
-import { IUser, User } from "../models/User";
+import { IUser, userSchema, User } from "../models/User";
+import RichTextEditor, { EditorValue } from "react-rte";
+import mongoose, { model, Model } from "mongoose";
+import dynamic from "next/dynamic";
 
-export default function Submission() {
+const TextEditor = dynamic(() => import("./TextEditor"), {
+    ssr: false,
+});
+
+// var User = model("User", userSchema);
+
+mongoose.connect("mongodb://localhost:27017/testDB");
+
+async function checkRole(email: string) {
+    const user = await User.findOne({ email: email });
+    // User.findOne({ email: email }, function (err: any, user: IUser) {
+    //     if (err) {
+    //         return "Error";
+    //     }
+    //     return user.role;
+    // });
+    // return "Error: no user found";
+    const userRole: string | undefined = user?.role;
+    if (userRole === undefined) {
+        return "Error";
+    }
+    return userRole;
+}
+
+export default async function Submission() {
     const { data: session, status } = useSession();
 
     if (status === "authenticated") {
-        const role: string | number = checkRole(session.user!.email);
-        if (typeof role === "string") {
+        const role = await checkRole(session.user!.email!);
+        if (role !== "Admin" && role !== "Writer") {
             return <p>You do not have access!</p>;
         }
         return (
             <div>
                 <h2>Welcome {session.user!.name}</h2>
                 <h3>This is the submission page!</h3>
+                <TextEditor />
             </div>
         );
     }
-}
-
-function checkRole(email: string | null | undefined): string | number {
-    User.findOne({ email: email }, function (err: any, user: IUser) {
-        if (err) {
-            return "Error";
-        }
-        return user.role;
-    });
-    return "Error: no user found";
 }
 
 export async function getServerSideProps(context: GetSessionParams) {
