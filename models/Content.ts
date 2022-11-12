@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 enum contentType {
-    Text = 0,
+    Article = 0,
     Image = 1,
     Video = 2,
 }
@@ -37,6 +37,10 @@ const contentSchema = new Schema({
         type: String,
         required: true,
     },
+    imageDescription: {
+        type: String,
+        default: "",
+    },
     column: {
         type: contentColumn,
         required: true,
@@ -59,6 +63,7 @@ export interface IContent {
     author: any;
     nodeType: contentType;
     content: string;
+    imageDescription: string;
     column: contentColumn;
     dateCreated: Date;
     lastUpdated: Date;
