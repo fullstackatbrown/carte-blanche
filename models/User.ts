@@ -1,4 +1,5 @@
-import { model, Schema, models } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
+import { useEffect } from "react";
 
 // export enum userRole {
 //     // Admin = 0,
@@ -11,7 +12,7 @@ import { model, Schema, models } from "mongoose";
 //     // message: 'User '
 // }
 
-export const userSchema = new Schema({
+const userSchema = new Schema({
     userID: {
         type: Number,
         required: true,
@@ -55,6 +56,15 @@ export interface IUser {
 
 // export const User = model<IUser>("User", userSchema);
 // export default User;
-export const User = models.User || model<IUser>("User", userSchema);
+console.log("get here 1");
+// if (models.User === undefined) {
+//     console.log("MODEL USER UNDEFIEND")
+// }
+// if (model<IUser>("User", userSchema) === undefined) {
+//     console.log("user Schema sus")
+// }
+export const User = mongoose.models.User || model<IUser>("User", userSchema);
+console.log("get here 2");
+console.log("USER" + User);
 // const User = (models.User as IUser) || model<IUser>("User", userSchema);
 // export { User };

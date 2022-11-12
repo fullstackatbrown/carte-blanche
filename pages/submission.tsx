@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession, getSession, GetSessionParams } from "next-auth/react";
-import { IUser, userSchema, User } from "../models/User";
+import { IUser, User } from "../models/User";
 import RichTextEditor, { EditorValue } from "react-rte";
 import mongoose, { model, Model } from "mongoose";
 import dynamic from "next/dynamic";
@@ -10,8 +10,11 @@ const TextEditor = dynamic(() => import("./TextEditor"), {
 });
 
 // var User = model("User", userSchema);
+const password = process.env.PASSWORD;
 
-mongoose.connect("mongodb://localhost:27017/testDB");
+mongoose.connect(
+    `mongodb+srv://carteblanche:${password}@carteblanche1.ftoanln.mongodb.net/?retryWrites=true&w=majority`
+);
 
 async function checkRole(email: string) {
     console.log("began checkRole");
@@ -37,6 +40,7 @@ export default function Submission() {
     const [role, setRole] = useState("");
 
     if (status !== "authenticated") {
+        console.log("not auth");
         return <p>You do not have access!</p>;
     }
 
