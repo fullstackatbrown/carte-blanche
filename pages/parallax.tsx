@@ -1,7 +1,8 @@
 import React from "react";
 import Grid from "../components/Grid";
 import GridItem from "../components/GridItem";
-import parallaxStyles from "../styles/parallax.module.css";
+import styles from "../styles/parallax.module.css";
+<script src="parallax-scripts.js"></script>;
 
 const tempImageData = [
     "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chipmunk-nature-photos-1537973822.jpg",
@@ -23,15 +24,41 @@ const tempImageData = [
 
 const parallax = () => {
     return (
-        <div>
-            <div className={parallaxStyles.parallax}></div>
+        // <div>
+        //     <div className={parallaxStyles.parallax}></div>
 
-            <div className={parallaxStyles.content}>
-                <Grid width="500px" height="500px">
-                    {tempImageData.map((url: string, index: number) => (
-                        <GridItem url={url} key={index} />
-                    ))}
-                </Grid>
+        //     <div className={parallaxStyles.content}>
+        //         <Grid width="500px" height="500px">
+        //             {tempImageData.map((url: string, index: number) => (
+        //                 <GridItem url={url} key={index} />
+        //             ))}
+        //         </Grid>
+        //     </div>
+        // </div>
+        <div className={styles.columns}>
+            <div className={styles.column}>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+            </div>
+            <div className={`${styles.column} ${styles.columnReverse}`}>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+            </div>
+            <div className={styles.column}>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
+                <div className={styles.columnItem}></div>
             </div>
         </div>
     );
