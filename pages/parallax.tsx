@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "../components/Grid";
 import GridItem from "../components/GridItem";
+import parallaxStyles from "../styles/parallax.module.css";
 
-// this image data is only for testing purposes
 const tempImageData = [
     "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chipmunk-nature-photos-1537973822.jpg",
     "https://media.istockphoto.com/id/680810342/photo/dog-watching-tv-on-the-couch.jpg?s=612x612&w=0&k=20&c=CQXmfuqlwL49GhcLDXIQSEZwq3iGpIkPJneWJUiI_0U=",
@@ -21,25 +21,20 @@ const tempImageData = [
     "https://en.meming.world/images/en/thumb/0/08/Cat_Standing_in_the_Snow_no_caption.jpg/300px-Cat_Standing_in_the_Snow_no_caption.jpg",
 ];
 
-const gridtest = () => {
+const parallax = () => {
     return (
-        <div
-            style={{
-                width: "100vw",
-                height: "100vh",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
-            <h1>Responsive Grid Demo</h1>
-            <Grid width="70vw" height="100%">
-                {tempImageData.map((url: string, index: number) => (
-                    <GridItem url={url} key={index} />
-                ))}
-            </Grid>
+        <div>
+            <div className={parallaxStyles.parallax}></div>
+
+            <div className={parallaxStyles.content}>
+                <Grid width="500px" height="500px">
+                    {tempImageData.map((url: string, index: number) => (
+                        <GridItem url={url} key={index} />
+                    ))}
+                </Grid>
+            </div>
         </div>
     );
 };
 
-export default gridtest;
+export default parallax;

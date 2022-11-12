@@ -1,8 +1,8 @@
 .componentContainer {
-    margin: 20px;
     outline: 3px solid gray;
     border-radius: 25px;
     padding: 20px;
+    background-color: rgba(0, 255, 0, 0);
     overflow: scroll;
 }
 

@@ -1,0 +1,18 @@
+.parallax{
+    background-image: url("../public/coolpic.jpg");
+    /* background-color: lightblue; */
+
+    min-height: 100vh;
+
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    background-color: rgba(0,0,0,0);
+    width: 100vw;
+}
