@@ -22,9 +22,17 @@ const tempImageData = [
 
 const gridtest = () => {
     return (
-        <div style={{ width: "100vw", textAlign: "center" }}>
+        <div
+            style={{
+                width: "100vw",
+                height: "100vh",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
             <h1>Responsive Grid Demo</h1>
-            <Grid data={tempImageData} />
+            <Grid data={tempImageData} width="70vw" height="100%" />
         </div>
     );
 };

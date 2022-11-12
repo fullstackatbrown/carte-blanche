@@ -18,7 +18,7 @@ const Grid = (props: gridProps) => {
             className={gridStyles.componentContainer}
         >
             <Container fluid>
-                <Row xs={1} md={2} lg={4}>
+                <Row xs={1} md={2} lg={3}>
                     {props.data.map((url: string, index: number) => (
                         <Col
                             style={{
