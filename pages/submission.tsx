@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession, getSession, GetSessionParams } from "next-auth/react";
 import { IUser, userSchema, User } from "../models/User";
 import RichTextEditor, { EditorValue } from "react-rte";
@@ -14,7 +14,9 @@ const TextEditor = dynamic(() => import("./TextEditor"), {
 mongoose.connect("mongodb://localhost:27017/testDB");
 
 async function checkRole(email: string) {
+    console.log("began checkRole");
     const user = await User.findOne({ email: email });
+    console.log("user" + user);
     // User.findOne({ email: email }, function (err: any, user: IUser) {
     //     if (err) {
     //         return "Error";
@@ -26,14 +28,24 @@ async function checkRole(email: string) {
     if (userRole === undefined) {
         return "Error";
     }
+    console.log("role: " + userRole);
     return userRole;
 }
 
-export default async function Submission() {
+export default function Submission() {
     const { data: session, status } = useSession();
+    const [role, setRole] = useState("");
+
+    if (status !== "authenticated") {
+        return <p>You do not have access!</p>;
+    }
+
+    useEffect(() => {
+        checkRole(session.user!.email!).then((role) => setRole(role));
+    });
 
     if (status === "authenticated") {
-        const role = await checkRole(session.user!.email!);
+        // checkRole(session.user!.email!).then((role) => setRole(role));
         if (role !== "Admin" && role !== "Writer") {
             return <p>You do not have access!</p>;
         }

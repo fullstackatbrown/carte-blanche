@@ -53,8 +53,8 @@ export interface IUser {
     submissions: any[];
 }
 
-export const User = model<IUser>("User", userSchema);
+// export const User = model<IUser>("User", userSchema);
 // export default User;
-// export const User = models.User || model<IUser>("User", userSchema);
+export const User = models.User || model<IUser>("User", userSchema);
 // const User = (models.User as IUser) || model<IUser>("User", userSchema);
 // export { User };
