@@ -21,12 +21,12 @@ const Home: NextPage = () => {
                 <div className={styles.navLinks}>
                     <a href="pieces">Pieces</a>
                     <a href="about">About</a>
-                    <a href="join">Join</a>
+                    <a href="login">Login</a>
                 </div>
                 <div className={styles.navLinksMini} id="navLinksMini">
                     <a href="pieces">Pieces</a>
                     <a href="about">About</a>
-                    <a href="join">Join</a>
+                    <a href="login">Login</a>
                 </div>
                 <div
                     className={styles.hamburgerIcon}
