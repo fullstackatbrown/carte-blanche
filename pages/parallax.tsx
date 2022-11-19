@@ -18,17 +18,13 @@ const parallax = () => {
         );
 
         columns.addEventListener("scroll", (event) => {
-            var offset = 2 * columns?.scrollTop;
-            var containerOffset = columns?.scrollTop;
-            console.log(columns?.scrollTop);
+            var offset = columns?.scrollTop;
             // for (var i = 0; i < columnReverse.length; i++) {
             //     columnReverse[i].style.transform = `translateY(${offset}px)`;
             //     columnReverse[i].style.backgroundColor = "green";
             // }
-            if (columns?.scrollTop < 455) {
-                columnReverseContainer.style.transform = `translateY(${offset}px)`;
-                columnReverse.style.transform = `translateY(${containerOffset}px)`;
-            }
+            columnReverseContainer.style.transform = `translateY(${offset}px)`;
+            columnReverse.style.transform = `translateY(${offset}px)`;
         });
     });
 
