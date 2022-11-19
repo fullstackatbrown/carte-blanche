@@ -1,4 +1,7 @@
-import "https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js";
+
+
+console.log("hello world");
+document.querySelector("columns").style.overflowY = "hidden";
 
 const timeline = new ScrollTimeline({
     scrollSource: document.documentElement,
@@ -6,10 +9,7 @@ const timeline = new ScrollTimeline({
     fill: "both"
 });
 
-document.querySelectorAll("columnReverse").forEach(($column) => {
-    //$column.style.flexDirection = "column-reverse";
-    $column.style.width = "10%";
-
+document.querySelectorAll(`${styles.columnReverse}`).forEach(($column) => {
     $column.animate (
         {
             transform: [
@@ -24,3 +24,4 @@ document.querySelectorAll("columnReverse").forEach(($column) => {
         }
     );
 });
+
