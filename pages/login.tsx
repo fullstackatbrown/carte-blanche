@@ -7,6 +7,11 @@ export default function Login() {
 
     if (session) {
         // already logged in
+        fetch(`/api/basicadduser/`, {
+            method: "POST",
+            headers: {},
+            body: `${session.user!.email}`,
+        });
         return (
             <div>
                 <h2>Welcome, {session.user!.name}</h2>

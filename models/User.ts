@@ -1,5 +1,7 @@
-import mongoose, { model, Schema } from "mongoose";
-import { useEffect } from "react";
+import { Model, model, Schema, connect, PopulatedDoc } from "mongoose";
+import * as mongoose from "mongoose";
+import { IContent } from "./Content";
+import createModel from "./createModel";
 
 // export enum userRole {
 //     // Admin = 0,
@@ -12,14 +14,31 @@ import { useEffect } from "react";
 //     // message: 'User '
 // }
 
-const userSchema = new Schema({
+export interface IUser {
+    _id?: string;
+    userID: number;
+    name: string;
+    email: string;
+    profilePicture: string; // probably a link to profile pic provided by Google
+    // role?: userRole;
+    role: "Admin" | "Writer" | "Reader";
+    submissions: PopulatedDoc<IContent>[];
+}
+
+// interface IUserMethods {
+//     getRole(): "Admin" | "Writer" | "Reader";
+// }
+
+// type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser>({
     userID: {
         type: Number,
-        required: true,
+        required: false,
     },
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
         type: String,
@@ -27,7 +46,7 @@ const userSchema = new Schema({
     },
     profilePicture: {
         type: String,
-        required: true,
+        required: false,
     },
     role: {
         // type: userRole,
@@ -43,16 +62,9 @@ const userSchema = new Schema({
     },
 });
 
-export interface IUser {
-    _id?: string;
-    userID: number;
-    name: string;
-    email: string;
-    profilePicture: string; // probably a link to profile pic provided by Google
-    // role?: userRole;
-    role: "Admin" | "Writer" | "Reader";
-    submissions: any[];
-}
+// userSchema.method("getRole", function getRole() {
+//     return this.role;
+// })
 
 // export const User = model<IUser>("User", userSchema);
 // export default User;
@@ -63,8 +75,11 @@ console.log("get here 1");
 // if (model<IUser>("User", userSchema) === undefined) {
 //     console.log("user Schema sus")
 // }
-export const User = mongoose.models.User || model<IUser>("User", userSchema);
+const User = mongoose.models.User || model<IUser>("User", userSchema);
+// module.exports = mongoose.models.User || model<IUser>("User", userSchema);
+// export default createModel<IUser, UserModel>("User", userSchema);
 console.log("get here 2");
 console.log("USER" + User);
+export default User;
 // const User = (models.User as IUser) || model<IUser>("User", userSchema);
 // export { User };
