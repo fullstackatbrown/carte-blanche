@@ -7,7 +7,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     console.log("handler called");
-    const { query: email, method } = req;
+    // const { query: email, method } = req;
+    const {
+        query: { email },
+        method,
+    } = req;
     console.log("email" + email);
 
     await dbConnect();
@@ -22,8 +26,11 @@ export default async function handler(
                         .status(400)
                         .json({ success: false, message: "User not found" });
                 }
-                return res.status(200).json({ success: true, role: user });
+                return res
+                    .status(200)
+                    .json({ success: true, user: JSON.stringify(user) });
             } catch (error) {
+                console.log("AN error occurred");
                 console.log(error);
                 return res
                     .status(400)
