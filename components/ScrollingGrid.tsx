@@ -40,9 +40,9 @@ interface ScrollingGridProps {
 
 function ScrollingGrid(props: ScrollingGridProps) {
     const [columns, setColumns] = useState<string[][]>([[]]);
-    const [scrollDelta, setScrollDelta] = useState(0);
 
     const containerDivRef = useRef<HTMLDivElement>(null);
+    const reverseColumnRef = useRef<HTMLDivElement>(null);
 
     const getMaxColumnLength = (): number => {
         let max = columns[0].length;
@@ -75,7 +75,11 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
     const handleScroll = (e: React.UIEvent) => {
         // console.log(containerDivRef.current!.scrollTop);
-        setScrollDelta(containerDivRef.current!.scrollTop);
+        // console.log(reverseColumnRef.current?.style.transform);
+        let scrollDelta: number = containerDivRef.current!.scrollTop;
+        if (reverseColumnRef != null) {
+            reverseColumnRef.current!.style.transform = `translateY(calc(2*${scrollDelta}px))`;
+        }
     };
 
     useEffect(() => {
@@ -99,11 +103,12 @@ function ScrollingGrid(props: ScrollingGridProps) {
                 columns.map((array: string[], index: number) => (
                     <Column
                         index={index}
-                        scrollDelta={scrollDelta}
                         height={`${
                             getMaxColumnLength() * (cellHeight + cellMargin)
                         }em`}
                         gridHeight={props.height}
+                        key={index}
+                        reverseColumnRef={reverseColumnRef}
                     >
                         {array.map((entry: string, index: number) => (
                             <div
@@ -122,10 +127,10 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
 interface ColumnProps {
     index: number;
-    scrollDelta: number;
     children: React.ReactNode;
     height?: string;
     gridHeight?: string;
+    reverseColumnRef?: React.RefObject<HTMLDivElement>;
 }
 function Column(props: ColumnProps) {
     if (props.index % 2 == 0) {
@@ -153,8 +158,9 @@ function Column(props: ColumnProps) {
                     className={styles.columnReverseContainer}
                     style={{
                         marginTop: initialOffset,
-                        transform: `translateY(calc(2*${props.scrollDelta}px))`,
+                        // transform: `translateY(calc(2*${props.scrollDelta}px))`,
                     }}
+                    ref={props.reverseColumnRef}
                 >
                     {props.children}
                 </div>
