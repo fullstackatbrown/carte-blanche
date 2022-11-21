@@ -1,0 +1,42 @@
+.container {
+    background-color: lightblue;
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    position: relative;
+    justify-items: center;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.columnReverse{
+    background-color:bisque;
+    margin: 0 1em;
+    overflow-y: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    top:0;
+}
+
+.columnReverseContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    background-color:darkgoldenrod;
+}
+
+.item {
+    margin-bottom: 1em;
+    border: solid 2px black;
+}
+
+.cellImage {
+    max-height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
