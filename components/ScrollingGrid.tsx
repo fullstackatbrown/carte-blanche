@@ -77,7 +77,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
         // console.log(containerDivRef.current!.scrollTop);
         // console.log(reverseColumnRef.current?.style.transform);
         let scrollDelta: number = containerDivRef.current!.scrollTop;
-        if (reverseColumnRef != null) {
+        if (reverseColumnRef.current != null) {
             reverseColumnRef.current!.style.transform = `translateY(calc(2*${scrollDelta}px))`;
         }
     };
