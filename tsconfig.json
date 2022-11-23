@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/dbConnect.js", "pages/api/makeSubmission.js", "pages/api/userRole/[email].js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/dbConnect.js", "pages/api/makeSubmission.js", "pages/api/getUserByEmail/[email].js"],
   "exclude": ["node_modules"]
 }

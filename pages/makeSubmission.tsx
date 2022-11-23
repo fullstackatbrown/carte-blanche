@@ -60,7 +60,7 @@ export default function Submission() {
 
     if (status === "authenticated") {
         const { data, error } = useSwr<>(
-            `/api/userrole/${session.user!.email}`,
+            `/api/getUserByEmail/${session.user!.email}`,
             fetcher
         );
         // checkRole(session.user!.email!).then((role) => setRole(role));
@@ -70,7 +70,6 @@ export default function Submission() {
         } else if (!data) {
             return <div>Loading...</div>;
         }
-        console.log("DATA: " + data.user.role);
         if (data.user.role !== "Admin" && data.user.role !== "Writer") {
             return <p>Incorrect role: You do not have access!</p>;
         }
