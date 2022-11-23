@@ -5,37 +5,31 @@ import User from "../../../models/User";
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
-) {
+){
     console.log("handler called");
     // const { query: email, method } = req;
     const {
         query: { email },
         method,
     } = req;
-    console.log("email" + email);
+    console.log("email: " + email);
 
     await dbConnect();
 
     switch (method) {
         case "GET":
             try {
-                const user = User.findOne({ email: email });
+                const user = await User.findOne({ email: email });
+                console.log("user: " + user);
                 if (!user) {
-                    console.log("No user exists");
-                    return res
-                        .status(400)
-                        .json({ success: false, message: "User not found" });
+                    console.log("No user found!")
+                    return res.status(400).json({ success: false, message: "User not found" });
                 }
-                return res
-                    .status(200)
-                    .json({ success: true, user: JSON.stringify(user) });
+                res.status(200).json({ success: true, user: user });
             } catch (error) {
-                console.log("AN error occurred");
-                console.log(error);
-                return res
-                    .status(400)
-                    .json({ success: false, message: "An error occurred" });
+                console.log("Error: " + error);
+                res.status(400).json({ success: false, message: "Error getting user" });
             }
             break;
+        }
     }
-}
