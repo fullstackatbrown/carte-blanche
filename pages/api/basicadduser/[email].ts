@@ -15,8 +15,9 @@ export default async function handler(
 
     switch (method) {
         case "POST":
+            console.log("POST REQUEST MADE!");
             try {
-                const user = User.findOne({ email: email });
+                const user = await User.findOne({ email: email });
                 console.log("USER" + user);
                 if (!user) {
                     const newUser = new User({ email: email });
