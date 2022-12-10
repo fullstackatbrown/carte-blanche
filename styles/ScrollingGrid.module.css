@@ -1,11 +1,17 @@
 .container {
-    background-color: lightblue;
     overflow: scroll;
     display: flex;
     flex-direction: row;
     overflow: scroll;
     position: relative;
     justify-items: center;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin: 0 1em;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 .column {
@@ -15,28 +21,67 @@
 }
 
 .columnReverse{
-    background-color:bisque;
     margin: 0 1em;
     overflow-y: hidden;
     width: 100%;
     display: flex;
     flex-direction: column;
-    top:0;
+    top: 0;
 }
 
 .columnReverseContainer {
     display: flex;
     flex-direction: column-reverse;
-    background-color:darkgoldenrod;
 }
 
 .item {
     margin-bottom: 1em;
-    border: solid 2px black;
+    overflow: hidden;
+}
+
+.column:not(.columnReverse) .item:last-of-type {
+    margin-bottom: 0;
 }
 
 .cellImage {
-    max-height: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+.scrollingGrid {
+    left: 0;
+}
+
+.body {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.menu {
+    text-align: end;
     width: 100%;
-    object-fit: contain;
+    margin-left: 1em;
+}
+
+@media (min-width: 576px) and (max-width: 992px) {
+    .columnReverse{
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .menu {
+        display: none;
+    }
+
+    .container {
+        margin: 0 calc(35vw / 2);
+    }
 }

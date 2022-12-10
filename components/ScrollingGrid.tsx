@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/ScrollingGrid.module.css";
 
-const cellHeight = 16; //em
+const cellHeight = 15; //em
 const cellMargin = 1; //em
 
 // returns the breakpoint from a given screen width
@@ -94,7 +94,6 @@ function ScrollingGrid(props: ScrollingGridProps) {
             style={{
                 width: `${props.width}`,
                 height: `${props.height}`,
-                margin: "1em auto",
             }}
             ref={containerDivRef}
             onScroll={(e) => handleScroll(e)}
@@ -104,7 +103,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
                     <Column
                         index={index}
                         height={`${
-                            getMaxColumnLength() * (cellHeight + cellMargin)
+                            getMaxColumnLength() * (cellHeight + cellMargin) - 1
                         }em`}
                         gridHeight={props.height}
                         key={index}
