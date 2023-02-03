@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import React from "react";
 import Navbar from "../src/components/Navbar";
 
-const Home: NextPage = () => {
+const About: NextPage = () => {
     return (
         <>
             <Navbar />
@@ -11,4 +11,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default About;

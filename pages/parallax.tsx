@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../components/Grid";
 import GridItem from "../components/GridItem";
-import styles from "../styles/parallax.module.css";
+import styles from "../styles/parallax.module.scss";
 import $ from "jquery";
 //import { Helmet } from "react-helmet";
 

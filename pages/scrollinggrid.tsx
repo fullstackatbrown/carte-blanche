@@ -1,7 +1,7 @@
 import React from "react";
-import ScrollingGrid from "../components/ScrollingGrid";
+import ScrollingGrid from "../src/components/ScrollingGrid";
 
-import styles from "../styles/ScrollingGrid.module.css";
+import styles from "../styles/ScrollingGrid.module.scss";
 
 // const tempData = [
 //     "a",
