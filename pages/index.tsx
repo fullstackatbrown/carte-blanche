@@ -2,43 +2,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.scss";
-import MenuIcon from "@mui/icons-material/Menu";
+import { FaBars } from "react-icons/fa";
 import React from "react";
+import Navbar from "../src/components/Navbar";
 
 const Home: NextPage = () => {
     return (
         <>
-            {/* Navigation Bar */}
-            <div className={styles.topNavigation}>
-                <a href="">
-                    <img
-                        className={styles.logo}
-                        alt="logo"
-                        src="https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg"
-                    />
-                </a>
-                <div className="space" />
-                <div className={styles.navLinks}>
-                    <a href="pieces">Pieces</a>
-                    <a href="about">About</a>
-                    <a href="login">Login</a>
-                </div>
-                <div className={styles.navLinksMini} id="navLinksMini">
-                    <a href="pieces">Pieces</a>
-                    <a href="about">About</a>
-                    <a href="login">Login</a>
-                </div>
-                <div
-                    className={styles.hamburgerIcon}
-                    onClick={() => {
-                        let sidebar = document.querySelector("#navLinksMini");
-                        sidebar!.classList.toggle(styles.open);
-                    }}
-                >
-                    <MenuIcon className={styles.hamburger} />
-                </div>
-            </div>
-
+            <Navbar />
             {/* HOME PAGE CONTENT */}
             <div className={styles.homeContent}>
                 <div className={styles.homeContentTitle}>Carte Blanche</div>
