@@ -1,16 +1,13 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
+import IUser from "../types/IUser";
 
-enum userRole {
+export enum Role {
     Admin = 0,
     Writer = 1,
     Reader = 2,
 }
 
-const userSchema = new Schema({
-    userID: {
-        type: Number,
-        required: true,
-    },
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -19,28 +16,21 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    profilePicture: {
+    image: {
         type: String,
         required: true,
     },
     role: {
-        type: userRole,
-        default: userRole.Reader,
+        type: String,
+        enum: Role,
+        default: Role.Reader,
     },
     submissions: {
-        type: Array<Schema.Types.ObjectId>,
+        type: [Schema.Types.ObjectId],
         ref: "Content",
+        default: [],
     },
 });
 
-export interface IUser {
-    _id?: string;
-    userID: number;
-    name: string;
-    email: string;
-    profilePicture: string; // probably a link to profile pic provided by Google
-    role?: userRole;
-    submissions: any[];
-}
-
-export const User = model<IUser>("User", userSchema);
+// export const User = model<IUser>("users", UserSchema);
+export default mongoose.models.User || model<IUser>("User", UserSchema);

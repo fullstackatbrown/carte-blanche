@@ -5,11 +5,19 @@ import styles from "../styles/Home.module.scss";
 import { FaBars } from "react-icons/fa";
 import React from "react";
 import Navbar from "../src/components/Navbar";
+import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
+    const { data: session, status } = useSession();
+    if (status === "authenticated") {
+        console.log("user is logged in" + session.user!.name);
+    }
+
     return (
         <>
             <Navbar />
+            {/* check if user is logged in */}
+
             {/* HOME PAGE CONTENT */}
             <div className={styles.homeContent}>
                 <div className={styles.homeContentTitle}>Carte Blanche</div>
