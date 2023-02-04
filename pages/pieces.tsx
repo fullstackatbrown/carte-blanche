@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Navbar from "../src/components/Navbar";
 import ScrollingGrid from "../src/components/ScrollingGrid";
 
 import styles from "../styles/ScrollingGrid.module.scss";
@@ -27,6 +28,7 @@ const tempData = [
 const Pieces: NextPage = () => {
     return (
         <div className={styles.body}>
+            <Navbar />
             <div className={styles.menu}>
                 <h3>vous avez</h3>
                 <h1>CARTE BLANCHE</h1>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 import { FaBars } from "react-icons/fa";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -12,6 +12,7 @@ import {
     Tooltip,
 } from "@mui/material";
 import { PersonAdd, Settings, Logout } from "@mui/icons-material";
+import IUser from "../../types/IUser";
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -25,13 +26,49 @@ export default function Navbar() {
     };
 
     const { data: session, status } = useSession();
-    if (status === "authenticated") {
-        console.log("user is logged in" + session.user!.name);
-        console.log(session!.user!.image);
-    }
+    const [user, setUser] = useState<IUser>();
+    const [canAccessAdmin, setCanAccessAdmin] = useState(false);
+    const [canAccessWriter, setCanAccessWriter] = useState(false);
+    useEffect(() => {
+        const getUser = async () => {
+            const user = await fetch("/api/user/getUser", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const userJson = await user.json();
+            setUser(userJson.user);
+            if (userJson.user?.role === "admin") {
+                setCanAccessAdmin(true);
+                setCanAccessWriter(true);
+            }
+            if (userJson.user?.role === "writer") {
+                setCanAccessWriter(true);
+            }
+        };
+
+        // const updateUserRole = async () => {
+        //     const user = await fetch("/api/user/changeRole", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({
+        //             role: "admin",
+        //         }),
+        //     });
+        //     const userJson = await user.json();
+        //     setUser(userJson.user);
+        // };
+
+        getUser();
+        // updateUserRole();
+    }, []);
+
     return (
         <div className={styles.topNavigation}>
-            <a href="">
+            <a href="/">
                 <img
                     className={styles.logo}
                     alt="logo"
@@ -42,6 +79,8 @@ export default function Navbar() {
             <div className={styles.navLinks}>
                 <a href="pieces">Pieces</a>
                 <a href="about">About</a>
+                {canAccessAdmin ? <a href="admin">Admin</a> : null}
+                {canAccessWriter ? <a href="writer">Upload</a> : null}
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">

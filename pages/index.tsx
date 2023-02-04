@@ -9,15 +9,9 @@ import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
-    if (status === "authenticated") {
-        console.log("user is logged in" + session.user!.name);
-    }
-
     return (
         <>
             <Navbar />
-            {/* check if user is logged in */}
-
             {/* HOME PAGE CONTENT */}
             <div className={styles.homeContent}>
                 <div className={styles.homeContentTitle}>Carte Blanche</div>
@@ -30,7 +24,7 @@ const Home: NextPage = () => {
                 <div className={styles.homeContentButtonContainer}>
                     <div className="space"></div>
                     <a
-                        href=""
+                        href="/pieces"
                         className={styles.btnFlip}
                         data-back="Be bold"
                         data-front="Dive in"
