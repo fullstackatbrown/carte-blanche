@@ -16,6 +16,7 @@ import {
     TextField,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
+import { CreateContentModal } from "../src/components/Modals/CreateContentModal";
 
 const Upload: NextPage = () => {
     const { data: session, status } = useSession({ required: true });
@@ -99,12 +100,26 @@ const Upload: NextPage = () => {
         };
     }, []);
 
+    const [createNodeModalOpen, setCreateNodeModalOpen] = useState(false);
+
     return (
         <>
             <Navbar />
             {status === "authenticated" && isAdmin ? (
                 <div className={styles.aboutContent}>
                     <h1>Upload Page</h1>
+                    <CreateContentModal
+                        isOpen={createNodeModalOpen}
+                        onClose={() => setCreateNodeModalOpen(false)}
+                    />
+                    <button
+                        onClick={() => {
+                            setCreateNodeModalOpen(true);
+                        }}
+                    >
+                        Open Modal
+                    </button>
+
                     <div className={styles.buttonContainer}>
                         {/* <div>{`value: ${
                             emailValue !== null ? `'${emailValue}'` : "null"

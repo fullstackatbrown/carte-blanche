@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { PersonAdd, Settings, Logout } from "@mui/icons-material";
 import IUser from "../../types/IUser";
+import { CreateContentModal } from "./Modals/CreateContentModal";
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -50,6 +51,8 @@ export default function Navbar() {
         getUser();
     }, []);
 
+    const [createNodeModalOpen, setCreateNodeModalOpen] = useState(false);
+
     return (
         <div className={styles.topNavigation}>
             <a href="/">
@@ -64,6 +67,19 @@ export default function Navbar() {
                 <a href="pieces">Pieces</a>
                 {canAccessAdmin ? <a href="admin">Admin</a> : null}
                 {canAccessWriter ? <a href="upload">Upload</a> : null}
+                {/* {canAccessWriter ? (
+                    <div
+                        onClick={() => {
+                            setCreateNodeModalOpen(true);
+                        }}
+                    >
+                        Upload
+                    </div>
+                ) : null} */}
+                <CreateContentModal
+                    isOpen={createNodeModalOpen}
+                    onClose={() => setCreateNodeModalOpen(false)}
+                />
                 <a href="about">About</a>
                 {status === "authenticated" ? (
                     <>

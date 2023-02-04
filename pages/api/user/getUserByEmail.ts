@@ -15,6 +15,7 @@ export default async function handler(
     const user = await User.findOne({
         email: session?.user?.email,
     });
+    console.log(user);
     if (!user) {
         res.status(401).json({ name: "Not logged in" });
         return;

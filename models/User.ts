@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     role: {
         type: String,
         enum: Role,
-        default: Role.Reader,
+        default: Role.reader,
     },
     submissions: {
         type: [Schema.Types.ObjectId],

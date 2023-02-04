@@ -1,27 +1,7 @@
-import { model, Schema } from "mongoose";
-import IContent from "../types/IContent";
-
-// enum contentType {
-//     Text = 0,
-//     Image = 1,
-//     Video = 2,
-// }
-
-// enum contentColumn {
-//     Left = 0,
-//     Middle = 1,
-//     Right = 2,
-// }
+import mongoose, { model, Schema } from "mongoose";
+import IContent, { nodeTypes } from "../types/IContent";
 
 const contentSchema = new Schema({
-    userID: {
-        type: Number,
-        required: true,
-    },
-    contentID: {
-        type: Number,
-        required: true,
-    },
     title: {
         type: String,
         required: true,
@@ -39,11 +19,6 @@ const contentSchema = new Schema({
         type: String,
         required: true,
     },
-    column: {
-        // type: contentColumn,
-        type: String,
-        required: true,
-    },
     dateCreated: {
         type: Date,
         default: Date.now,
@@ -54,4 +29,5 @@ const contentSchema = new Schema({
     },
 });
 
-export const Content = model<IContent>("Content", contentSchema);
+export default mongoose.models.Content ||
+    model<IContent>("Content", contentSchema);
