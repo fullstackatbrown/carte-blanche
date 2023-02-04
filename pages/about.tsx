@@ -7,6 +7,8 @@ const About: NextPage = () => {
         <>
             <Navbar />
             <h1>This is Carte Blanche</h1>
+            <h1>Our Mission</h1>
+            <p>Lorem epsum..</p>
         </>
     );
 };
