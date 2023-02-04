@@ -11,7 +11,13 @@ import {
     MenuItem,
     Tooltip,
 } from "@mui/material";
-import { PersonAdd, Settings, Logout } from "@mui/icons-material";
+import {
+    Create,
+    PersonAdd,
+    Settings,
+    SupervisorAccount,
+    Logout,
+} from "@mui/icons-material";
 import IUser from "../../types/IUser";
 import { CreateContentModal } from "./Modals/CreateContentModal";
 
@@ -23,13 +29,18 @@ export default function Navbar() {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+    const handleLogout = () => {
+        setAnchorEl(null);
         signOut();
     };
 
     const { data: session, status } = useSession();
+    // state variables
     const [user, setUser] = useState<IUser>();
     const [canAccessAdmin, setCanAccessAdmin] = useState(false);
     const [canAccessWriter, setCanAccessWriter] = useState(false);
+    const [createContentModalOpen, setCreateContentModalOpen] = useState(false);
     useEffect(() => {
         const getUser = async () => {
             const user = await fetch("/api/user/getUserByEmail", {
@@ -51,8 +62,6 @@ export default function Navbar() {
         getUser();
     }, []);
 
-    const [createNodeModalOpen, setCreateNodeModalOpen] = useState(false);
-
     return (
         <div className={styles.topNavigation}>
             <a href="/">
@@ -65,8 +74,8 @@ export default function Navbar() {
             <div className="space" />
             <div className={styles.navLinks}>
                 <a href="pieces">Pieces</a>
-                {canAccessAdmin ? <a href="admin">Admin</a> : null}
-                {canAccessWriter ? <a href="upload">Upload</a> : null}
+                {/* {canAccessAdmin ? <a href="admin">Admin</a> : null}
+                {canAccessWriter ? <a href="upload">Upload</a> : null} */}
                 {/* {canAccessWriter ? (
                     <div
                         onClick={() => {
@@ -77,8 +86,8 @@ export default function Navbar() {
                     </div>
                 ) : null} */}
                 <CreateContentModal
-                    isOpen={createNodeModalOpen}
-                    onClose={() => setCreateNodeModalOpen(false)}
+                    isOpen={createContentModalOpen}
+                    onClose={() => setCreateContentModalOpen(false)}
                 />
                 <a href="about">About</a>
                 {status === "authenticated" ? (
@@ -127,7 +136,7 @@ export default function Navbar() {
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}
-                onClose={handleClose}
+                // onClose={handleClose}
                 onClick={handleClose}
                 PaperProps={{
                     elevation: 0,
@@ -164,20 +173,30 @@ export default function Navbar() {
                 <MenuItem onClick={handleClose}>
                     <Avatar /> My account
                 </MenuItem>
+                {canAccessAdmin ? (
+                    <MenuItem onClick={() => setCreateContentModalOpen(true)}>
+                        <ListItemIcon>
+                            <SupervisorAccount fontSize="small" />
+                        </ListItemIcon>
+                        Change Roles
+                    </MenuItem>
+                ) : null}
+                {canAccessWriter ? (
+                    <MenuItem onClick={() => setCreateContentModalOpen(true)}>
+                        <ListItemIcon>
+                            <Create fontSize="small" />
+                        </ListItemIcon>
+                        Create Content
+                    </MenuItem>
+                ) : null}
                 <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
                     Settings
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>

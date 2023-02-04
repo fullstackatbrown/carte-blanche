@@ -112,11 +112,13 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         if (!responseJson.success) {
             return;
         }
+        console.log("last line of handleSubmit");
         handleClose();
     };
 
     /** Reset all our state variables and close the modal */
     const handleClose = () => {
+        console.log("handle close called");
         onClose();
         setTitle("");
         setAuthor("");

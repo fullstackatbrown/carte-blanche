@@ -100,7 +100,7 @@ const Upload: NextPage = () => {
         };
     }, []);
 
-    const [createNodeModalOpen, setCreateNodeModalOpen] = useState(false);
+    const [createContentModalOpen, setCreateContentModalOpen] = useState(false);
 
     return (
         <>
@@ -109,12 +109,12 @@ const Upload: NextPage = () => {
                 <div className={styles.aboutContent}>
                     <h1>Upload Page</h1>
                     <CreateContentModal
-                        isOpen={createNodeModalOpen}
-                        onClose={() => setCreateNodeModalOpen(false)}
+                        isOpen={createContentModalOpen}
+                        onClose={() => setCreateContentModalOpen(false)}
                     />
                     <button
                         onClick={() => {
-                            setCreateNodeModalOpen(true);
+                            setCreateContentModalOpen(true);
                         }}
                     >
                         Open Modal
