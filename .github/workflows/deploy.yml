@@ -1,0 +1,36 @@
+# NicholasBottone's Deploy to Private Repo Action
+name: 🚀 Deploy Production
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [main]
+
+jobs:
+    build-deploy-frontend:
+        name: 🎉 Build and Deploy Frontend
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🚚 Get latest code
+              uses: actions/checkout@v2
+
+            - name: 🔨 Set up Node 16.17.0
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 16.17.0
+
+            - name: ⛏ Build Frontend
+              run: |
+                  cd client
+                  npm ci
+                  npm run lint
+                  npm run build
+                  cd ..
+
+            - name: ☁ Deploy to Vercel Git Repo
+              uses: wei/git-sync@v3
+              with:
+                  source_repo: "https://github.com/fullstackatbrown/carte-blanche.git"
+                  source_branch: "main"
+                  destination_repo: "https://andrew7li:${{ secrets.PAT }}@github.com/andrew7li/carte-blanche-deploy.git"
+                  destination_branch: "deploy"
