@@ -31,7 +31,7 @@ export default function Navbar() {
     const [canAccessWriter, setCanAccessWriter] = useState(false);
     useEffect(() => {
         const getUser = async () => {
-            const user = await fetch("/api/user/getUser", {
+            const user = await fetch("/api/user/getUserByEmail", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,23 +47,7 @@ export default function Navbar() {
                 setCanAccessWriter(true);
             }
         };
-
-        // const updateUserRole = async () => {
-        //     const user = await fetch("/api/user/changeRole", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify({
-        //             role: "admin",
-        //         }),
-        //     });
-        //     const userJson = await user.json();
-        //     setUser(userJson.user);
-        // };
-
         getUser();
-        // updateUserRole();
     }, []);
 
     return (
@@ -78,9 +62,9 @@ export default function Navbar() {
             <div className="space" />
             <div className={styles.navLinks}>
                 <a href="pieces">Pieces</a>
-                <a href="about">About</a>
                 {canAccessAdmin ? <a href="admin">Admin</a> : null}
-                {canAccessWriter ? <a href="writer">Upload</a> : null}
+                {canAccessWriter ? <a href="upload">Upload</a> : null}
+                <a href="about">About</a>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">

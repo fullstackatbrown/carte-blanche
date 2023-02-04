@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
-const Admin: NextPage = () => {
+const Upload: NextPage = () => {
     const { data: session, status } = useSession({ required: true });
     const [user, setUser] = useState<IUser>();
     const [listOfUsers, setListOfUsers] = useState<string[]>([]);
@@ -104,7 +104,7 @@ const Admin: NextPage = () => {
             <Navbar />
             {status === "authenticated" && isAdmin ? (
                 <div className={styles.aboutContent}>
-                    <h1>Admin Page</h1>
+                    <h1>Upload Page</h1>
                     <div className={styles.buttonContainer}>
                         {/* <div>{`value: ${
                             emailValue !== null ? `'${emailValue}'` : "null"
@@ -127,10 +127,7 @@ const Admin: NextPage = () => {
                             }
                             sx={{ width: 500 }}
                             renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Users (by email)"
-                                />
+                                <TextField {...params} label="Title" />
                             )}
                         />
                         <Autocomplete
@@ -146,7 +143,39 @@ const Admin: NextPage = () => {
                             options={roles!}
                             sx={{ width: 500 }}
                             renderInput={(params) => (
-                                <TextField {...params} label="New Role" />
+                                <TextField {...params} label="Author" />
+                            )}
+                        />
+                        <Autocomplete
+                            value={emailValue}
+                            onChange={(event: any, newValue: string | null) => {
+                                setNewRoleValue(newValue);
+                            }}
+                            inputValue={newRoleInputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setNewRoleInputValue(newInputValue);
+                            }}
+                            id="controllable-states-demo"
+                            options={roles!}
+                            sx={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Content Type" />
+                            )}
+                        />
+                        <Autocomplete
+                            value={emailValue}
+                            onChange={(event: any, newValue: string | null) => {
+                                setNewRoleValue(newValue);
+                            }}
+                            inputValue={newRoleInputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setNewRoleInputValue(newInputValue);
+                            }}
+                            id="controllable-states-demo"
+                            options={roles!}
+                            sx={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Content" />
                             )}
                         />
                         <Box sx={{ m: 1, position: "relative" }}>
@@ -176,8 +205,8 @@ const Admin: NextPage = () => {
             ) : (
                 <div className={styles.aboutContent}>
                     <h1>
-                        Admin Page. You don't have the right permissions to view
-                        this page.
+                        Upload Page. You don't have the right permissions to
+                        view this page.
                     </h1>
                 </div>
             )}
@@ -185,7 +214,7 @@ const Admin: NextPage = () => {
     );
 };
 
-export default Admin;
+export default Upload;
 
 // export const getServerSideProps = async (
 //     context: GetSessionParams | undefined

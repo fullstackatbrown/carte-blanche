@@ -46,8 +46,8 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
     const getMaxColumnLength = (): number => {
         let max = columns[0].length;
-        for (let i = 0; i < columns.length; i++) {
-            max = Math.max(max, columns[i].length);
+        for (const element of columns) {
+            max = Math.max(max, element.length);
         }
         return max;
     };

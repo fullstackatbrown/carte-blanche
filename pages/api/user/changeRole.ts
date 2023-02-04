@@ -25,11 +25,11 @@ export default async function handler(
         }
     );
     if (!user) {
-        res.status(401).json({ name: "Not logged in" });
+        res.status(401).json({ msg: "Not logged in" });
         return;
     }
     res.status(200).json({
-        msg: "it worked -- user is now admin",
+        msg: "User role successfully changed",
         user: user,
     });
 }
