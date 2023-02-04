@@ -1,8 +1,34 @@
-import type { NextPage } from "next";
-import Navbar from "../src/components/Navbar";
+import React from "react";
 import ScrollingGrid from "../src/components/ScrollingGrid";
 
 import styles from "../styles/ScrollingGrid.module.scss";
+
+// const tempData = [
+//     "a",
+//     "b",
+//     "c",
+//     "d",
+//     "e",
+//     "f",
+//     "g",
+//     "h",
+//     "i",
+//     "j",
+//     "k",
+//     "l",
+//     "m",
+//     "n",
+//     "o",
+//     "p",
+//     "q",
+//     "r",
+//     "s",
+//     "t",
+//     "u",
+//     "v",
+//     "w",
+//     "x",
+// ];
 
 const tempData = [
     "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chipmunk-nature-photos-1537973822.jpg",
@@ -25,10 +51,9 @@ const tempData = [
     "https://upload.wikimedia.org/wikipedia/en/7/7d/Minions_characters.png",
 ];
 
-const Pieces: NextPage = () => {
+export default function ScrollingGridPage() {
     return (
         <div className={styles.body}>
-            <Navbar />
             <div className={styles.menu}>
                 <h3>vous avez</h3>
                 <h1>CARTE BLANCHE</h1>
@@ -38,6 +63,4 @@ const Pieces: NextPage = () => {
             </div>
         </div>
     );
-};
-
-export default Pieces;
+}

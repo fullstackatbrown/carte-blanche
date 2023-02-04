@@ -1,0 +1,54 @@
+$input-margin: 10px;
+
+.modalFont {
+    font-family: "Inter", sans-serif;
+}
+
+.modalTreeView {
+    // max-height: $node-manager-max-height-in-modal;
+    overflow: auto;
+}
+
+.modalInput {
+    margin-top: $input-margin;
+}
+
+.modalSection {
+    // border-top: solid 1px $secondary-background-color;
+    margin-top: 15px;
+    padding-top: 10px;
+}
+
+.modalTitle {
+    display: flex;
+    align-items: center;
+    .modalTitleTag {
+        margin-right: 5px;
+        // background-color: $selected-color;
+        color: black;
+        padding: 3px 10px;
+        border-radius: 4px;
+        user-select: none;
+    }
+
+    .modalTitleHeader {
+        font-weight: bold;
+    }
+}
+
+.modalError {
+    color: white;
+    font-size: 0.8rem;
+    // background-color: $error-color;
+    padding: 5px 10px;
+    margin: 0px 20px;
+    position: absolute;
+    left: 0;
+    font-weight: 500;
+}
+
+.modalFooterButtons {
+    display: flex;
+    flex-direction: row;
+    font-weight: 500;
+}

@@ -1,0 +1,30 @@
+/* HOME PAGE CONTENT */
+
+.aboutContent {
+    // letter-spacing: 0.2rem;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    font-family: "Inknut Antiqua, serif";
+    font-size: 3.5rem;
+    // object-fit: cover;
+    // background-image: linear-gradient(
+    //         120deg,
+    //         rgba(255, 255, 255, 0.95),
+    //         rgba(255, 255, 255, 0.15)
+    //     ),
+    //     url(https://www.pngkey.com/png/full/434-4345150_ink-splatter-ink.png);
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
