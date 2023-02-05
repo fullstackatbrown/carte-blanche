@@ -176,8 +176,8 @@ const Admin: NextPage = () => {
             ) : (
                 <div className={styles.aboutContent}>
                     <h1>
-                        Admin Page. You don't have the right permissions to view
-                        this page.
+                        Admin Page. You don&apos;t have the right permissions to
+                        view this page.
                     </h1>
                 </div>
             )}

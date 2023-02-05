@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 import { FaBars } from "react-icons/fa";
+import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
     Avatar,
@@ -64,16 +65,16 @@ export default function Navbar() {
 
     return (
         <div className={styles.topNavigation}>
-            <a href="/">
+            <Link href="/">
                 <img
                     className={styles.logo}
                     alt="logo"
                     src="https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg"
                 />
-            </a>
+            </Link>
             <div className="space" />
             <div className={styles.navLinks}>
-                <a href="pieces">Pieces</a>
+                <Link href="pieces">Pieces</Link>
                 {/* {canAccessAdmin ? <a href="admin">Admin</a> : null}
                 {canAccessWriter ? <a href="upload">Upload</a> : null} */}
                 {/* {canAccessWriter ? (
@@ -89,7 +90,7 @@ export default function Navbar() {
                     isOpen={createContentModalOpen}
                     onClose={() => setCreateContentModalOpen(false)}
                 />
-                <a href="about">About</a>
+                <Link href="about">About</Link>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">
@@ -116,11 +117,11 @@ export default function Navbar() {
                 )}
             </div>
             <div className={styles.navLinksMini} id="navLinksMini">
-                <a href="pieces">Pieces</a>
-                <a href="about">About</a>
-                <a href="login" onClick={() => signIn()}>
+                <Link href="pieces">Pieces</Link>
+                <Link href="about">About</Link>
+                <Link href="login" onClick={() => signIn()}>
                     Login
-                </a>
+                </Link>
             </div>
             <div
                 className={styles.hamburgerIcon}
