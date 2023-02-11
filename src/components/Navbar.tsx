@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Navbar.module.scss";
-import { FaBars } from "react-icons/fa";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import {
+    Create,
+    Logout,
+    Settings,
+    SupervisorAccount,
+} from "@mui/icons-material";
 import {
     Avatar,
     Divider,
@@ -12,15 +13,14 @@ import {
     MenuItem,
     Tooltip,
 } from "@mui/material";
-import {
-    Create,
-    PersonAdd,
-    Settings,
-    SupervisorAccount,
-    Logout,
-} from "@mui/icons-material";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
 import IUser from "../../types/IUser";
+import { ChangeRolesModal } from "./Modals/ChangeRolesModal";
 import { CreateContentModal } from "./Modals/CreateContentModal";
+import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -42,6 +42,7 @@ export default function Navbar() {
     const [canAccessAdmin, setCanAccessAdmin] = useState(false);
     const [canAccessWriter, setCanAccessWriter] = useState(false);
     const [createContentModalOpen, setCreateContentModalOpen] = useState(false);
+    const [changeRolesModalOpen, setChangeRolesModalOpen] = useState(false);
     useEffect(() => {
         const getUser = async () => {
             const user = await fetch("/api/user/getUserByEmail", {
@@ -65,6 +66,15 @@ export default function Navbar() {
 
     return (
         <div className={styles.topNavigation}>
+            {/* Modals  */}
+            <CreateContentModal
+                isOpen={createContentModalOpen}
+                onClose={() => setCreateContentModalOpen(false)}
+            />
+            <ChangeRolesModal
+                isOpen={changeRolesModalOpen}
+                onClose={() => setChangeRolesModalOpen(false)}
+            />
             <Link href="/">
                 <img
                     className={styles.logo}
@@ -75,21 +85,6 @@ export default function Navbar() {
             <div className="space" />
             <div className={styles.navLinks}>
                 <Link href="pieces">Pieces</Link>
-                {/* {canAccessAdmin ? <a href="admin">Admin</a> : null}
-                {canAccessWriter ? <a href="upload">Upload</a> : null} */}
-                {/* {canAccessWriter ? (
-                    <div
-                        onClick={() => {
-                            setCreateNodeModalOpen(true);
-                        }}
-                    >
-                        Upload
-                    </div>
-                ) : null} */}
-                <CreateContentModal
-                    isOpen={createContentModalOpen}
-                    onClose={() => setCreateContentModalOpen(false)}
-                />
                 <Link href="about">About</Link>
                 {status === "authenticated" ? (
                     <>
@@ -113,15 +108,46 @@ export default function Navbar() {
                         </Tooltip>
                     </>
                 ) : (
-                    <div onClick={() => signIn()}>Login</div>
+                    <div
+                        className={styles.navLinksItem}
+                        onClick={() => signIn()}
+                    >
+                        Login
+                    </div>
                 )}
             </div>
             <div className={styles.navLinksMini} id="navLinksMini">
                 <Link href="pieces">Pieces</Link>
                 <Link href="about">About</Link>
-                <Link href="login" onClick={() => signIn()}>
-                    Login
-                </Link>
+                {status === "authenticated" ? (
+                    <>
+                        <Tooltip title="Account settings">
+                            <IconButton
+                                onClick={handleClick}
+                                size="small"
+                                sx={{ ml: 0 }}
+                                aria-controls={
+                                    open ? "account-menu" : undefined
+                                }
+                                aria-haspopup="true"
+                                aria-expanded={open ? "true" : undefined}
+                            >
+                                <img
+                                    src={session.user!.image!}
+                                    alt="profile pic"
+                                    className={styles.profilePic}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                ) : (
+                    <div
+                        className={styles.navLinksItem}
+                        onClick={() => signIn()}
+                    >
+                        Login
+                    </div>
+                )}
             </div>
             <div
                 className={styles.hamburgerIcon}
@@ -137,7 +163,6 @@ export default function Navbar() {
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}
-                // onClose={handleClose}
                 onClick={handleClose}
                 PaperProps={{
                     elevation: 0,
@@ -175,7 +200,7 @@ export default function Navbar() {
                     <Avatar /> My account
                 </MenuItem>
                 {canAccessAdmin ? (
-                    <MenuItem onClick={() => setCreateContentModalOpen(true)}>
+                    <MenuItem onClick={() => setChangeRolesModalOpen(true)}>
                         <ListItemIcon>
                             <SupervisorAccount fontSize="small" />
                         </ListItemIcon>

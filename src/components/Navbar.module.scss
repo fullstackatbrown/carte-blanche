@@ -26,7 +26,10 @@
 
 .logo {
     width: 3rem;
-    margin: auto;
+}
+
+.logo:hover {
+    cursor: pointer;
 }
 
 .profilePic {
@@ -39,6 +42,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .navLinksItem {
+        cursor: pointer;
+    }
 }
 
 .navLinks a:after {
@@ -56,11 +63,6 @@
 .hamburgerIcon {
     display: none;
 }
-
-// .hamburgerIcon {
-//     height: 4rem;
-//     width: 4rem;
-// }
 
 .navLinksMini {
     display: none;
@@ -87,6 +89,14 @@
         transition: ease;
         transition-duration: 0.5s;
         overflow: hidden;
+
+        a,
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.5em;
+        }
     }
 
     .open {
@@ -94,13 +104,6 @@
         visibility: visible;
         transition: ease;
         transition-duration: 0.5s;
-    }
-
-    .navLinksMini a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0.5em;
     }
 
     .hamburgerIcon {
