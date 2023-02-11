@@ -55,13 +55,14 @@ const Pieces: NextPage = () => {
             });
             setImageContent(imageUrls);
 
-            console.log(imageUrls);
+            // console.log(imageUrls);
         };
-        console.log("yo");
+        // console.log("yo");
         getAllContent();
     }, []);
 
-    console.log(imageContent);
+    // console.log(tempData);
+    // console.log(imageContent);
 
     return (
         <div className={styles.body}>

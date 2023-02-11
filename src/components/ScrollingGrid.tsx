@@ -86,7 +86,9 @@ function ScrollingGrid(props: ScrollingGridProps) {
         divideData(window.innerWidth);
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
+    }, [props.data]);
+
+    console.log(columns);
 
     return (
         <div
