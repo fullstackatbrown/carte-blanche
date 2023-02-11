@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import ConnectMongo from "../../../utils/ConnectMongo";
-import Content from "../../../models/User";
+import Content from "../../../models/Content";
 
 export default async function handler(
     req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
 ) {
     // connect to the database
     await ConnectMongo();
-    // get all the users
+    // get all the content
     const content = await Content.find();
     if (!content) {
         res.status(401).json({ msg: "Problem with getting content" });

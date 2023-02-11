@@ -115,7 +115,7 @@ export const ChangeRolesModal = (props: IChangeRolesModalProps) => {
                     }}
                     style={{ marginTop: "1rem" }}
                     id="controllable-states-demo"
-                    options={listOfUsers!}
+                    options={listOfUsers || []}
                     getOptionDisabled={(option) => option === user?.email}
                     renderInput={(params) => (
                         <TextField {...params} label="Users (by email)" />

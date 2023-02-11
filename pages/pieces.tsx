@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 import Navbar from "../src/components/Navbar";
 import ScrollingGrid from "../src/components/ScrollingGrid";
 
 import styles from "../styles/ScrollingGrid.module.scss";
+import IContent from "../types/IContent";
 
 const tempData = [
     "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/chipmunk-nature-photos-1537973822.jpg",
@@ -26,6 +28,41 @@ const tempData = [
 ];
 
 const Pieces: NextPage = () => {
+    const [data, setData] = useState([] as IContent[]);
+    const [imageData, setImageData] = useState([] as IContent[]);
+    const [imageContent, setImageContent] = useState<string[]>([]);
+
+    useEffect(() => {
+        const getAllContent = async () => {
+            const response = await fetch("/api/content/getAllContent", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const json = await response.json();
+            setData(json.content);
+
+            // Filter for image content only
+            const imageContent = json.content.filter((ele: IContent) => {
+                return ele.nodeType === "image";
+            });
+            setImageData(imageContent);
+
+            // Get image urls
+            const imageUrls = imageContent.map((ele: IContent) => {
+                return ele.content;
+            });
+            setImageContent(imageUrls);
+
+            console.log(imageUrls);
+        };
+        console.log("yo");
+        getAllContent();
+    }, []);
+
+    console.log(imageContent);
+
     return (
         <div className={styles.body}>
             <Navbar />
@@ -34,7 +71,12 @@ const Pieces: NextPage = () => {
                 <h1>CARTE BLANCHE</h1>
             </div>
             <div className={styles.scrollingGrid}>
-                <ScrollingGrid data={tempData} height="100vh" width="65vw" />
+                <ScrollingGrid
+                    data={imageContent}
+                    // data={tempData}
+                    height="100vh"
+                    width="65vw"
+                />
             </div>
         </div>
     );
