@@ -4,6 +4,40 @@ This is the Full Stack at Brown Repository for the Carte Blanche Project.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Timeline for Spring 2023
+
+### Sprint 1 (Feb 11 – Feb 25)
+
+Overall Goal: Handle upload of rich text and image upload
+
+Team Red:
+
+-   Modify home page according to client's feedback
+-   Add featured submissions to home page
+-   Add rotating scrolling animation to featured submissions
+-   Modify navigation based on client's feedback
+
+Team Blue:
+
+-   Add rich text editor to submission page
+-   Handle display of rich text on pieces page
+
+Design:
+
+-   Revise designs based on client's feedback
+
+### Sprint 2 (Feb 25 – Mar 11)
+
+Overall Goal: Handle routing of content to individual pieces page
+
+### Sprint 3 (Mar 11 - Mar 25)
+
+Overall Goal: Develop the individual pieces page and build backend APIs to delete and edit pieces
+
+### Sprint 4 (Mar 25 - Apr 8)
+
+Overall Goal: Allow all site viewers to upload their submissions which goes into content moderation
+
 ## Getting Started
 
 First, run the development server:
@@ -26,8 +60,8 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
