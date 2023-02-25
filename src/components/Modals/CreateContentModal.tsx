@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { NodeType, nodeTypes } from "../../../types/IContent";
 import IUser from "../../../types/IUser";
+import Tiptap from "../richText";
 import styles from "./CreateContentModal.module.scss";
 
 export interface ICreateContentModalProps {
@@ -212,17 +213,19 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                     </Button>
                 )}
                 {selectedType && isText && (
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Text Content"
-                        multiline
-                        fullWidth
-                        style={{ marginTop: "1rem" }}
-                        rows={10}
-                        value={content}
-                        placeholder={textPlaceholder}
-                        onChange={handleTextContentChange}
-                    />
+                    // <TextField
+                    //     id="outlined-multiline-static"
+                    //     label="Text Content"
+                    //     multiline
+                    //     fullWidth
+                    //     style={{ marginTop: "1rem" }}
+                    //     rows={10}
+                    //     value={content}
+                    //     placeholder={textPlaceholder}
+                    //     onChange={handleTextContentChange}
+                    // />
+                    <Tiptap />
+
                 )}
             </DialogContent>
             <DialogActions>
