@@ -87,6 +87,7 @@ export default function Navbar() {
             <div className={styles.navLinks}>
                 <Link href="pieces">Pieces</Link>
                 <Link href="about">About</Link>
+                <Link href="about">Join Us</Link>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">
@@ -120,6 +121,7 @@ export default function Navbar() {
             <div className={styles.navLinksMini} id="navLinksMini">
                 <Link href="pieces">Pieces</Link>
                 <Link href="about">About</Link>
+                <Link href="about">Join Us</Link>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">

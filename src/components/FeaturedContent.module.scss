@@ -1,0 +1,25 @@
+.featureContentContainer {
+    height: 100vh;
+    padding-top: 4rem;
+    // background-color: white;
+    // color: black;
+}
+
+.featureDescription {
+    text-align: center;
+    background-color: blue;
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.featuredImage {
+    height: 20rem;
+    width: 20rem;
+    transition: ease;
+    transition-duration: 0.5s;
+}

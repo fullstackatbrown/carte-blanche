@@ -6,6 +6,8 @@ import { FaBars } from "react-icons/fa";
 import React from "react";
 import Navbar from "../src/components/Navbar";
 import { useSession } from "next-auth/react";
+import About from "./about";
+import FeaturedContent from "../src/components/FeaturedContent";
 
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
@@ -13,7 +15,7 @@ const Home: NextPage = () => {
         <>
             <Navbar />
             {/* HOME PAGE CONTENT */}
-            <div className={styles.homeContent}>
+            <section className={styles.homeContent}>
                 <div className={styles.homeContentTitle}>Carte Blanche</div>
                 <div className={styles.homeContentText}>
                     [kahrt blanch] French for “white card”
@@ -26,11 +28,19 @@ const Home: NextPage = () => {
                     <a
                         href="/pieces"
                         className={styles.btnFlip}
-                        data-back="Be bold"
-                        data-front="Dive in"
+                        data-back="Dive in"
+                        data-front="Be bold"
                     />
                 </div>
-            </div>
+            </section>
+            {/* FEATURES PAGE CONTENT */}
+            <section>
+                <FeaturedContent />
+            </section>
+            {/* ABOUT PAGE CONTENT */}
+            <section>
+                <About />
+            </section>
         </>
     );
 };
