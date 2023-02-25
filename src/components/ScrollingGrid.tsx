@@ -131,13 +131,13 @@ function ScrollingGrid(props: ScrollingGridProps) {
                                 >
                                     <img
                                         src={entry.content}
+                                        className={styles.cellImage}
                                         onClick={() => {
                                             void router.push(
                                                 "/content/" + entry._id
                                             );
                                         }}
                                     />
-                                    <p>Hello</p>
                                 </div>
                             );
                         })}
