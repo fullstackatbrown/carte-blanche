@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../../styles/ScrollingGrid.module.scss";
@@ -39,6 +40,8 @@ interface ScrollingGridProps {
 }
 
 function ScrollingGrid(props: ScrollingGridProps) {
+    const router = useRouter();
+
     const [columns, setColumns] = useState<string[][]>([[]]);
 
     const containerDivRef = useRef<HTMLDivElement>(null);
@@ -117,7 +120,15 @@ function ScrollingGrid(props: ScrollingGridProps) {
                                 key={index}
                                 style={{ height: `${cellHeight}em` }}
                             >
-                                <img src={entry} className={styles.cellImage} />
+                                <img
+                                    src={entry}
+                                    className={styles.cellImage}
+                                    onClick={() => {
+                                        void router.push(
+                                            "/content/" + entry.id
+                                        );
+                                    }}
+                                />
                             </div>
                         ))}
                     </Column>
