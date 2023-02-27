@@ -59,6 +59,7 @@ const TextContent: NextPage = () => {
                             query: {
                                 title: entry.title,
                                 content: entry.content,
+                                date: entry.lastUpdated.toString(),
                             },
                         }}
                     >

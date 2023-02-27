@@ -1,51 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import IContent from "../../../types/IContent";
 import TipTapRead from "../../../src/components/TipTapRead";
+import type { NextPage } from "next";
+import styles from "../../../styles/article.module.scss";
 
-export default function Home() {
+const Article: NextPage = () => {
     const { query, isReady } = useRouter();
     const title = query.title;
+    const date = query.date;
     const content = query.content;
 
     if (!isReady) {
         return <div>Loading content</div>;
     }
 
-    // const [content, setContent] = useState<IContent>();
+    console.log(date);
 
-    // useEffect(() => {
-    //     const getContent = async () => {
-    //         const contentResponse = await fetch(
-    //             "../../api/content/getContentById",
-    //             {
-    //                 method: "GET",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({
-    //                     contentId: entry,
-    //                 }),
-    //             }
-    //         );
-    //         const contentJson = await contentResponse.json();
-    //         setContent(contentJson.content);
-    //     };
-    //     getContent();
-    // }, []);
-
+    // diabolical way of making query a string
     const buffer = content ? content : "";
     const actualContent = typeof buffer === "string" ? buffer : "";
-    console.log(actualContent);
 
     return (
         <>
-            <h2>
-                <Link href="../../textContent">back to home </Link>
-            </h2>
-            <h1>{title}</h1>
-            <TipTapRead document={actualContent} />
+            {" "}
+            <div className={styles.homeContent}>
+                <h2>
+                    <Link href="../../textContent">...back to home </Link>
+                </h2>
+                <div className={styles.header}>
+                    <h1 className={styles.title}>{title}</h1>
+                    <h2>at {date} </h2>
+                </div>
+                <div className={styles.content}>
+                    <TipTapRead document={actualContent} />
+                </div>
+            </div>
         </>
     );
-}
+};
+
+export default Article;
