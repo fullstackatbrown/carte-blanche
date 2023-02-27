@@ -55,7 +55,7 @@ const TextContent: NextPage = () => {
                 <>
                     <Link
                         href={{
-                            pathname: `/articles/${entry.title}`,
+                            pathname: `/articles/${entry._id}`,
                             query: {
                                 title: entry.title,
                                 content: entry.content,

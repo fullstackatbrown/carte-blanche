@@ -5,9 +5,13 @@ import IContent from "../../../types/IContent";
 import TipTapRead from "../../../src/components/TipTapRead";
 
 export default function Home() {
-    const router = useRouter();
-    const title = router.query.title;
-    const content = router.query.content;
+    const { query, isReady } = useRouter();
+    const title = query.title;
+    const content = query.content;
+
+    if (!isReady) {
+        return <div>Loading content</div>;
+    }
 
     // const [content, setContent] = useState<IContent>();
 
@@ -33,6 +37,7 @@ export default function Home() {
 
     const buffer = content ? content : "";
     const actualContent = typeof buffer === "string" ? buffer : "";
+    console.log(actualContent);
 
     return (
         <>
