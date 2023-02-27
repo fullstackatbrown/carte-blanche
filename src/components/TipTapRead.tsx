@@ -6,18 +6,19 @@ import {
     FloatingMenu,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-
-import * as document from "../../pages/document.json";
 import { useState } from "react";
 
-// React.Dispatch<React.SetStateAction<string>>
-const TipTapWrite = () => {
+interface TipTapReadProps {
+    document?: string;
+}
+const TipTapRead = (props: TipTapReadProps) => {
     // content is NOT editable
     const [editable, setEditable] = useState(false);
+    const editorContent = props.document ? JSON.parse(props.document) : null;
     const editor = useEditor({
         editable,
         extensions: [StarterKit],
-        content: document,
+        content: editorContent,
     });
     return (
         <>
@@ -26,4 +27,4 @@ const TipTapWrite = () => {
     );
 };
 
-export default TipTapWrite;
+export default TipTapRead;
