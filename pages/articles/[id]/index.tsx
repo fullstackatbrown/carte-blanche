@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <>
             <h2>
-                <Link href="../../textContent.tsx">back to home </Link>
+                <Link href="../../textContent">back to home </Link>
             </h2>
             <h1>{title}</h1>
             <TipTapRead document={actualContent} />
