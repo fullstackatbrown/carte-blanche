@@ -3,6 +3,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import IContent from "../../types/IContent";
 import { useRouter } from "next/router";
+import ImageFullView from "../../src/components/FullView/ImageFullView";
 
 const MyPage: NextPage = () => {
     const router = useRouter();
@@ -47,6 +48,11 @@ const MyPage: NextPage = () => {
                 <>
                     <p>{content?.title}</p>
                     hello
+                    {content.nodeType === "image" ? (
+                        <ImageFullView content={content} />
+                    ) : (
+                        <p>djksfljd</p>
+                    )}
                 </>
                 // <Dorm
                 //     id={building.data.id}
