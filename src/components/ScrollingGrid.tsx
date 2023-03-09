@@ -1,6 +1,9 @@
+import { useRouter } from "next/router";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../../styles/ScrollingGrid.module.scss";
+import IContent from "../../types/IContent";
 
 const cellHeight = 15; //em
 const cellMargin = 1; //em
@@ -33,13 +36,16 @@ const getNumColumns = (size: number): number => {
 };
 
 interface ScrollingGridProps {
-    data: string[];
+    data: IContent[];
     width?: string;
     height?: string;
 }
 
 function ScrollingGrid(props: ScrollingGridProps) {
-    const [columns, setColumns] = useState<string[][]>([[]]);
+    console.log(props);
+    const router = useRouter();
+
+    const [columns, setColumns] = useState<IContent[][]>([[]]);
 
     const containerDivRef = useRef<HTMLDivElement>(null);
     const reverseColumnRef = useRef<HTMLDivElement>(null);
@@ -54,7 +60,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
     const divideData = (width: number) => {
         let cols: number = getNumColumns(width);
-        let dividedData: string[][] = [];
+        let dividedData: IContent[][] = [];
 
         for (let i = 0; i < cols; i++) {
             dividedData[i] = [];
@@ -62,8 +68,12 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
         //evenly distribute the items to each of the new columns
         for (let i = 0; i < props.data.length; i++) {
+            console.log(props.data);
+            console.log(props.data[i]);
             dividedData[i % cols].push(props.data[i]);
         }
+        console.log("LOOK BELOW");
+        console.log(dividedData);
 
         setColumns(dividedData);
     };
@@ -101,7 +111,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
             onScroll={(e) => handleScroll(e)}
         >
             {columns &&
-                columns.map((array: string[], index: number) => (
+                columns.map((array: IContent[], index: number) => (
                     <Column
                         index={index}
                         height={`${
@@ -111,15 +121,27 @@ function ScrollingGrid(props: ScrollingGridProps) {
                         key={index}
                         reverseColumnRef={reverseColumnRef}
                     >
-                        {array.map((entry: string, index: number) => (
-                            <div
-                                className={styles.item}
-                                key={index}
-                                style={{ height: `${cellHeight}em` }}
-                            >
-                                <img src={entry} className={styles.cellImage} />
-                            </div>
-                        ))}
+                        {array.map((entry: IContent, index: number) => {
+                            console.log(entry);
+                            return (
+                                <div
+                                    className={styles.item}
+                                    key={index}
+                                    style={{ height: `${cellHeight}em` }}
+                                >
+                                    <img
+                                        src={entry.content}
+                                        className={styles.cellImage}
+                                        onClick={() => {
+                                            void router.push(
+                                                // "/content/" + entry._id
+                                                "/pieces/" + entry._id
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            );
+                        })}
                     </Column>
                 ))}
         </div>

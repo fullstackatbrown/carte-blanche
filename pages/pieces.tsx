@@ -31,6 +31,7 @@ const Pieces: NextPage = () => {
     const [data, setData] = useState([] as IContent[]);
     const [imageData, setImageData] = useState([] as IContent[]);
     const [imageContent, setImageContent] = useState<string[]>([]);
+    const [contents, setContents] = useState([] as IContent[]);
 
     useEffect(() => {
         const getAllContent = async () => {
@@ -42,6 +43,7 @@ const Pieces: NextPage = () => {
             });
             const json = await response.json();
             setData(json.content);
+            setContents(json.content);
 
             // Filter for image content only
             const imageContent = json.content.filter((ele: IContent) => {
@@ -63,6 +65,7 @@ const Pieces: NextPage = () => {
 
     // console.log(tempData);
     // console.log(imageContent);
+    console.log(contents);
 
     return (
         <div className={styles.body}>
@@ -73,7 +76,8 @@ const Pieces: NextPage = () => {
             </div>
             <div className={styles.scrollingGrid}>
                 <ScrollingGrid
-                    data={imageContent}
+                    data={contents}
+                    // data={imageContent}
                     // data={tempData}
                     height="100vh"
                     width="65vw"
