@@ -226,7 +226,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                     //     placeholder={textPlaceholder}
                     //     onChange={handleTextContentChange}
                     // />
-                    <TipTapWrite handler={handleTextContentChange} />
+                    <TipTapWrite handler={handleTextContentChange}/>
                 )}
             </DialogContent>
             <DialogActions>

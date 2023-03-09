@@ -1,53 +1,61 @@
 .ProseMirror {
+    margin-top: 1rem;
+  
     > * + * {
-        margin-top: 0.75em;
+      margin-top: 0.75em;
     }
-
+  
     ul,
     ol {
-        padding: 0 1rem;
+      padding: 0 1rem;
     }
-}
-
-.bubble-menu {
-    display: flex;
-    background-color: #0d0d0d;
-    padding: 0.2rem;
-    border-radius: 0.5rem;
-
-    button {
-        border: none;
+  
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.1;
+    }
+  
+    code {
+      background-color: rgba(#616161, 0.1);
+      color: #616161;
+    }
+  
+    pre {
+      background: #0D0D0D;
+      color: #FFF;
+      font-family: 'JetBrainsMono', monospace;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+  
+      code {
+        color: inherit;
+        padding: 0;
         background: none;
-        color: #fff;
-        font-size: 0.85rem;
-        font-weight: 500;
-        padding: 0 0.2rem;
-        opacity: 0.6;
-
-        &:hover,
-        &.is-active {
-            opacity: 1;
-        }
+        font-size: 0.8rem;
+      }
     }
-}
-
-.floating-menu {
-    display: flex;
-    background-color: #0d0d0d10;
-    padding: 0.2rem;
-    border-radius: 0.5rem;
-
-    button {
-        border: none;
-        background: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        padding: 0 0.2rem;
-        opacity: 0.6;
-
-        &:hover,
-        &.is-active {
-            opacity: 1;
-        }
+  
+    mark {
+      background-color: #FAF594;
     }
-}
+  
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  
+    blockquote {
+      padding-left: 1rem;
+      border-left: 2px solid rgba(#0D0D0D, 0.1);
+    }
+  
+    hr {
+      border: none;
+      border-top: 2px solid rgba(#0D0D0D, 0.1);
+      margin: 2rem 0;
+    }
+  }
