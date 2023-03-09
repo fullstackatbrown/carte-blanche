@@ -7,7 +7,7 @@ import React from "react";
 import Navbar from "../src/components/Navbar";
 import { useSession } from "next-auth/react";
 import About from "./about";
-import FeaturedContent from "../src/components/FeaturedContent";
+// import FeaturedContent from "../src/components/FeaturedContent";
 
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
@@ -34,9 +34,9 @@ const Home: NextPage = () => {
                 </div>
             </section>
             {/* FEATURES PAGE CONTENT */}
-            <section>
+            {/* <section>
                 <FeaturedContent />
-            </section>
+            </section> */}
             {/* ABOUT PAGE CONTENT */}
             <section>
                 <About />
