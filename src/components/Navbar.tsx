@@ -42,7 +42,7 @@ export default function Navbar() {
     const [canAccessAdmin, setCanAccessAdmin] = useState(false);
     const [canAccessWriter, setCanAccessWriter] = useState(false);
     // CHANGED TO TRUE TO OVERRIDE ACCESS
-    const [createContentModalOpen, setCreateContentModalOpen] = useState(true);
+    const [createContentModalOpen, setCreateContentModalOpen] = useState(false);
     const [changeRolesModalOpen, setChangeRolesModalOpen] = useState(false);
     useEffect(() => {
         const getUser = async () => {

@@ -63,7 +63,7 @@ const TextContent: NextPage = () => {
                             },
                         }}
                     >
-                        <div key={index}>{entry.title}</div>
+                        <div key={entry._id}>{entry.title}</div>
                     </Link>
                 </>
             ))}
