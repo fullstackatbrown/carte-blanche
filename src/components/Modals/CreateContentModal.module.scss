@@ -53,6 +53,23 @@ $input-margin: 10px;
     font-weight: 500;
 }
 
-.tiptapdiv {
-    min-height: 10rem;
+.tiptapbox {
+    border: 1px solid black;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.ProseMirror:focus {
+    outline: none;
+}
+
+
+.ProseMirror-focused:focus, .CreateContentModal_tiptapbox__jVtgt{
+    // outline: none;
+    border:10px solid red !important;
+}
+
+.ProseMirror h1 {
+    color: blue;
+    font-size: 25px;
 }
