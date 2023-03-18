@@ -79,7 +79,7 @@ const Pieces: NextPage = () => {
                     data={contents}
                     // data={imageContent}
                     // data={tempData}
-                    height="100vh"
+                    height="calc(100vh - 5em)"
                     width="65vw"
                 />
             </div>
