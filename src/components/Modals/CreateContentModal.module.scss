@@ -63,15 +63,17 @@ $input-margin: 10px;
     outline: none;
 }
 
-
-.ProseMirror-focused:focus, .CreateContentModal_tiptapbox__jVtgt{
+.ProseMirror-focused:focus,
+.CreateContentModal_tiptapbox__jVtgt {
     // outline: none;
-    border:10px solid red !important;
+    border: 10px solid red !important;
 }
 
 .ProseMirror h1 {
     color: blue;
     font-size: 25px;
+}
+
 .tiptapdiv {
     min-height: 10rem;
 }
