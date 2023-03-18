@@ -23,23 +23,27 @@ const getBreakpoint = (size: number): string => {
     }
 };
 
-// figures out how many columns we should have based on breakpoints
-const getNumColumns = (size: number): number => {
-    let breakpoint: string = getBreakpoint(size);
-    if (breakpoint === "xs") {
-        return 1;
-    } else if (breakpoint === "sm" || breakpoint === "md") {
-        return 2;
-    } else {
-        return 3;
-    }
-};
-
 interface ScrollingGridProps {
     data: IContent[];
     width?: string;
     height?: string;
 }
+
+// figures out how many columns we should have based on breakpoints
+const getNumColumns = (size: number, sgp: ScrollingGridProps): number => {
+    let breakpoint: string = getBreakpoint(size);
+    if (breakpoint === "xs" || sgp.data.length < 5) {
+        return 1;
+    } else if (
+        breakpoint === "sm" ||
+        breakpoint === "md" ||
+        sgp.data.length < 7
+    ) {
+        return 2;
+    } else {
+        return 3;
+    }
+};
 
 function ScrollingGrid(props: ScrollingGridProps) {
     console.log(props);
@@ -59,7 +63,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
     };
 
     const divideData = (width: number) => {
-        let cols: number = getNumColumns(width);
+        let cols: number = getNumColumns(width, props);
         let dividedData: IContent[][] = [];
 
         for (let i = 0; i < cols; i++) {
