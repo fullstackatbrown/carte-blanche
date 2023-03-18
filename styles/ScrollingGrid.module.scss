@@ -20,7 +20,7 @@
     width: 100%;
 }
 
-.columnReverse{
+.columnReverse {
     margin: 0 1em;
     overflow-y: hidden;
     width: 100%;
@@ -51,6 +51,10 @@
     object-fit: cover;
 }
 
+.cellImage:hover {
+    cursor: pointer;
+}
+
 .scrollingGrid {
     left: 0;
 }
@@ -71,7 +75,7 @@
 }
 
 @media (min-width: 576px) and (max-width: 992px) {
-    .columnReverse{
+    .columnReverse {
         margin-right: 0;
     }
 }
