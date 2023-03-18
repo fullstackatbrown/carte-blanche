@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.16.2",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.11.7",
     "@next-auth/mongodb-adapter": "^1.1.1",
+    "@tiptap/extension-highlight": "^2.0.0-beta.220",
+    "@tiptap/extension-text-align": "^2.0.0-beta.220",
+    "@tiptap/pm": "^2.0.0-beta.218",
+    "@tiptap/react": "^2.0.0-beta.218",
+    "@tiptap/starter-kit": "^2.0.0-beta.218",
     "mongodb": "^4.13.0",
     "mongoose": "^6.6.6",
     "next": "12.3.1",

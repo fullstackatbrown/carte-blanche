@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { NodeType, nodeTypes } from "../../../types/IContent";
 import IUser from "../../../types/IUser";
+import TipTapWrite from "../TipTapWrite";
 import styles from "./CreateContentModal.module.scss";
 
 export interface ICreateContentModalProps {
@@ -34,7 +35,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     const [title, setTitle] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [selectedType, setSelectedType] = useState<NodeType>("" as NodeType);
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState<string>("");
     const [uploading, setUploading] = useState(false);
 
     // event handlers for the modal inputs and dropdown selects
@@ -52,11 +53,13 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     ) => {
         setContent(event.target.value);
     };
-    const handleTextContentChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setContent(event.target.value);
+    const handleTextContentChange = (newContent: string) => {
+        console.log(newContent);
+        setContent(newContent);
     };
+    // const richTextProps = {
+    //     richTextHandler: handleTextContentChange,
+    // };
 
     // useEffect to get user and list of users
     useEffect(() => {
@@ -212,17 +215,22 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                     </Button>
                 )}
                 {selectedType && isText && (
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Text Content"
-                        multiline
-                        fullWidth
-                        style={{ marginTop: "1rem" }}
-                        rows={10}
-                        value={content}
-                        placeholder={textPlaceholder}
-                        onChange={handleTextContentChange}
-                    />
+                    // <TextField
+                    //     id="outlined-multiline-static"
+                    //     label="Text Content"
+                    //     multiline
+                    //     fullWidth
+                    //     style={{ marginTop: "1rem" }}
+                    //     rows={10}
+                    //     value={content}
+                    //     placeholder={textPlaceholder}
+                    //     onChange={handleTextContentChange}
+                    // />
+                    <div>
+                        <div className={styles.tiptapbox}>
+                            <TipTapWrite handler={handleTextContentChange} />
+                        </div>
+                    </div>
                 )}
             </DialogContent>
             <DialogActions>

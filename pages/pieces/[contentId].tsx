@@ -54,18 +54,6 @@ const MyPage: NextPage = () => {
                         <p>djksfljd</p>
                     )}
                 </>
-                // <Dorm
-                //     id={building.data.id}
-                //     name={building.data.name}
-                //     areaName={building.data.areaName}
-                //     summary={building.data.summary}
-                //     location={building.data.address}
-                //     sublocations={building.data.sublocations}
-                //     floorplans={building.data.FloorPlan}
-                //     reviews={building.data.Review}
-                //     images={building.data.Media.map((media) => media.url)}
-                //     refetch={() => void building.refetch()}
-                // />
             )}
         </>
     );
