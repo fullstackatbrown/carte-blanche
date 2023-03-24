@@ -105,6 +105,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             // email: session?.user?.email,
             nodeType: selectedType,
             content: content,
+            caption: caption,
             dateCreated: new Date(),
             lastUpdated: new Date(),
         };

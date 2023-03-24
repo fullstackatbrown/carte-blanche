@@ -19,6 +19,10 @@ const contentSchema = new Schema({
         type: String,
         required: true,
     },
+    caption: {
+        type: String,
+        required: true,
+    },
     dateCreated: {
         type: Date,
         default: Date.now,
