@@ -33,6 +33,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     // state variables
     const [user, setUser] = useState<IUser>();
     const [title, setTitle] = useState<string>("");
+    const [caption, setCaption] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [selectedType, setSelectedType] = useState<NodeType>("" as NodeType);
     const [content, setContent] = useState<string>("");
@@ -41,6 +42,11 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     // event handlers for the modal inputs and dropdown selects
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
+    };
+    const handleCaptionChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setCaption(event.target.value);
     };
     const handleSelectedTypeChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -124,6 +130,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         console.log("handle close called");
         onClose();
         setTitle("");
+        setCaption("");
         setAuthor("");
         setSelectedType("" as NodeType);
         setContent("");
@@ -166,7 +173,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     const textPlaceholder = `Enter text...`;
 
     return (
-        <Dialog open={isOpen} onClose={handleClose}>
+        <Dialog maxWidth="xl" open={isOpen} onClose={handleClose}>
             <DialogTitle>Upload Content</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -198,22 +205,6 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                         </MenuItem>
                     ))}
                 </TextField>
-                {selectedType && isImage && (
-                    <Button
-                        variant="contained"
-                        style={{ marginTop: "1rem" }}
-                        component="label"
-                    >
-                        Upload
-                        <input
-                            hidden
-                            accept="image/*"
-                            multiple
-                            type="file"
-                            onChange={handleImageUpload}
-                        />
-                    </Button>
-                )}
                 {selectedType && isText && (
                     // <TextField
                     //     id="outlined-multiline-static"
@@ -232,6 +223,33 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                         </div>
                     </div>
                 )}
+                {/* {selectedType && isImage && ( */}
+                <Button
+                    variant="contained"
+                    style={{ marginTop: "1rem" }}
+                    component="label"
+                >
+                    Upload
+                    <input
+                        hidden
+                        accept="image/*"
+                        multiple
+                        type="file"
+                        onChange={handleImageUpload}
+                    />
+                </Button>
+                <TextField
+                    id="outlined-textarea"
+                    label="Caption"
+                    placeholder="Caption"
+                    multiline
+                    fullWidth
+                    style={{ marginTop: "1rem" }}
+                    value={caption}
+                    onChange={handleCaptionChange}
+                />
+                <br />
+                {/* )} */}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant="contained">

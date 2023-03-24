@@ -1,3 +1,11 @@
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
 .ProseMirror {
     margin-top: 1rem;
     > * + * {
