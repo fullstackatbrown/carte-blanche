@@ -24,7 +24,7 @@ const TipTapWrite = (props: RichTextProps) => {
             }),
             Highlight,
         ],
-        content: "<p>start writing your article...</p><br><br><br><br><br>",
+        content: "<p>Start writing your article...</p><br><br><br><br><br>",
         onUpdate({ editor }) {
             props.handler(JSON.stringify(editor.getJSON()));
         },

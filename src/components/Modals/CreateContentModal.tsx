@@ -33,39 +33,36 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     // state variables
     const [user, setUser] = useState<IUser>();
     const [title, setTitle] = useState<string>("");
-    const [caption, setCaption] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [selectedType, setSelectedType] = useState<NodeType>("" as NodeType);
-    const [content, setContent] = useState<string>("");
+    const [imageContent, setImageContent] = useState<string>("");
+    const [caption, setCaption] = useState<string>("");
+    const [textContent, setTextContent] = useState<string>("");
     const [uploading, setUploading] = useState(false);
 
     // event handlers for the modal inputs and dropdown selects
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
     };
+    const handleSelectedTypeChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setSelectedType(event.target.value.toLowerCase() as NodeType);
+    };
+    const handleImageContentChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setImageContent(event.target.value);
+    };
     const handleCaptionChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setCaption(event.target.value);
     };
-    const handleSelectedTypeChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setSelectedType(event.target.value.toLowerCase() as NodeType);
-        setContent("");
-    };
-    const handleImageContentChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setContent(event.target.value);
-    };
     const handleTextContentChange = (newContent: string) => {
         console.log(newContent);
-        setContent(newContent);
+        setTextContent(newContent);
     };
-    // const richTextProps = {
-    //     richTextHandler: handleTextContentChange,
-    // };
 
     // useEffect to get user and list of users
     useEffect(() => {
@@ -84,28 +81,14 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
 
     // called when the "Create" button is clicked
     const handleSubmit = async () => {
-        // Get the user object from their email
-        // const userResponse = await fetch("/api/user/getUserByEmail", {
-        //     method: "GET",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        // });
-        // const userJson = await userResponse.json();
-        // console.log(userJson);
-        // if (!userJson.success) {
-        //     console.log("Error getting user by email");
-        //     return;
-        // }
-        // const author = userJson.user;
-
         const newContent = {
             title: title,
             author: user,
             // email: session?.user?.email,
             nodeType: selectedType,
-            content: content,
+            imageContent: imageContent,
             caption: caption,
+            textContent: textContent,
             dateCreated: new Date(),
             lastUpdated: new Date(),
         };
@@ -131,10 +114,11 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         console.log("handle close called");
         onClose();
         setTitle("");
-        setCaption("");
         setAuthor("");
         setSelectedType("" as NodeType);
-        setContent("");
+        setImageContent("");
+        setCaption("");
+        setTextContent("");
         setUploading(false);
     };
 
@@ -157,7 +141,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             .then((res) => {
                 res.json()
                     .then((data) => {
-                        setContent(
+                        setImageContent(
                             (data as { data: { link: string } }).data.link
                         );
                         setUploading(false);

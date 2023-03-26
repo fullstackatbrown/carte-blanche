@@ -15,11 +15,15 @@ const contentSchema = new Schema({
         type: String,
         required: true,
     },
-    content: {
+    imageContent: {
         type: String,
         required: true,
     },
     caption: {
+        type: String,
+        required: true,
+    },
+    textContent: {
         type: String,
         required: true,
     },
