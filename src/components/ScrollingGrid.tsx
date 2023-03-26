@@ -134,7 +134,7 @@ function ScrollingGrid(props: ScrollingGridProps) {
                                     style={{ height: `${cellHeight}em` }}
                                 >
                                     <img
-                                        src={entry.content}
+                                        src={entry.imageContent}
                                         className={styles.cellImage}
                                         onClick={() => {
                                             void router.push(

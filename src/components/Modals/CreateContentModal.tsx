@@ -35,7 +35,9 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     const [title, setTitle] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [selectedType, setSelectedType] = useState<NodeType>("" as NodeType);
-    const [content, setContent] = useState<string>("");
+    const [imageContent, setImageContent] = useState<string>("");
+    const [caption, setCaption] = useState<string>("");
+    const [textContent, setTextContent] = useState<string>("");
     const [uploading, setUploading] = useState(false);
 
     // event handlers for the modal inputs and dropdown selects
@@ -46,20 +48,21 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setSelectedType(event.target.value.toLowerCase() as NodeType);
-        setContent("");
     };
     const handleImageContentChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setContent(event.target.value);
+        setImageContent(event.target.value);
+    };
+    const handleCaptionChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setCaption(event.target.value);
     };
     const handleTextContentChange = (newContent: string) => {
         console.log(newContent);
-        setContent(newContent);
+        setTextContent(newContent);
     };
-    // const richTextProps = {
-    //     richTextHandler: handleTextContentChange,
-    // };
 
     // useEffect to get user and list of users
     useEffect(() => {
@@ -78,27 +81,14 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
 
     // called when the "Create" button is clicked
     const handleSubmit = async () => {
-        // Get the user object from their email
-        // const userResponse = await fetch("/api/user/getUserByEmail", {
-        //     method: "GET",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        // });
-        // const userJson = await userResponse.json();
-        // console.log(userJson);
-        // if (!userJson.success) {
-        //     console.log("Error getting user by email");
-        //     return;
-        // }
-        // const author = userJson.user;
-
         const newContent = {
             title: title,
             author: user,
             // email: session?.user?.email,
             nodeType: selectedType,
-            content: content,
+            imageContent: imageContent,
+            caption: caption,
+            textContent: textContent,
             dateCreated: new Date(),
             lastUpdated: new Date(),
         };
@@ -126,7 +116,9 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         setTitle("");
         setAuthor("");
         setSelectedType("" as NodeType);
-        setContent("");
+        setImageContent("");
+        setCaption("");
+        setTextContent("");
         setUploading(false);
     };
 
@@ -149,7 +141,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             .then((res) => {
                 res.json()
                     .then((data) => {
-                        setContent(
+                        setImageContent(
                             (data as { data: { link: string } }).data.link
                         );
                         setUploading(false);
@@ -166,7 +158,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     const textPlaceholder = `Enter text...`;
 
     return (
-        <Dialog open={isOpen} onClose={handleClose}>
+        <Dialog maxWidth="xl" open={isOpen} onClose={handleClose}>
             <DialogTitle>Upload Content</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -198,22 +190,6 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                         </MenuItem>
                     ))}
                 </TextField>
-                {selectedType && isImage && (
-                    <Button
-                        variant="contained"
-                        style={{ marginTop: "1rem" }}
-                        component="label"
-                    >
-                        Upload
-                        <input
-                            hidden
-                            accept="image/*"
-                            multiple
-                            type="file"
-                            onChange={handleImageUpload}
-                        />
-                    </Button>
-                )}
                 {selectedType && isText && (
                     // <TextField
                     //     id="outlined-multiline-static"
@@ -232,6 +208,33 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
                         </div>
                     </div>
                 )}
+                {/* {selectedType && isImage && ( */}
+                <Button
+                    variant="contained"
+                    style={{ marginTop: "1rem" }}
+                    component="label"
+                >
+                    Upload
+                    <input
+                        hidden
+                        accept="image/*"
+                        multiple
+                        type="file"
+                        onChange={handleImageUpload}
+                    />
+                </Button>
+                <TextField
+                    id="outlined-textarea"
+                    label="Caption"
+                    placeholder="Caption"
+                    multiline
+                    fullWidth
+                    style={{ marginTop: "1rem" }}
+                    value={caption}
+                    onChange={handleCaptionChange}
+                />
+                <br />
+                {/* )} */}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant="contained">
