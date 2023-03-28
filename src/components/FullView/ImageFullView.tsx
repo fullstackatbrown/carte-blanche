@@ -20,7 +20,7 @@ export default function ImageFullView(props: IImageFullViewProps) {
                 <h1>CARTE BLANCHE</h1>
             </div>
             <div className={styles.scrollingGrid}>
-                <img src={content.content} />
+                <img src={content.imageContent} />
                 {/* <ScrollingGrid
                     data={contents}
                     // data={imageContent}

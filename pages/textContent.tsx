@@ -58,7 +58,7 @@ const TextContent: NextPage = () => {
                             pathname: `/articles/${entry._id}`,
                             query: {
                                 title: entry.title,
-                                content: entry.content,
+                                content: entry.textContent,
                                 date: entry.lastUpdated.toString(),
                             },
                         }}
