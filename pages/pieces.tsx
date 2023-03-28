@@ -53,7 +53,7 @@ const Pieces: NextPage = () => {
 
             // Get image urls
             const imageUrls = imageContent.map((ele: IContent) => {
-                return ele.content;
+                return ele.imageContent;
             });
             setImageContent(imageUrls);
 
