@@ -14,10 +14,11 @@ export default async function handler(
     console.log("backend");
     console.log(req.body);
     const title: string = req.body.title;
-    // const email: string = req.body.email;
-    const reqContent: string = req.body.content;
-    const nodeType = req.body.nodeType;
     const author: string = req.body.author;
+    const nodeType = req.body.nodeType;
+    const imageContent: string = req.body.imageContent;
+    const caption: string = req.body.caption;
+    const textContent: string = req.body.textContent;
     const dateCreated: Date = req.body.dateCreated;
     const lastUpdated: Date = req.body.lastUpdated;
 
@@ -27,7 +28,9 @@ export default async function handler(
         author: author,
         // email: email,
         nodeType: nodeType,
-        content: reqContent,
+        imageContent: imageContent,
+        caption: caption,
+        textContent: textContent,
         dateCreated: dateCreated,
         lastUpdated: lastUpdated,
     });
