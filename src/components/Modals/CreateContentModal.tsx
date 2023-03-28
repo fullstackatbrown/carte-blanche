@@ -102,6 +102,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             body: JSON.stringify(newContent),
         });
         const responseJson = await response.json();
+        console.log(responseJson);
         if (!responseJson.success) {
             return;
         }
