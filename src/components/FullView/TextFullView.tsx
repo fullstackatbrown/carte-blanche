@@ -10,14 +10,53 @@ export interface ITextFullViewProps {
     content: IContent;
 }
 
-const formatDate = (date: Date) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(date).toLocaleDateString(undefined, options);
+const getMonth = (month: number) => {
+    if (month === 1) return "January";
+    else if (month == 2) return "February";
+    else if (month == 3) return "March";
+    else if (month == 4) return "April";
+    else if (month == 5) return "May";
+    else if (month == 6) return "June";
+    else if (month == 7) return "July";
+    else if (month == 8) return "August";
+    else if (month == 9) return "September";
+    else if (month == 10) return "October";
+    else if (month == 11) return "November";
+    else if (month == 12) return "December";
 };
 
+const getHour = (hour: number) => {
+    return (hour + 24 - 3) % 24;
+};
+
+const getAMOrPM = (hour: number) => {
+    if (hour < 12) return "AM";
+    else return "PM";
+};
+
+/**
+ * Function to format the date from a Date object
+ * @param date Date object
+ * @returns date in format "Month Day, Year"
+ */
+const formatDate = (date: Date) => {
+    const stringDate = date.toLocaleString();
+    const month = getMonth(Number(stringDate.slice(5, 7)));
+    const day = stringDate.slice(8, 10);
+    const year = stringDate.slice(0, 4);
+    return `${month} ${day}, ${year}`;
+};
+
+/**
+ * Function to format the time from a Date object
+ * @param date Date object
+ * @returns time in format "Hour:Minute [AM/PM]"
+ */
 const formatTime = (date: Date) => {
-    const options = { hour: "numeric", minute: "numeric" };
-    return new Date(date).toLocaleTimeString(undefined, options);
+    const stringDate = date.toLocaleString();
+    const hour = getHour(Number(stringDate.slice(11, 13)));
+    const minute = stringDate.slice(14, 16);
+    return `${hour % 12}:${minute} ${getAMOrPM(Number(hour))}`;
 };
 
 export default function TextFullView(props: ITextFullViewProps) {
