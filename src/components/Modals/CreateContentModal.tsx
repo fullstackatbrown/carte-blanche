@@ -37,7 +37,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
     const [selectedType, setSelectedType] = useState<NodeType>("" as NodeType);
     const [imageContent, setImageContent] = useState<string>("");
     const [caption, setCaption] = useState<string>("");
-    const [textContent, setTextContent] = useState<string>("");
+    const [textContent, setTextContent] = useState<string>("{}");
     const [uploading, setUploading] = useState(false);
 
     // event handlers for the modal inputs and dropdown selects

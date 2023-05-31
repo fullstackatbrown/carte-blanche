@@ -26,7 +26,7 @@ const getMonth = (month: number) => {
 };
 
 const getHour = (hour: number) => {
-    return (hour + 24 - 3) % 24;
+    return (hour + 24 - 4) % 24;
 };
 
 const getAMOrPM = (hour: number) => {
