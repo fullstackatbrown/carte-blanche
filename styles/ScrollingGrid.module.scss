@@ -35,6 +35,7 @@
 }
 
 .item {
+    width: 100%;
     margin-bottom: 1em;
     overflow: hidden;
 }
@@ -44,8 +45,8 @@
 }
 
 .cellImage {
-    max-width: 100%;
-    min-height: 100%;
+    max-width: 80%;
+    min-height: 90%;
     width: auto;
     height: auto;
     object-fit: cover;
@@ -56,22 +57,35 @@
 }
 
 .scrollingGrid {
-    left: 0;
-    margin-top: 5em;
+    border: 5px solid green;
+    width: 67vw;
+    max-height: calc(100vh - 3em);
 }
 
 .body {
     background-color: black;
-    height: 100vh;
+    height: calc(100vh - 3em);
     width: 100vw;
-    display: flex;
-    align-items: center;
+    margin-top: 4rem;
+    // align-items: center;
     color: white;
 }
 
-.menu {
-    text-align: end;
+.pageContainer {
+    border: 5px solid red;
+    display: flex;
+    gap: 3rem;
+    flex-direction: row;
     width: 100%;
+}
+
+.menu {
+    border: 5px solid blue;
+    margin: auto 0;
+    text-align: end;
+    width: 33vw;
+    margin-left: 1em;
+    text-align: end;
     margin-left: 1em;
 }
 

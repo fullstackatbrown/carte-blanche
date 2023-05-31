@@ -93,6 +93,7 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             lastUpdated: new Date(),
         };
         console.log(newContent);
+        console.log(JSON.stringify(newContent));
         // call the API to create the new node
         const response = await fetch("/api/content/create", {
             method: "POST",

@@ -4,6 +4,7 @@ import Head from "next/head";
 import IContent from "../../types/IContent";
 import { useRouter } from "next/router";
 import ImageFullView from "../../src/components/FullView/ImageFullView";
+import TextFullView from "../../src/components/FullView/TextFullView";
 
 const MyPage: NextPage = () => {
     const router = useRouter();
@@ -46,12 +47,12 @@ const MyPage: NextPage = () => {
                 <div>Loading...</div>
             ) : (
                 <>
-                    <p>{content?.title}</p>
-                    hello
                     {content.nodeType === "image" ? (
                         <ImageFullView content={content} />
+                    ) : content.nodeType === "text" ? (
+                        <TextFullView content={content} />
                     ) : (
-                        <p>djksfljd</p>
+                        <div>Invalid content type</div>
                     )}
                 </>
             )}

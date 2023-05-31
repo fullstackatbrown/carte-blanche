@@ -77,17 +77,18 @@ export default function Navbar() {
                 onClose={() => setChangeRolesModalOpen(false)}
             />
             <Link href="/">
-                <img
+                <div className={styles.logo}>C | B</div>
+                {/* <img
                     className={styles.logo}
                     alt="logo"
                     src="https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg"
-                />
+                /> */}
             </Link>
             <div className="space" />
             <div className={styles.navLinks}>
-                <Link href="pieces">Pieces</Link>
-                <Link href="about">About</Link>
-                <Link href="about">Join Us</Link>
+                <Link href="/pieces">Pieces</Link>
+                <Link href="/about">About</Link>
+                <Link href="/about">Join Us</Link>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">
@@ -119,9 +120,9 @@ export default function Navbar() {
                 )}
             </div>
             <div className={styles.navLinksMini} id="navLinksMini">
-                <Link href="pieces">Pieces</Link>
-                <Link href="about">About</Link>
-                <Link href="about">Join Us</Link>
+                <Link href="/pieces">Pieces</Link>
+                <Link href="/about">About</Link>
+                <Link href="/about">Join Us</Link>
                 {status === "authenticated" ? (
                     <>
                         <Tooltip title="Account settings">

@@ -15,19 +15,26 @@ export default function ImageFullView(props: IImageFullViewProps) {
     return (
         <div className={styles.body}>
             <Navbar />
-            <div className={styles.menu}>
-                <h3>vous avez</h3>
-                <h1>CARTE BLANCHE</h1>
-            </div>
-            <div className={styles.scrollingGrid}>
-                <img src={content.imageContent} />
-                {/* <ScrollingGrid
-                    data={contents}
-                    // data={imageContent}
-                    // data={tempData}
-                    height="100vh"
-                    width="65vw"
-                /> */}
+            <div className={styles.pageContainer}>
+                {/* <FaArrowLeft className={styles.backButton} /> */}
+                <div className={styles.menu}>
+                    <h3>vous avez</h3>
+                    <h1>CARTE BLANCHE</h1>
+                </div>
+                <div className={styles.textContentContainer}>
+                    {/* <h1 className={styles.title}>
+                        <strong>{content.title}</strong> | {author.name}
+                    </h1> */}
+                    {/* <p className={styles.date}>
+                        {formatDate(content.dateCreated)}
+                        &nbsp;at {formatTime(content.dateCreated)}
+                    </p>
+                    <img className={styles.image} src={content.imageContent} />
+                    <p className={styles.imageCaption}>
+                        Caption: {content.caption}
+                    </p>
+                    <TipTapRead document={content.textContent}></TipTapRead> */}
+                </div>
             </div>
         </div>
     );

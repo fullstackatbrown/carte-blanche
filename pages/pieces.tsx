@@ -65,23 +65,25 @@ const Pieces: NextPage = () => {
 
     // console.log(tempData);
     // console.log(imageContent);
-    console.log(contents);
+    // console.log(contents);
 
     return (
         <div className={styles.body}>
             <Navbar />
-            <div className={styles.menu}>
-                <h3>vous avez</h3>
-                <h1>CARTE BLANCHE</h1>
-            </div>
-            <div className={styles.scrollingGrid}>
-                <ScrollingGrid
-                    data={contents}
-                    // data={imageContent}
-                    // data={tempData}
-                    height="calc(100vh - 5em)"
-                    width="65vw"
-                />
+            <div className={styles.pageContainer}>
+                <div className={styles.menu}>
+                    <h3>vous avez</h3>
+                    <h1>CARTE BLANCHE</h1>
+                </div>
+                <div className={styles.scrollingGrid}>
+                    <ScrollingGrid
+                        data={contents}
+                        // data={imageContent}
+                        // data={tempData}
+                        height="calc(100vh - 5em)"
+                        width="67vw"
+                    />
+                </div>
             </div>
         </div>
     );
