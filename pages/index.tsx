@@ -38,9 +38,9 @@ const Home: NextPage = () => {
                 <FeaturedContent />
             </section> */}
             {/* ABOUT PAGE CONTENT */}
-            <section>
+            {/* <section>
                 <About />
-            </section>
+            </section> */}
         </>
     );
 };

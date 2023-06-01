@@ -1,21 +1,19 @@
 .body {
     background-color: black;
-    height: calc(100vh - 3em);
+    height: calc(100vh - 4em);
     width: 100vw;
     margin-top: 4rem;
 }
 
 .pageContainer {
-    border: 5px solid red;
     display: flex;
     gap: 3rem;
     flex-direction: row;
     width: 100%;
-    min-height: calc(100vh - 3em);
+    height: 100%;
 }
 
 .menu {
-    border: 5px solid blue;
     margin: auto 0;
     text-align: end;
     width: 27vw;
@@ -25,14 +23,20 @@
 
 .backButton {
     color: white;
+    height: 2em;
+    width: 2em;
     position: absolute;
+    margin: 2em 28vw;
 }
 
-.textContentContainer {
-    border: 5px solid green;
+.backButton:hover {
+    cursor: pointer;
+}
+
+.imageContentContainer {
     background-color: white;
     width: 67vw;
-    max-height: calc(100vh - 3em);
+    height: 100%;
     padding: 0.5rem 3rem;
     text-align: left;
     color: black;
@@ -67,7 +71,7 @@
         display: none;
     }
 
-    .textContentContainer {
+    .imageContentContainer {
         width: 100%;
     }
 }

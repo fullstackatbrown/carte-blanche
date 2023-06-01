@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-import styles from "../../styles/ScrollingGrid.module.scss";
+import styles from "../../styles/Pieces.module.scss";
 import IContent from "../../types/IContent";
 
 const cellHeight = 15; //em

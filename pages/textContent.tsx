@@ -1,9 +1,7 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import Navbar from "../src/components/Navbar";
-import TipTapRead from "../src/components/TipTapRead";
-import IContent from "../types/IContent";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import IContent from "../types/IContent";
 
 // import styles from "../styles/ScrollingGrid.module.scss";
 

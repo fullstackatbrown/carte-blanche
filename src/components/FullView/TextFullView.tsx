@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import IContent from "../../../types/IContent";
-import Navbar from "../Navbar";
-import styles from "./TextFullView.module.scss";
-import TipTapRead from "../TipTapRead";
 import IUser from "../../../types/IUser";
+import Navbar from "../Navbar";
+import TipTapRead from "../TipTapRead";
+import styles from "./TextFullView.module.scss";
 import { FaArrowLeft } from "react-icons/fa";
 
 export interface ITextFullViewProps {
@@ -86,11 +86,16 @@ export default function TextFullView(props: ITextFullViewProps) {
         <div className={styles.body}>
             <Navbar />
             <div className={styles.pageContainer}>
-                {/* <FaArrowLeft className={styles.backButton} /> */}
                 <div className={styles.menu}>
                     <h3>vous avez</h3>
                     <h1>CARTE BLANCHE</h1>
                 </div>
+                <FaArrowLeft
+                    className={styles.backButton}
+                    onClick={() => {
+                        window.history.back();
+                    }}
+                />
                 <div className={styles.textContentContainer}>
                     <h1 className={styles.title}>
                         <strong>{content.title}</strong> | {author.name}
