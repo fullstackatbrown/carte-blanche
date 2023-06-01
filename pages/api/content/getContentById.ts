@@ -10,7 +10,6 @@ export default async function handler(
     await ConnectMongo();
     // get the content id from the query param
     const contentId = req.query.id;
-    console.log(contentId);
     const content = await Content.findById(contentId);
     if (!content) {
         res.status(401).json({ name: "Could not find content" });

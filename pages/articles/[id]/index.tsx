@@ -15,8 +15,6 @@ const Article: NextPage = () => {
         return <div>Loading content</div>;
     }
 
-    console.log(date);
-
     // diabolical way of making query a string
     const buffer = content ? content : "";
     const actualContent = typeof buffer === "string" ? buffer : "";

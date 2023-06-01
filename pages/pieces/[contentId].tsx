@@ -9,7 +9,6 @@ import TextFullView from "../../src/components/FullView/TextFullView";
 const MyPage: NextPage = () => {
     const router = useRouter();
     const contentId = router.query.contentId;
-    console.log(contentId);
 
     // State to store the content
     const [content, setContent] = useState<IContent>();
@@ -29,7 +28,6 @@ const MyPage: NextPage = () => {
             );
             const contentJson = await contentResponse.json();
             setContent(contentJson.content);
-            console.log(contentJson);
         };
         getContent();
     }, [contentId]);

@@ -58,7 +58,6 @@ const Admin: NextPage = () => {
             const usersList = usersJson.users.map((ele: IUser) => {
                 return ele.email;
             });
-            console.log(user);
             setListOfUsers(usersList);
         };
 

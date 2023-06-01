@@ -46,7 +46,6 @@ const getNumColumns = (size: number, sgp: ScrollingGridProps): number => {
 };
 
 function ScrollingGrid(props: ScrollingGridProps) {
-    console.log(props);
     const router = useRouter();
 
     const [columns, setColumns] = useState<IContent[][]>([[]]);
@@ -72,13 +71,8 @@ function ScrollingGrid(props: ScrollingGridProps) {
 
         //evenly distribute the items to each of the new columns
         for (let i = 0; i < props.data.length; i++) {
-            console.log(props.data);
-            console.log(props.data[i]);
             dividedData[i % cols].push(props.data[i]);
         }
-        console.log("LOOK BELOW");
-        console.log(dividedData);
-
         setColumns(dividedData);
     };
 
@@ -88,8 +82,6 @@ function ScrollingGrid(props: ScrollingGridProps) {
     };
 
     const handleScroll = (e: React.UIEvent) => {
-        // console.log(containerDivRef.current!.scrollTop);
-        // console.log(reverseColumnRef.current?.style.transform);
         let scrollDelta: number = containerDivRef.current!.scrollTop;
         if (reverseColumnRef.current != null) {
             reverseColumnRef.current!.style.transform = `translateY(calc(2*${scrollDelta}px))`;
@@ -101,8 +93,6 @@ function ScrollingGrid(props: ScrollingGridProps) {
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
     }, [props.data]);
-
-    console.log(columns);
 
     return (
         <div
@@ -126,7 +116,6 @@ function ScrollingGrid(props: ScrollingGridProps) {
                         reverseColumnRef={reverseColumnRef}
                     >
                         {array.map((entry: IContent, index: number) => {
-                            console.log(entry);
                             return (
                                 <div
                                     className={styles.item}
@@ -172,7 +161,6 @@ function Column(props: ColumnProps) {
         );
     } else {
         let initialOffset: string = `calc(-1 * (${props.height} - ${props.gridHeight}))`;
-        console.log(initialOffset);
         return (
             <div
                 key={props.index}

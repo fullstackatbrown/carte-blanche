@@ -11,8 +11,6 @@ export default async function handler(
     // connect to the database
     await ConnectMongo();
     // insert the content into the database
-    console.log("backend");
-    console.log(req.body);
     const title: string = req.body.title;
     const author: string = req.body.author;
     const nodeType = req.body.nodeType;
@@ -23,10 +21,8 @@ export default async function handler(
     const lastUpdated: Date = req.body.lastUpdated;
 
     const content = await Content.create({
-        // email: session?.user?.email,
         title: title,
         author: author,
-        // email: email,
         nodeType: nodeType,
         imageContent: imageContent,
         caption: caption,

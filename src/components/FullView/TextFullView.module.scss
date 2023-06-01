@@ -43,9 +43,25 @@
     overflow-y: scroll;
 }
 
+.titleBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .title {
     font-weight: 400;
     margin-bottom: 0.1em;
+}
+
+.deleteButton {
+    margin-top: 20px;
+    margin-bottom: 0.1em;
+}
+
+.deleteButton:hover {
+    cursor: pointer;
 }
 
 .date {
@@ -56,8 +72,7 @@
 
 .image {
     height: 50%;
-    width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .imageCaption {

@@ -60,7 +60,6 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
         setCaption(event.target.value);
     };
     const handleTextContentChange = (newContent: string) => {
-        console.log(newContent);
         setTextContent(newContent);
     };
 
@@ -92,8 +91,6 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             dateCreated: new Date(),
             lastUpdated: new Date(),
         };
-        console.log(newContent);
-        console.log(JSON.stringify(newContent));
         // call the API to create the new node
         const response = await fetch("/api/content/create", {
             method: "POST",
@@ -103,17 +100,14 @@ export const CreateContentModal = (props: ICreateContentModalProps) => {
             body: JSON.stringify(newContent),
         });
         const responseJson = await response.json();
-        console.log(responseJson);
         if (!responseJson.success) {
             return;
         }
-        console.log("last line of handleSubmit");
         handleClose();
     };
 
     /** Reset all our state variables and close the modal */
     const handleClose = () => {
-        console.log("handle close called");
         onClose();
         setTitle("");
         setAuthor("");

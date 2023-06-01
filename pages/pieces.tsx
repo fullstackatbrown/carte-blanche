@@ -34,7 +34,7 @@ const Pieces: NextPage = () => {
                     <ScrollingGrid
                         data={contents}
                         height="calc(100vh - 5em)"
-                        width="67vw"
+                        width="64vw"
                     />
                 </div>
             </div>

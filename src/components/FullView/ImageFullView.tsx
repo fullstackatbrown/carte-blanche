@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaTrash } from "react-icons/fa";
 import IContent from "../../../types/IContent";
 import IUser from "../../../types/IUser";
 import Navbar from "../Navbar";
@@ -61,11 +61,33 @@ const formatTime = (date: Date) => {
 export default function ImageFullView(props: IImageFullViewProps) {
     // destructure props
     const { content } = props;
-
     const [author, setAuthor] = useState({} as IUser);
+    const [canDelete, setCanDelete] = useState(false);
 
+    // useEffect to check if the user can delete the content
     useEffect(() => {
-        const getUser = async () => {
+        const getSignedInUser = async () => {
+            const user = await fetch("/api/user/getUserByEmail", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const userJson = await user.json();
+            if (
+                userJson.user?.role === "admin" ||
+                (userJson.user?.role === "writer" &&
+                    userJson.user?.id === content.author)
+            ) {
+                setCanDelete(true);
+            }
+        };
+        getSignedInUser();
+    }, [content]);
+
+    // UseEffect to get the author of the content
+    useEffect(() => {
+        const getAuthor = async () => {
             const userResponse = await fetch(
                 `/api/user/getUserById?id=${content.author}`,
                 {
@@ -78,8 +100,28 @@ export default function ImageFullView(props: IImageFullViewProps) {
             const userJson = await userResponse.json();
             setAuthor(userJson.user);
         };
-        getUser();
+        getAuthor();
     }, [content]);
+
+    const handleDelete = async () => {
+        const deleteResponse = await fetch(
+            `/api/content/deleteContentById?id=${content._id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const deleteJson = await deleteResponse.json();
+        if (!deleteJson.deleteResponse.acknowledged) {
+            alert("Error deleting content");
+            console.log(deleteJson);
+            return;
+        }
+        alert("Successfully deleted content");
+        window.location.href = "/pieces";
+    };
 
     return (
         <div className={styles.body}>
@@ -96,9 +138,19 @@ export default function ImageFullView(props: IImageFullViewProps) {
                     }}
                 />
                 <div className={styles.imageContentContainer}>
-                    <h1 className={styles.title}>
-                        <strong>{content.title}</strong> | {author.name}
-                    </h1>
+                    <div className={styles.titleBar}>
+                        <h1 className={styles.title}>
+                            <strong>{content.title}</strong> | {author.name}
+                        </h1>
+                        {canDelete ? (
+                            <FaTrash
+                                className={styles.deleteButton}
+                                onClick={() => handleDelete()}
+                            />
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                     <p className={styles.date}>
                         {formatDate(content.dateCreated)}
                         &nbsp;at {formatTime(content.dateCreated)}
