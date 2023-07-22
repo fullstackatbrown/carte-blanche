@@ -66,7 +66,7 @@ export default function TopNav() {
             </Menu>
           </>
         ) : (
-          <span onClick={() => void signIn()}>log in</span>
+          <span onClick={() => void signIn("google")}>log in</span>
         )}
       </ul>
     </div>
