@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.1.1",
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.1",
     "@next-auth/prisma-adapter": "^1.0.5",
@@ -26,6 +27,7 @@
     "next-auth": "^4.22.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.2",
     "superjson": "1.12.2",
     "zod": "^3.21.4"
   },
@@ -38,13 +40,14 @@
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^8.2.0",
     "eslint": "^8.40.0",
     "eslint-config-next": "^13.4.2",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.27",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "prisma": "^5.0.0",
-    "tailwindcss": "^3.3.0",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.0.4"
   },
   "ct3aMetadata": {
