@@ -22,7 +22,7 @@ export default function TopNav() {
   );
 
   return (
-    <div className="flex items-center justify-center bg-black px-4 py-2 text-lg text-white">
+    <div className="sticky left-0 top-0 flex items-center justify-center bg-black px-4 py-2 text-lg text-white">
       <Link href="/" className="lowercase">
         C | B
       </Link>
@@ -32,7 +32,7 @@ export default function TopNav() {
           pieces
         </Link>
         <div className="aspect-square w-3 rounded-full bg-white"></div>
-        <Link href="/about" className="lowercase">
+        <Link href="#about" scroll={false} className="lowercase">
           about
         </Link>
         <div className="aspect-square w-3 rounded-full bg-white"></div>
