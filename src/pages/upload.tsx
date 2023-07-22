@@ -12,10 +12,12 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { ContentType } from "@prisma/client";
-import { resolve } from "path";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { api } from "@CarteBlanche/utils/api";
+import { useSession } from "next-auth/react";
 
 // Interface for the form input
 interface IFormInput {
@@ -29,11 +31,22 @@ interface IFormInput {
 // Form validation schema using Zod
 const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
-  contentType: z.enum(["TEXT", "IMAGE", "VIDEO", "AUDIO"]),
+  contentType: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
   contentURL: z.string().min(1, "Content URL is required"),
   textContent: z.string().min(1, "Text Content is required"),
 });
+
+/**
+ * Default values for the form input
+ */
+const defaultFormValues = {
+  title: "",
+  contentType: ContentType.TEXT,
+  caption: "",
+  contentURL: "",
+  textContent: "",
+};
 
 export interface IUpload {
   isOpen: boolean;
@@ -45,61 +58,46 @@ export interface IUpload {
   setErrorSnackbarMessage: (message: string) => void;
 }
 
-export default function Upload(props: IUpload) {
-  // Deconstruct props
-  const {
-    isOpen,
-    onClose,
-    runGetAllUsersQuery,
-    setOpenSuccessSnackbar,
-    setSuccessSnackbarMessage,
-    setOpenErrorSnackbar,
-    setErrorSnackbarMessage,
-  } = props;
+export default function Upload({ onClose }: IUpload) {
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+  const formError = Boolean(formErrorMessage);
 
-  /**
-   * Default values for the form input
-   */
-  const defaultFormValues = {
-    title: "",
-    contentType: ContentType.TEXT,
-    caption: "",
-    contentURL: "",
-    textContent: "",
-  };
+  const { mutate: createContent } = api.content.createContent.useMutation({
+    onError(error) {
+      setFormErrorMessage(error.message);
+    },
+    onSuccess() {
+      handleClose();
+    },
+  });
 
   // Form methods
-  const methods = useForm<IFormInput>({
+  const { handleSubmit, reset, control } = useForm<IFormInput>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(createContentValidator),
+    mode: "onSubmit",
   });
-  const { handleSubmit, reset, control } = methods;
-  const [formError, setFormError] = useState<boolean>(false);
-  const [formErrorMessage, setFormErrorMessage] = useState<string>("");
 
-  // Queries
-  const runCreateUserQuery = async (contentToSave: IFormInput) => {
-    try {
-      // await api.post("/api/content", contentToSave);
-      resolve();
-    } catch (error) {
-      setFormError(true);
-      // setFormErrorMessage(error.message);
-    }
-  };
+  const { data: session } = useSession();
 
   const onSubmit = (data: IFormInput) => {
-    // Edit
+    console.log("called");
+    if (!session) return;
+
     const contentToSave = {
+      authorId: session.user.id,
       title: data.title,
-      contentType: data.contentType,
+      type: data.contentType,
       caption: data.caption,
       contentURL: data.contentURL,
       textContent: data.textContent,
     };
-    runCreateUserQuery(contentToSave);
+    console.log("calling api");
+    createContent(contentToSave);
     console.log("Saving", contentToSave);
   };
+
+  const submit = handleSubmit(onSubmit);
 
   /**
    * Function to handle closing the dialog and resetting the form
@@ -135,18 +133,8 @@ export default function Upload(props: IUpload) {
               marginTop: "20px",
             }}
           >
-            <FormInputText
-              name="title"
-              control={control}
-              label="Title"
-              // styles={{ flex: 1 }}
-            />
-            <FormInputText
-              name="caption"
-              control={control}
-              label="Caption"
-              // styles={{ flex: 1 }}
-            />
+            <FormInputText name="title" control={control} label="Title" />
+            <FormInputText name="caption" control={control} label="Caption" />
             <UploadFormInputDropdown
               name="contentType"
               control={control}
@@ -190,7 +178,7 @@ export default function Upload(props: IUpload) {
               Reset
             </Button>
           </Box>
-          <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>
+          <Button onClick={() => void submit} variant="outlined">
             Submit
           </Button>
         </DialogActions>
