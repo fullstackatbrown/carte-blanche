@@ -15,7 +15,7 @@ import { ContentType } from "@prisma/client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import TopNav from "@CarteBlanche/components/TopNav";
 import { api } from "@CarteBlanche/utils/api";
 import { useSession } from "next-auth/react";
 
@@ -58,7 +58,7 @@ export interface IUpload {
   setErrorSnackbarMessage: (message: string) => void;
 }
 
-export default function Upload({ onClose }: IUpload) {
+export default function Upload({}: IUpload) {
   const [formErrorMessage, setFormErrorMessage] = useState("");
   const formError = Boolean(formErrorMessage);
 
@@ -66,7 +66,7 @@ export default function Upload({ onClose }: IUpload) {
     onError(error) {
       setFormErrorMessage(error.message);
     },
-    onSuccess() {
+    onSuccess(data) {
       handleClose();
     },
   });
@@ -81,8 +81,11 @@ export default function Upload({ onClose }: IUpload) {
   const { data: session } = useSession();
 
   const onSubmit = (data: IFormInput) => {
+    alert("Yo");
     console.log("called");
-    if (!session) return;
+    if (!session) {
+      return;
+    }
 
     const contentToSave = {
       authorId: session.user.id,
@@ -110,7 +113,8 @@ export default function Upload({ onClose }: IUpload) {
 
   return (
     <>
-      <Dialog fullWidth open={true} onClose={handleClose}>
+      <TopNav />
+      {/* <Dialog fullWidth open={true} onClose={handleClose}>
         <DialogTitle>Upload Content</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -121,68 +125,73 @@ export default function Upload({ onClose }: IUpload) {
             formError && formErrorMessage && (
               <FormErrorMessage error={"Error: " + formErrorMessage} />
             )
-          }
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "20px",
-              marginTop: "20px",
-            }}
-          >
-            <FormInputText name="title" control={control} label="Title" />
-            <FormInputText name="caption" control={control} label="Caption" />
-            <UploadFormInputDropdown
-              name="contentType"
-              control={control}
-              label="Content Type"
-            />
-          </Box>
-          <FormInputText
-            name="textContent"
-            control={control}
-            label="Text Content"
-            styles={{ marginTop: "20px" }}
-          />
-        </DialogContent>
-        <DialogActions
+          } */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "20px",
+          marginTop: "20px",
+        }}
+      >
+        <FormInputText name="title" control={control} label="Title" />
+        <FormInputText name="caption" control={control} label="Caption" />
+        <FormInputText
+          name="contentURL"
+          control={control}
+          label="Content URL"
+        />
+        <UploadFormInputDropdown
+          name="contentType"
+          control={control}
+          label="Content Type"
+        />
+      </Box>
+      <FormInputText
+        name="textContent"
+        control={control}
+        label="Text Content"
+        styles={{ marginTop: "20px" }}
+      />
+      {/* </DialogContent> */}
+      <DialogActions
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "20px",
+          padding: "0px 20px 15px",
+        }}
+      >
+        <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "20px",
-            padding: "0px 20px 15px",
+            gap: "10px",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <Button onClick={handleClose} variant="outlined">
-              Cancel
-            </Button>
-
-            <Button
-              onClick={() => {
-                reset(defaultFormValues);
-              }}
-              variant="outlined"
-            >
-              Reset
-            </Button>
-          </Box>
-          <Button onClick={() => void submit} variant="outlined">
-            Submit
+          <Button onClick={handleClose} variant="outlined">
+            Cancel
           </Button>
-        </DialogActions>
-      </Dialog>
+
+          <Button
+            onClick={() => {
+              reset(defaultFormValues);
+            }}
+            variant="outlined"
+          >
+            Reset
+          </Button>
+        </Box>
+        <Button onClick={handleSubmit(onSubmit)} variant="outlined">
+          Submit
+        </Button>
+      </DialogActions>
+      {/* </Dialog> */}
     </>
   );
 }
