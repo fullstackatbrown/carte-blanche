@@ -1,8 +1,14 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
+import { Inknut_Antiqua } from "next/font/google";
 import { api } from "@CarteBlanche/utils/api";
 import "@CarteBlanche/styles/globals.css";
+
+const inknut_antiqua = Inknut_Antiqua({
+  weight: "400",
+  subsets: ["latin", "latin-ext"],
+});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -10,7 +16,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <main className={inknut_antiqua.className}>
+        <Component {...pageProps} />
+      </main>
     </SessionProvider>
   );
 };
