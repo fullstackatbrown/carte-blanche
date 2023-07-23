@@ -15,7 +15,7 @@ import { api } from "@CarteBlanche/utils/api";
 export default function TopNav() {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { data: user } = api.user.getUser.useQuery(
     { id: session?.user.id },
     { refetchOnWindowFocus: false }
@@ -28,16 +28,16 @@ export default function TopNav() {
       </Link>
       <div className="flex flex-grow" />
       <ul className="flex items-center justify-center gap-7">
-        <Link href="/pieces" className="lowercase">
-          pieces
-        </Link>
-        <div className="aspect-square w-3 rounded-full bg-white"></div>
         <Link href="#about" scroll={false} className="lowercase">
           about
         </Link>
         <div className="aspect-square w-3 rounded-full bg-white"></div>
-        <Link href="/join-us" className="lowercase">
-          join us
+        <Link href="/pieces" className="lowercase">
+          pieces
+        </Link>
+        <div className="aspect-square w-3 rounded-full bg-white"></div>
+        <Link href="/podcasts" className="lowercase">
+          podcasts
         </Link>
         <div className="aspect-square w-3 rounded-full bg-white"></div>
         {user ? (
