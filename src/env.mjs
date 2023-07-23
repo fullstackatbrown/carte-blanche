@@ -31,7 +31,8 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_IMGUR_CLIENT_ID: z.string().min(1),
+    NEXT_PUBLIC_UPLOADTHING_SECRET: z.string().min(1),
+    NEXT_PUBLIC_UPLOADTHING_APP_ID: z.string().min(1),
     NEXT_PUBLIC_TINYMCE_API_KEY: z.string().min(1),
   },
 
@@ -46,7 +47,8 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     JWT_SECRET: process.env.JWT_SECRET,
-    NEXT_PUBLIC_IMGUR_CLIENT_ID: process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID,
+    NEXT_PUBLIC_UPLOADTHING_SECRET: process.env.NEXT_PUBLIC_UPLOADTHING_SECRET,
+    NEXT_PUBLIC_UPLOADTHING_APP_ID: process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID,
     NEXT_PUBLIC_TINYMCE_API_KEY: process.env.NEXT_PUBLIC_TINYMCE_API_KEY,
   },
   /**
