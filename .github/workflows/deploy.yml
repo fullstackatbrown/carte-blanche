@@ -1,10 +1,10 @@
-# NicholasBottone's Deploy to Private Repo Action
-name: 🚀 Deploy Production
+# Andrew Li's Deploy to Private Repo Action
+name: 😎 Deploy Production
 
 on:
     workflow_dispatch:
     push:
-        branches: [main]
+        branches: [t3-rewrite]
 
 jobs:
     build-deploy-frontend:
@@ -30,6 +30,6 @@ jobs:
               uses: wei/git-sync@v3
               with:
                   source_repo: "https://github.com/fullstackatbrown/carte-blanche.git"
-                  source_branch: "main"
+                  source_branch: "t3-rewrite"
                   destination_repo: "https://andrew7li:${{ secrets.PAT }}@github.com/andrew7li/carte-blanche-deploy.git"
                   destination_branch: "deploy"
