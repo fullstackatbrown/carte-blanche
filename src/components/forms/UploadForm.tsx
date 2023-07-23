@@ -1,14 +1,17 @@
-import { z } from "zod";
 import { api } from "@CarteBlanche/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useSession } from "next-auth/react";
+import { type ChangeEvent, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { ContentType } from "@prisma/client";
 import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
+import RichTextEditor from "@CarteBlanche/components/RichTextEditor";
 import { FormInputText } from "@components/forms/input/FormInputText";
 import { Box, Button, DialogActions } from "@mui/material";
+import { ContentType } from "@prisma/client";
+import type { Editor as TinyMCEEditor } from "tinymce";
 import { FormErrorMessage } from "./FormErrorMessage";
 
 // Interface for the form input
@@ -17,7 +20,6 @@ interface IFormInput {
   type: ContentType;
   caption: string;
   contentURL: string;
-  textContent: string;
 }
 
 // Form validation schema using Zod
@@ -25,8 +27,6 @@ const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
   type: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
-  contentURL: z.string().min(1, "Content URL is required"),
-  textContent: z.string().min(1, "Text Content is required"),
 });
 
 /**
@@ -36,8 +36,6 @@ const defaultFormValues = {
   title: "",
   type: ContentType.TEXT,
   caption: "",
-  contentURL: "",
-  textContent: "",
 };
 
 interface IUploadForm {
@@ -56,10 +54,12 @@ export default function UploadForm({
   const [formErrorMessage, setFormErrorMessage] = useState("");
 
   // Form methods
-  const { handleSubmit, reset, control } = useForm<IFormInput>({
-    defaultValues: defaultFormValues,
-    resolver: zodResolver(createContentValidator),
-  });
+  const { register, handleSubmit, reset, control, watch } = useForm<IFormInput>(
+    {
+      defaultValues: defaultFormValues,
+      resolver: zodResolver(createContentValidator),
+    }
+  );
 
   const { mutate: createContent } = api.content.createContent.useMutation({
     onError(error) {
@@ -67,14 +67,16 @@ export default function UploadForm({
       setErrorSnackbarMessage(error.message);
       setFormErrorMessage(error.message);
     },
-    onSuccess(data) {
+    onSuccess() {
       setOpenSuccessSnackbar(true);
       setSuccessSnackbarMessage("Content successfully uploaded!");
-      handleClose();
+      handleReset();
     },
   });
 
   const { data: session } = useSession();
+
+  const editorRef = useRef<TinyMCEEditor | null>(null);
 
   const onSubmit = (data: IFormInput) => {
     if (!session) {
@@ -89,18 +91,58 @@ export default function UploadForm({
       title: data.title,
       type: data.type,
       caption: data.caption,
-      contentURL: data.contentURL,
-      textContent: data.textContent,
+      contentURL: uploadedImageLink,
+      textContent: editorRef.current!.getContent() ?? "",
     };
+    console.log(contentToSave);
     createContent(contentToSave);
   };
 
   /**
-   * Function to handle closing the dialog and resetting the form
+   * Function to handle resetting the form
    */
-  const handleClose = () => {
+  const handleReset = () => {
     setFormErrorMessage("");
+    setSelectedImage(null);
     reset(defaultFormValues);
+  };
+
+  const isTextContent = watch("type") === ContentType.TEXT;
+  const isAudioContent = watch("type") === ContentType.AUDIO;
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [uploadedImageLink, setUploadedImageLink] = useState(null);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setSelectedImage(file ?? null);
+  };
+
+  const handleUpload = async () => {
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("image", selectedImage);
+      try {
+        const headers = {
+          Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+        };
+        const imgurResponse = await axios.post(
+          "https://api.imgur.com/3/image",
+          formData,
+          { headers }
+        );
+        // TODO: Use Zod to validate the imgur response to ensure type safety
+        setUploadedImageLink(imgurResponse.data.data.link);
+      } catch (error) {
+        setFormErrorMessage(
+          error.message + ". " + error.response.data.data.error
+        );
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage("Error uploading image!");
+        console.error("Error uploading image:", error);
+        setUploadedImageLink(null);
+      }
+    }
   };
 
   return (
@@ -126,17 +168,28 @@ export default function UploadForm({
           control={control}
           label="Content Type"
         />
-        <FormInputText
-          name="contentURL"
-          control={control}
-          label="Content URL"
-        />
-
-        <FormInputText
-          name="textContent"
-          control={control}
-          label="Text Content"
-        />
+        {isAudioContent ? (
+          <FormInputText
+            name="contentURL"
+            control={control}
+            label="Spotify URL"
+          />
+        ) : (
+          <div className="w-full">
+            {/* <input type="file" onChange={handleImageChange} /> */}
+            <input
+              {...register("contentURL")}
+              onChange={handleImageChange}
+              type="file"
+              name="contentURL"
+            />
+            <button onClick={() => void handleUpload()}>Upload</button>
+          </div>
+        )}
+        {isTextContent && (
+          // Key should be something that is called whenever "reset" button is clicked
+          <RichTextEditor editorRef={editorRef} />
+        )}
       </Box>
       <DialogActions
         sx={{
@@ -158,7 +211,7 @@ export default function UploadForm({
         >
           <Button
             onClick={() => {
-              reset(defaultFormValues);
+              handleReset();
             }}
             variant="outlined"
           >
@@ -167,7 +220,8 @@ export default function UploadForm({
         </Box>
         <Button
           onClick={() => void handleSubmit(onSubmit)()}
-          variant="outlined"
+          variant="contained"
+          style={{ backgroundColor: "#2196f3", color: "white" }}
         >
           Submit
         </Button>

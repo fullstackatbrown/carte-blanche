@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
-    signIn: ({ user }) => {
+    signIn: ({}) => {
       return true;
     },
   },

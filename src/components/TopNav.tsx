@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+import { api } from "@CarteBlanche/utils/api";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { useState } from "react";
+
+import { Logout } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   Avatar,
   Box,
@@ -9,21 +15,15 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import { Logout } from "@mui/icons-material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useSession, signOut, signIn } from "next-auth/react";
-import Link from "next/link";
-import { api } from "@CarteBlanche/utils/api";
 
 const navLinks = [
   <Link
     key="about"
-    href="#about"
+    href="/#about"
     scroll={false}
     className="h-full w-full lowercase"
   >
@@ -80,7 +80,7 @@ export default function TopNav() {
         </Drawer>
       </div>
       <ul className="hidden items-center justify-center gap-7 md:flex">
-        <Link href="#about" scroll={false} className="lowercase">
+        <Link href="/#about" scroll={false} className="lowercase">
           about
         </Link>
         <div className="aspect-square w-3 rounded-full bg-white"></div>

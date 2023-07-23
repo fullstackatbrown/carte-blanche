@@ -15,8 +15,8 @@ export function UploadFormInputDropdown<TFieldValues extends FieldValues>({
           <TextField
             id="outlined-textarea"
             select
-            label="Role"
-            placeholder="Role"
+            label="Content Type"
+            placeholder="Content Type"
             multiline
             variant="outlined"
             value={value}

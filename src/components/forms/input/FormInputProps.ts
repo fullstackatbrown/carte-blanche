@@ -5,5 +5,5 @@ export type FormInputProps<TFieldValues extends FieldValues> = Pick<
   "control" | "name"
 > & {
   label: string;
-  styles?: any;
+  styles?: React.CSSProperties;
 };
