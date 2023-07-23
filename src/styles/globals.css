@@ -5,3 +5,42 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Define common font sizes as variables */
+:root {
+  --font-size-small: 14px;
+  --font-size-medium: 17px;
+  --font-size-large: 20px;
+  --font-size-xl: 23px;
+}
+
+/* Apply the variables to different elements */
+body {
+  font-size: var(--font-size-medium);
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+}
+
+h2 {
+  font-size: var(--font-size-large);
+}
+
+h3 {
+  font-size: var(--font-size-medium);
+}
+
+p {
+  font-size: var(--font-size-medium);
+}
+
+/* Adjust font size for smaller screens */
+@media screen and (max-width: 768px) {
+  :root {
+    --font-size-small: 12px;
+    --font-size-medium: 14px;
+    --font-size-large: 16px;
+    --font-size-xl: 18px;
+  }
+}
