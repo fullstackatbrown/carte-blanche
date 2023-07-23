@@ -4,6 +4,7 @@ import { type AppType } from "next/app";
 import { Inknut_Antiqua } from "next/font/google";
 import { api } from "@CarteBlanche/utils/api";
 import "@CarteBlanche/styles/globals.css";
+import "@uploadthing/react/styles.css";
 
 const inknut_antiqua = Inknut_Antiqua({
   weight: "400",

@@ -1,25 +1,26 @@
 import { api } from "@CarteBlanche/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useSession } from "next-auth/react";
-import { type ChangeEvent, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
 import RichTextEditor from "@CarteBlanche/components/RichTextEditor";
 import { FormInputText } from "@components/forms/input/FormInputText";
-import { Box, Button, DialogActions } from "@mui/material";
+import { Box, Button, DialogActions, IconButton } from "@mui/material";
 import { ContentType } from "@prisma/client";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { FormErrorMessage } from "./FormErrorMessage";
+import { UploadButton, useUploadThing } from "@CarteBlanche/utils/uploadthing";
+import { Upload } from "@mui/icons-material";
 
 // Interface for the form input
 interface IFormInput {
   title: string;
   type: ContentType;
   caption: string;
-  contentURL: string;
+  contentURL: File | string;
 }
 
 // Form validation schema using Zod
@@ -27,6 +28,7 @@ const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
   type: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
+  contentURL: z.instanceof(File).or(z.string().url("Not a valid URL")),
 });
 
 /**
@@ -52,15 +54,18 @@ export default function UploadForm({
   setErrorSnackbarMessage,
 }: IUploadForm) {
   const [formErrorMessage, setFormErrorMessage] = useState("");
-
-  // Form methods
-  const { register, handleSubmit, reset, control, watch } = useForm<IFormInput>(
-    {
-      defaultValues: defaultFormValues,
-      resolver: zodResolver(createContentValidator),
-    }
-  );
-
+  const { startUpload } = useUploadThing("imageUploader", {
+    onClientUploadComplete: (res) => {
+      console.log(res);
+    },
+    onUploadError: (error) => {
+      console.log(error);
+    },
+  });
+  const { handleSubmit, reset, control, watch } = useForm<IFormInput>({
+    defaultValues: defaultFormValues,
+    resolver: zodResolver(createContentValidator),
+  });
   const { mutate: createContent } = api.content.createContent.useMutation({
     onError(error) {
       setOpenErrorSnackbar(true);
@@ -73,12 +78,13 @@ export default function UploadForm({
       handleReset();
     },
   });
-
   const { data: session } = useSession();
-
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
-  const onSubmit = (data: IFormInput) => {
+  const isTextContent = watch("type") === ContentType.TEXT;
+  const isAudioContent = watch("type") === ContentType.AUDIO;
+
+  const onSubmit = async (data: IFormInput) => {
     if (!session) {
       setOpenErrorSnackbar(true);
       setErrorSnackbarMessage("Error uploading content!");
@@ -86,64 +92,35 @@ export default function UploadForm({
       return;
     }
 
+    let contentURL = "";
+    if (typeof data.contentURL !== "string") {
+      const uploadedFile = await startUpload([data.contentURL]);
+      if (!uploadedFile?.[0]) {
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage("Error uploading content!");
+        setFormErrorMessage("Unable to upload image!");
+        return;
+      }
+      contentURL = uploadedFile[0].fileUrl;
+    } else {
+      contentURL = data.contentURL;
+    }
+
     const contentToSave = {
       authorId: session.user.id,
       title: data.title,
       type: data.type,
       caption: data.caption,
-      contentURL: uploadedImageLink,
+      contentURL: contentURL,
       textContent: editorRef.current!.getContent() ?? "",
     };
-    console.log(contentToSave);
+
     createContent(contentToSave);
   };
 
-  /**
-   * Function to handle resetting the form
-   */
   const handleReset = () => {
     setFormErrorMessage("");
-    setSelectedImage(null);
     reset(defaultFormValues);
-  };
-
-  const isTextContent = watch("type") === ContentType.TEXT;
-  const isAudioContent = watch("type") === ContentType.AUDIO;
-
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [uploadedImageLink, setUploadedImageLink] = useState(null);
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedImage(file ?? null);
-  };
-
-  const handleUpload = async () => {
-    if (selectedImage) {
-      const formData = new FormData();
-      formData.append("image", selectedImage);
-      try {
-        const headers = {
-          Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-        };
-        const imgurResponse = await axios.post(
-          "https://api.imgur.com/3/image",
-          formData,
-          { headers }
-        );
-        console.log(imgurResponse);
-        // TODO: Use Zod to validate the imgur response to ensure type safety
-        setUploadedImageLink(imgurResponse.data.data.link);
-      } catch (error) {
-        setFormErrorMessage(
-          error.message + ". " + error.response.data.data.error
-        );
-        setOpenErrorSnackbar(true);
-        setErrorSnackbarMessage("Error uploading image!");
-        console.error("Error uploading image:", error);
-        setUploadedImageLink(null);
-      }
-    }
   };
 
   return (
@@ -176,21 +153,25 @@ export default function UploadForm({
             label="Spotify URL"
           />
         ) : (
-          <div className="w-full">
-            {/* <input type="file" onChange={handleImageChange} /> */}
-            <input
-              {...register("contentURL")}
-              onChange={handleImageChange}
-              type="file"
-              name="contentURL"
-            />
-            <button onClick={() => void handleUpload()}>Upload</button>
-          </div>
+          <Controller
+            control={control}
+            name="contentURL"
+            rules={{ required: true }}
+            render={({ field: { value, onChange, ...props } }) => {
+              return (
+                <input
+                  {...props}
+                  onChange={(e) => {
+                    onChange(e.target.files?.[0]);
+                  }}
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.heic,.webp"
+                />
+              );
+            }}
+          ></Controller>
         )}
-        {isTextContent && (
-          // Key should be something that is called whenever "reset" button is clicked
-          <RichTextEditor editorRef={editorRef} />
-        )}
+        {isTextContent && <RichTextEditor editorRef={editorRef} />}
       </Box>
       <DialogActions
         sx={{

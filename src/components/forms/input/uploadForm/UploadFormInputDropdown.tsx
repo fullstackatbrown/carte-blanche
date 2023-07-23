@@ -1,7 +1,7 @@
 import { FormControl, MenuItem, TextField } from "@mui/material";
-import { ContentTypes } from "@types/IContent";
 import { Controller, type FieldValues } from "react-hook-form";
 import type { UploadFormInputProps } from "./UploadFormInputProps";
+import { ContentType } from "@prisma/client";
 
 export function UploadFormInputDropdown<TFieldValues extends FieldValues>({
   name,
@@ -22,11 +22,9 @@ export function UploadFormInputDropdown<TFieldValues extends FieldValues>({
             value={value}
             onChange={onChange}
           >
-            {ContentTypes.map((role: string) => (
-              <MenuItem key={role} value={role}>
-                {role}
-              </MenuItem>
-            ))}
+            <MenuItem value={ContentType.AUDIO}>Audio</MenuItem>
+            <MenuItem value={ContentType.IMAGE}>Image</MenuItem>
+            <MenuItem value={ContentType.TEXT}>Text</MenuItem>
           </TextField>
         )}
         control={control}
