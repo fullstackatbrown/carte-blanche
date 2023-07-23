@@ -1,5 +1,6 @@
 import Head from "next/head";
 import TopNav from "@CarteBlanche/components/TopNav";
+import About from "@CarteBlanche/components/sections/About";
 
 export default function Home() {
   return (
@@ -30,7 +31,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="about" className="h-screen bg-red-500"></section>
+        <section id="about" className="h-screen bg-red-500">
+          <About />
+        </section>
       </main>
     </>
   );
