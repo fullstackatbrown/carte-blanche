@@ -5,7 +5,7 @@ export default function podcasts() {
   return (
     <>
       <TopNav />
-      <div>podcasts</div>
+      <div>Podcasts</div>
     </>
   );
 }
