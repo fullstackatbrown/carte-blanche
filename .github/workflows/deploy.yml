@@ -4,7 +4,7 @@ name: 😎 Deploy Production
 on:
     workflow_dispatch:
     push:
-        branches: [t3-rewrite]
+        branches: [main]
 
 jobs:
     build-deploy-frontend:
@@ -30,6 +30,6 @@ jobs:
               uses: wei/git-sync@v3
               with:
                   source_repo: "https://github.com/fullstackatbrown/carte-blanche.git"
-                  source_branch: "t3-rewrite"
+                  source_branch: "main"
                   destination_repo: "https://andrew7li:${{ secrets.PAT }}@github.com/andrew7li/carte-blanche-deploy.git"
                   destination_branch: "deploy"
