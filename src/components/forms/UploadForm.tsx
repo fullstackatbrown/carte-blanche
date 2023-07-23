@@ -131,6 +131,7 @@ export default function UploadForm({
           formData,
           { headers }
         );
+        console.log(imgurResponse);
         // TODO: Use Zod to validate the imgur response to ensure type safety
         setUploadedImageLink(imgurResponse.data.data.link);
       } catch (error) {

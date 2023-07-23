@@ -5,8 +5,7 @@ import { SuccessSnackbar } from "@components/forms/snackbars/SuccessSnackbar";
 import { useState } from "react";
 
 export default function Upload() {
-  // State for the snackbar
-  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false); // [1
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
   const [successSnackbarMessage, setSuccessSnackbarMessage] = useState("");
   const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
