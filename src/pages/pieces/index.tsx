@@ -1,29 +1,34 @@
 import { api } from "@CarteBlanche/utils/api";
+import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import TopNav from "@CarteBlanche/components/TopNav";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import { Avatar } from "@mui/material";
+import CreateIcon from "@mui/icons-material/Create";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export default function Pieces() {
+const Pieces: NextPage = () => {
   const { data: session } = useSession();
 
   const { data: user } = api.user.getUser.useQuery(
     { id: session?.user.id },
     { refetchOnWindowFocus: false }
   );
-  const canEditLayout = user?.role === "ADMIN";
-  const canUploadContent = canEditLayout || user?.role === "WRITER";
 
+  const isWriterOrAdmin = user?.role === "ADMIN" || user?.role === "WRITER";
   const [isEditing, setIsEditing] = useState(false);
 
   const [colScale, setColScale] = useState(12);
@@ -46,11 +51,41 @@ export default function Pieces() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const router = useRouter();
+
+  const actions = [
+    {
+      icon: <CreateIcon />,
+      name: "Create Content",
+      onClick: () => {
+        void router.push("/upload");
+      },
+      roles: ["ADMIN", "WRITER"],
+    },
+    {
+      icon: <DashboardCustomizeIcon />,
+      name: "Customize Dashboard",
+      onClick: () => setIsEditing(!isEditing),
+      roles: ["ADMIN"],
+    },
+  ];
+
+  /**
+   * Handles saving of the grid layout
+   */
+  const saveGridLayout = () => {
+    alert("Not implemented yet!");
+    setIsEditing(false);
+  };
+
   const {
     data: pieces,
     isLoading,
     error,
-  } = api.content.getAllContent.useQuery({}, { refetchOnWindowFocus: false });
+  } = api.content.getAllTextAndImageContent.useQuery(
+    {},
+    { refetchOnWindowFocus: false }
+  );
 
   if (isLoading || !pieces) {
     return <CircularSpinner />;
@@ -61,28 +96,39 @@ export default function Pieces() {
   return (
     <>
       <TopNav />
-      <button className="bg-slate-300">
-        <a href="./upload">Click me to Upload!</a>
-      </button>
-      <div className="flex">
+      {isEditing && (
+        <div className="bg-cyan-300">
+          <h1>EDITING MODE</h1>
+          <Button onClick={() => setIsEditing(!isEditing)}>Cancel</Button>
+          <Button onClick={saveGridLayout}>Save</Button>
+        </div>
+      )}
+      <div className="m-4 flex">
         <div className="absolute top-1/2">
           <p className="text-transform: lowercase">Vous Avez</p>
           <h1 className="text-transform: uppercase">Carte Blanche</h1>
-
-          {canUploadContent && (
-            <Link href="/upload">
-              <Avatar style={{ backgroundColor: "#2196f3", cursor: "pointer" }}>
-                <AddIcon />
-              </Avatar>
-            </Link>
-          )}
-          {canEditLayout && (
-            <Avatar
-              style={{ backgroundColor: "#2196f3", cursor: "pointer" }}
-              onClick={() => setIsEditing(!isEditing)}
+          {isWriterOrAdmin && (
+            <Box
+              sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}
             >
-              <EditIcon />
-            </Avatar>
+              <SpeedDial
+                ariaLabel="SpeedDial basic example"
+                sx={{ position: "absolute", bottom: 16, right: 16 }}
+                icon={<SpeedDialIcon />}
+              >
+                {actions.map(
+                  (action) =>
+                    action.roles.includes(user.role) && (
+                      <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                        onClick={action.onClick}
+                      />
+                    )
+                )}
+              </SpeedDial>
+            </Box>
           )}
         </div>
         <ResponsiveGridLayout
@@ -98,16 +144,25 @@ export default function Pieces() {
               <div
                 key={piece.id}
                 data-grid={{
-                  x: colScale * (idx % colScale),
+                  x: 4 + colScale * (idx % colScale),
                   y: colScale * (idx / colScale),
-                  w: 4,
-                  h: 3,
+                  w: 3,
+                  h: 8,
                   maxW: 3,
                   maxH: 10,
                   static: !isEditing,
                 }}
+                className="cursor-pointer transition duration-500 hover:scale-110"
               >
-                <h1>{piece.title} </h1>
+                <Link href={`/pieces/${piece.id}`} key={piece.id}>
+                  <img
+                    src={piece.contentURL}
+                    className="h-full w-full bg-gray-50 object-contain "
+                  />
+                  {piece.type === "TEXT" && (
+                    <p className="absolute bottom-0 right-0">Article</p>
+                  )}
+                </Link>
               </div>
             );
           })}
@@ -115,4 +170,6 @@ export default function Pieces() {
       </div>
     </>
   );
-}
+};
+
+export default Pieces;
