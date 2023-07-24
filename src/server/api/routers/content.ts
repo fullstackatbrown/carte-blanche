@@ -35,6 +35,26 @@ export const contentRouter = createTRPCRouter({
     return ctx.prisma.content.findMany();
   }),
 
+  getAllAudioContent: publicProcedure.input(z.object({})).query(({ ctx }) => {
+    return ctx.prisma.content.findMany({
+      where: {
+        type: ContentType.AUDIO,
+      },
+    });
+  }),
+
+  getAllTextAndImageContent: publicProcedure
+    .input(z.object({}))
+    .query(({ ctx }) => {
+      return ctx.prisma.content.findMany({
+        where: {
+          type: {
+            in: [ContentType.IMAGE, ContentType.TEXT],
+          },
+        },
+      });
+    }),
+
   getContentById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input, ctx }) => {
