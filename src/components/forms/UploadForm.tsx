@@ -5,15 +5,14 @@ import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
 import RichTextEditor from "@CarteBlanche/components/RichTextEditor";
+import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
+import { useUploadThing } from "@CarteBlanche/utils/uploadthing";
 import { FormInputText } from "@components/forms/input/FormInputText";
-import { Box, Button, DialogActions, IconButton } from "@mui/material";
+import { Box, Button, DialogActions } from "@mui/material";
 import { ContentType } from "@prisma/client";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { FormErrorMessage } from "./FormErrorMessage";
-import { UploadButton, useUploadThing } from "@CarteBlanche/utils/uploadthing";
-import { Upload } from "@mui/icons-material";
 
 // Interface for the form input
 interface IFormInput {
@@ -28,7 +27,7 @@ const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
   type: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
-  contentURL: z.instanceof(File).or(z.string().url("Not a valid URL")),
+  contentURL: z.custom<File>().or(z.string().url("Not a valid URL")),
 });
 
 /**
@@ -98,7 +97,7 @@ export default function UploadForm({
       if (!uploadedFile?.[0]) {
         setOpenErrorSnackbar(true);
         setErrorSnackbarMessage("Error uploading content!");
-        setFormErrorMessage("Unable to upload image!");
+        setFormErrorMessage("No image selected!");
         return;
       }
       contentURL = uploadedFile[0].fileUrl;
