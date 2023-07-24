@@ -31,7 +31,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="about" className="h-screen bg-red-500">
+        <section id="about">
           <About />
         </section>
       </main>
