@@ -13,6 +13,7 @@ import { ContentType } from "@prisma/client";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { FormErrorMessage } from "./FormErrorMessage";
 import TextEditor from "./TextEditor";
+import CircularSpinner from "../CircularSpinner";
 
 // Interface for the form input
 interface IFormInput {
@@ -20,14 +21,28 @@ interface IFormInput {
   type: ContentType;
   caption: string;
   imgURL: File | string;
+  content: string;
 }
 
-// Form validation schema using Zod
+// Zod validation schemas for the form input
 const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
-  type: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
-  imgUrl: z.custom<File>().or(z.string().url("Not a valid URL")),
+  imgURL: z.custom<File>().or(z.string().url("Not a valid URL")),
+});
+
+const createImageContentValidator = createContentValidator.extend({
+  type: z.literal(ContentType.IMAGE),
+});
+
+const createTextContentValidator = createContentValidator.extend({
+  type: z.literal(ContentType.TEXT),
+  content: z.string().min(1, "Content is required"),
+});
+
+const createAudioContentValidator = createContentValidator.extend({
+  type: z.literal(ContentType.AUDIO),
+  content: z.string().url("Not a valid URL"),
 });
 
 /**
@@ -37,6 +52,8 @@ const defaultFormValues = {
   title: "",
   type: ContentType.TEXT,
   caption: "",
+  imgURL: "",
+  content: "",
 };
 
 interface IUploadForm {
@@ -52,7 +69,10 @@ export default function UploadForm({
   setOpenErrorSnackbar,
   setErrorSnackbarMessage,
 }: IUploadForm) {
+  // States
   const [formErrorMessage, setFormErrorMessage] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res) => {
       console.log(res);
@@ -63,20 +83,25 @@ export default function UploadForm({
   });
   const { handleSubmit, reset, control, watch } = useForm<IFormInput>({
     defaultValues: defaultFormValues,
-    resolver: zodResolver(createContentValidator),
+    resolver: zodResolver(
+      createTextContentValidator
+        .or(createAudioContentValidator)
+        .or(createImageContentValidator)
+    ),
   });
-  const { mutate: createContent } = api.content.createContent.useMutation({
-    onError(error) {
-      setOpenErrorSnackbar(true);
-      setErrorSnackbarMessage(error.message);
-      setFormErrorMessage(error.message);
-    },
-    onSuccess() {
-      setOpenSuccessSnackbar(true);
-      setSuccessSnackbarMessage("Content successfully uploaded!");
-      handleReset();
-    },
-  });
+  const { mutate: createContent, isLoading: uploadingContent } =
+    api.content.createContent.useMutation({
+      onError(error) {
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage(error.message);
+        setFormErrorMessage(error.message);
+      },
+      onSuccess() {
+        setOpenSuccessSnackbar(true);
+        setSuccessSnackbarMessage("Content successfully uploaded!");
+        handleReset();
+      },
+    });
   const { data: session } = useSession();
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
@@ -92,6 +117,7 @@ export default function UploadForm({
     }
 
     let imgURL = "";
+    setUploadingImage(true);
     if (typeof data.imgURL !== "string") {
       const uploadedFile = await startUpload([data.imgURL]);
       if (!uploadedFile?.[0]) {
@@ -104,6 +130,7 @@ export default function UploadForm({
     } else {
       imgURL = data.imgURL;
     }
+    setUploadingImage(false);
 
     const contentToSave = {
       authorId: session.user.id,
@@ -111,7 +138,7 @@ export default function UploadForm({
       type: data.type,
       caption: data.caption,
       imgURL: imgURL,
-      textContent: editorRef.current!.getContent() ?? "",
+      textContent: editorRef.current?.getContent() ?? "",
     };
 
     createContent(contentToSave);
@@ -124,6 +151,7 @@ export default function UploadForm({
 
   return (
     <>
+      {(uploadingContent || uploadingImage) && <CircularSpinner />}
       {formErrorMessage && (
         <FormErrorMessage errorMessage={`Error: ${formErrorMessage}`} />
       )}
@@ -145,27 +173,26 @@ export default function UploadForm({
           control={control}
           label="Content Type"
         />
-        {isAudioContent ? (
+        <Controller
+          control={control}
+          name="imgURL"
+          rules={{ required: true }}
+          render={({ field: { value, onChange, ...props } }) => {
+            return (
+              <input
+                className="w-full"
+                {...props}
+                onChange={(e) => {
+                  onChange(e.target.files?.[0]);
+                }}
+                type="file"
+                accept=".png,.jpg,.jpeg,.heic,.webp"
+              />
+            );
+          }}
+        />
+        {isAudioContent && (
           <FormInputText name="content" control={control} label="Spotify URL" />
-        ) : (
-          <Controller
-            control={control}
-            name="content"
-            rules={{ required: true }}
-            render={({ field: { value, onChange, ...props } }) => {
-              return (
-                <input
-                  className="w-full"
-                  {...props}
-                  onChange={(e) => {
-                    onChange(e.target.files?.[0]);
-                  }}
-                  type="file"
-                  accept=".png,.jpg,.jpeg,.heic,.webp"
-                />
-              );
-            }}
-          ></Controller>
         )}
         {isTextContent && <TextEditor />}
       </Box>
