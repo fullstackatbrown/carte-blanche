@@ -60,14 +60,14 @@ enum ContentType {
 }
 
 model Content {
-    id          String      @id @default(auto()) @map("_id") @db.ObjectId
-    title       String
-    type        ContentType
-    caption     String
-    contentURL  String
-    textContent String?
-    authorId    String      @db.ObjectId
-    author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    id       String      @id @default(auto()) @map("_id") @db.ObjectId
+    title    String
+    type     ContentType
+    caption  String
+    imgURL   String
+    content  String?
+    authorId String      @db.ObjectId
+    author   User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

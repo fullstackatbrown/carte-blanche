@@ -14,8 +14,8 @@ export const contentRouter = createTRPCRouter({
         type: z.nativeEnum(ContentType),
         title: z.string(),
         caption: z.string(),
-        contentURL: z.string(),
-        textContent: z.optional(z.string()),
+        imgURL: z.string(),
+        content: z.optional(z.string()),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -24,8 +24,8 @@ export const contentRouter = createTRPCRouter({
           title: input.title,
           type: input.type,
           caption: input.caption,
-          contentURL: input.contentURL,
-          textContent: input.textContent,
+          imgURL: input.imgURL,
+          content: input.content,
           authorId: input.authorId,
         },
       });
@@ -71,8 +71,8 @@ export const contentRouter = createTRPCRouter({
         id: z.string(),
         title: z.string(),
         caption: z.string(),
-        contentUrl: z.string(),
-        textContent: z.optional(z.string()),
+        imgURL: z.string(),
+        content: z.optional(z.string()),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -83,8 +83,8 @@ export const contentRouter = createTRPCRouter({
         data: {
           title: input.title,
           caption: input.caption,
-          contentURL: input.contentUrl,
-          textContent: input.textContent,
+          imgURL: input.imgURL,
+          content: input.content,
         },
       });
     }),

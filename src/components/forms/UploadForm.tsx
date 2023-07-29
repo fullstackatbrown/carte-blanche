@@ -13,13 +13,14 @@ import { Box, Button, DialogActions } from "@mui/material";
 import { ContentType } from "@prisma/client";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { FormErrorMessage } from "./FormErrorMessage";
+import TextEditor from "./TextEditor";
 
 // Interface for the form input
 interface IFormInput {
   title: string;
   type: ContentType;
   caption: string;
-  contentURL: File | string;
+  imgURL: File | string;
 }
 
 // Form validation schema using Zod
@@ -27,7 +28,7 @@ const createContentValidator = z.object({
   title: z.string().min(1, "Title is required"),
   type: z.nativeEnum(ContentType),
   caption: z.string().min(1, "Caption is required"),
-  contentURL: z.custom<File>().or(z.string().url("Not a valid URL")),
+  imgUrl: z.custom<File>().or(z.string().url("Not a valid URL")),
 });
 
 /**
@@ -91,18 +92,18 @@ export default function UploadForm({
       return;
     }
 
-    let contentURL = "";
-    if (typeof data.contentURL !== "string") {
-      const uploadedFile = await startUpload([data.contentURL]);
+    let imgURL = "";
+    if (typeof data.imgURL !== "string") {
+      const uploadedFile = await startUpload([data.imgURL]);
       if (!uploadedFile?.[0]) {
         setOpenErrorSnackbar(true);
         setErrorSnackbarMessage("Error uploading content!");
         setFormErrorMessage("No image selected!");
         return;
       }
-      contentURL = uploadedFile[0].fileUrl;
+      imgURL = uploadedFile[0].fileUrl;
     } else {
-      contentURL = data.contentURL;
+      imgURL = data.imgURL;
     }
 
     const contentToSave = {
@@ -110,7 +111,7 @@ export default function UploadForm({
       title: data.title,
       type: data.type,
       caption: data.caption,
-      contentURL: contentURL,
+      imgURL: imgURL,
       textContent: editorRef.current!.getContent() ?? "",
     };
 
@@ -146,19 +147,16 @@ export default function UploadForm({
           label="Content Type"
         />
         {isAudioContent ? (
-          <FormInputText
-            name="contentURL"
-            control={control}
-            label="Spotify URL"
-          />
+          <FormInputText name="content" control={control} label="Spotify URL" />
         ) : (
           <Controller
             control={control}
-            name="contentURL"
+            name="content"
             rules={{ required: true }}
             render={({ field: { value, onChange, ...props } }) => {
               return (
                 <input
+                  className="w-full"
                   {...props}
                   onChange={(e) => {
                     onChange(e.target.files?.[0]);
@@ -170,7 +168,7 @@ export default function UploadForm({
             }}
           ></Controller>
         )}
-        {isTextContent && <RichTextEditor editorRef={editorRef} />}
+        {isTextContent && <TextEditor />}
       </Box>
       <DialogActions
         sx={{
