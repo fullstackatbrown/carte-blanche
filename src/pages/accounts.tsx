@@ -1,11 +1,11 @@
+import ManageAccountsForm from "@CarteBlanche/components/forms/ManageAccountsForm";
 import TopNav from "@components/TopNav";
-import UploadForm from "@components/forms/UploadForm";
 import { ErrorSnackbar } from "@components/forms/snackbars/ErrorSnackbar";
 import { SuccessSnackbar } from "@components/forms/snackbars/SuccessSnackbar";
 import { NextPage } from "next";
 import { useState } from "react";
 
-const Upload: NextPage = () => {
+const Accounts: NextPage = () => {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
   const [successSnackbarMessage, setSuccessSnackbarMessage] = useState("");
   const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
@@ -25,9 +25,9 @@ const Upload: NextPage = () => {
         message={errorSnackbarMessage}
       />
       <div className="m-10">
-        <h1>Upload Content</h1>
-        <p>Please fill out the following information to upload content.</p>
-        <UploadForm
+        <h1>Manage Accounts</h1>
+        <p>Use this page to manage the settings of other accounts.</p>
+        <ManageAccountsForm
           setOpenSuccessSnackbar={setOpenSuccessSnackbar}
           setSuccessSnackbarMessage={setSuccessSnackbarMessage}
           setOpenErrorSnackbar={setOpenErrorSnackbar}
@@ -38,4 +38,4 @@ const Upload: NextPage = () => {
   );
 };
 
-export default Upload;
+export default Accounts;

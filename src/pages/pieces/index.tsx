@@ -9,6 +9,7 @@ import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import TopNav from "@CarteBlanche/components/TopNav";
 import CreateIcon from "@mui/icons-material/Create";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
@@ -61,6 +62,14 @@ const Pieces: NextPage = () => {
         void router.push("/upload");
       },
       roles: ["ADMIN", "WRITER"],
+    },
+    {
+      icon: <ManageAccountsIcon />,
+      name: "Manage Accounts",
+      onClick: () => {
+        void router.push("/accounts");
+      },
+      roles: ["ADMIN"],
     },
     {
       icon: <DashboardCustomizeIcon />,
