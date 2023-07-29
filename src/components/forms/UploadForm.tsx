@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import RichTextEditor from "@CarteBlanche/components/RichTextEditor";
 import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
 import { useUploadThing } from "@CarteBlanche/utils/uploadthing";
 import { FormInputText } from "@components/forms/input/FormInputText";

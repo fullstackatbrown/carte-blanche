@@ -4,6 +4,8 @@ import {
   FormatAlignLeft,
   FormatAlignRight,
   FormatBold,
+  FormatColorFill,
+  FormatColorText,
   FormatItalic,
   FormatListBulleted,
   FormatListNumbered,
@@ -20,8 +22,18 @@ import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import { type Level } from "@tiptap/extension-heading";
+import Color from "@tiptap/extension-color";
+import { useState } from "react";
+import { Menu, MenuItem } from "@mui/material";
+import Highlight from "@tiptap/extension-highlight";
+import ColorSwatches from "../ColorSwatches";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
+  const [textColorEl, setTextColorEl] = useState<HTMLElement | null>(null);
+  const [textFillEl, setTextFillEl] = useState<HTMLElement | null>(null);
+  const textColorOpen = Boolean(textColorEl);
+  const textFillOpen = Boolean(textFillEl);
+
   if (!editor) return null;
 
   return (
@@ -136,6 +148,48 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
         />
       </button>
+      <button onClick={(e) => setTextColorEl(e.currentTarget)}>
+        <FormatColorText />
+      </button>
+      <Menu
+        anchorEl={textColorEl}
+        open={textColorOpen}
+        onClose={() => setTextColorEl(null)}
+      >
+        <MenuItem
+          sx={{
+            display: "grid",
+            gap: 0.5,
+            gridTemplateColumns: "repeat(10, 1fr)",
+          }}
+        >
+          <ColorSwatches
+            onClick={(color: string) => editor.chain().setColor(color).run()}
+          />
+        </MenuItem>
+      </Menu>
+      <button onClick={(e) => setTextFillEl(e.currentTarget)}>
+        <FormatColorFill />
+      </button>
+      <Menu
+        anchorEl={textFillEl}
+        open={textFillOpen}
+        onClose={() => setTextFillEl(null)}
+      >
+        <MenuItem
+          sx={{
+            display: "grid",
+            gap: 0.5,
+            gridTemplateColumns: "repeat(10, 1fr)",
+          }}
+        >
+          <ColorSwatches
+            onClick={(color: string) =>
+              editor.chain().setHighlight({ color }).run()
+            }
+          />
+        </MenuItem>
+      </Menu>
     </div>
   );
 };
@@ -148,6 +202,8 @@ export default function TextEditor() {
       FontSize,
       TextStyle,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Color,
+      Highlight.configure({ multicolor: true }),
     ],
     editorProps: {
       attributes: {
