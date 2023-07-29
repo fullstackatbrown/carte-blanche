@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-import { Logout } from "@mui/icons-material";
+import { Create, Logout, ManageAccounts } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Avatar,
@@ -19,6 +19,7 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
+import { Role } from "@prisma/client";
 
 const navLinks = [
   <Link
@@ -47,6 +48,8 @@ export default function TopNav() {
     { refetchOnWindowFocus: false }
   );
 
+  const canAccessAdmin = user?.role === Role.ADMIN;
+  const canAccessWriter = canAccessAdmin || user?.role === Role.WRITER;
   return (
     <div className="sticky left-0 top-0 z-50 flex h-20 items-center justify-center bg-black px-8 text-lg text-white">
       <Link href="/" className="lowercase">
@@ -104,6 +107,27 @@ export default function TopNav() {
               open={Boolean(menuAnchor)}
               onClick={() => setMenuAnchor(null)}
             >
+              {canAccessWriter && (
+                <Link href="/upload">
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Create />
+                    </ListItemIcon>
+                    Create Content
+                  </MenuItem>
+                </Link>
+              )}
+              {canAccessAdmin && (
+                <Link href="/accounts">
+                  <MenuItem>
+                    <ListItemIcon>
+                      <ManageAccounts />
+                    </ListItemIcon>
+                    Manage Accounts
+                  </MenuItem>
+                </Link>
+              )}
+              {canAccessWriter && <Divider />}
               <MenuItem
                 onClick={() => {
                   setMenuAnchor(null);
