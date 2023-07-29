@@ -113,7 +113,17 @@ const Pieces: NextPage = () => {
             >
               <SpeedDial
                 ariaLabel="SpeedDial basic example"
-                sx={{ position: "absolute", bottom: 16, right: 16 }}
+                sx={{
+                  position: "absolute",
+                  bottom: 16,
+                  right: 16,
+                  "& .MuiFab-root": {
+                    backgroundColor: "#3576cb",
+                  },
+                  "& .MuiSpeedDialAction-fab": {
+                    backgroundColor: "#fff",
+                  },
+                }}
                 icon={<SpeedDialIcon />}
               >
                 {actions.map(
