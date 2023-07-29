@@ -1,4 +1,8 @@
 import {
+  FormatAlignCenter,
+  FormatAlignJustify,
+  FormatAlignLeft,
+  FormatAlignRight,
   FormatBold,
   FormatItalic,
   FormatListBulleted,
@@ -14,6 +18,7 @@ import FontSize from "tiptap-extension-font-size";
 import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import TextAlign from "@tiptap/extension-text-align";
 import { type Level } from "@tiptap/extension-heading";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
@@ -113,17 +118,41 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       >
         <FormatQuote />
       </button>
+      <button onClick={() => editor.chain().focus().setTextAlign("left").run()}>
+        <FormatAlignLeft />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+      >
+        <FormatAlignCenter />
+      </button>
+      <button>
+        <FormatAlignRight
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+        />
+      </button>
+      <button>
+        <FormatAlignJustify
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+        />
+      </button>
     </div>
   );
 };
 
 export default function TextEditor() {
   const editor = useEditor({
-    extensions: [Underline, StarterKit, FontSize, TextStyle],
+    extensions: [
+      Underline,
+      StarterKit,
+      FontSize,
+      TextStyle,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ],
     editorProps: {
       attributes: {
         class:
-          "border-4 p-12 prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black",
+          "border-4 p-12 prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
       },
     },
     content: ``,
@@ -132,7 +161,10 @@ export default function TextEditor() {
   return (
     <div className="flex w-full flex-col items-center">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent
+        editor={editor}
+        className="flex w-full items-center justify-center"
+      />
     </div>
   );
 }

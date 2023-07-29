@@ -22,6 +22,7 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "@tiptap/extension-color": "^2.0.4",
     "@tiptap/extension-highlight": "^2.0.4",
+    "@tiptap/extension-text-align": "^2.0.4",
     "@tiptap/extension-underline": "^2.0.4",
     "@tiptap/pm": "^2.0.4",
     "@tiptap/react": "^2.0.4",
