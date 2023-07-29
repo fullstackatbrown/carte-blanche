@@ -48,7 +48,7 @@ export default function TopNav() {
   );
 
   return (
-    <div className="sticky left-0 top-0 flex h-20 items-center justify-center bg-black px-8 text-lg text-white">
+    <div className="sticky left-0 top-0 z-50 flex h-20 items-center justify-center bg-black px-8 text-lg text-white">
       <Link href="/" className="lowercase">
         C | B
       </Link>
