@@ -11,6 +11,7 @@ import {
   FormatListNumbered,
   FormatQuote,
   FormatUnderlined,
+  InsertLink,
   Redo,
   StrikethroughS,
   Undo,
@@ -23,16 +24,19 @@ import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import { type Level } from "@tiptap/extension-heading";
 import Color from "@tiptap/extension-color";
-import { useState } from "react";
-import { Menu, MenuItem } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { Box, Button, Menu, MenuItem, Modal, TextField } from "@mui/material";
 import Highlight from "@tiptap/extension-highlight";
 import ColorSwatches from "../ColorSwatches";
+import Link from "@tiptap/extension-link";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [textColorEl, setTextColorEl] = useState<HTMLElement | null>(null);
   const [textFillEl, setTextFillEl] = useState<HTMLElement | null>(null);
   const textColorOpen = Boolean(textColorEl);
   const textFillOpen = Boolean(textFillEl);
+  const [linkModalOpen, setLinkModalOpen] = useState(false);
+  const hrefTextField = useRef<HTMLInputElement>(null);
 
   if (!editor) return null;
 
@@ -160,7 +164,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           sx={{
             display: "grid",
             gap: 0.5,
-            gridTemplateColumns: "repeat(10, 1fr)",
+            gridTemplateColumns: 10,
           }}
         >
           <ColorSwatches
@@ -190,6 +194,77 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           />
         </MenuItem>
       </Menu>
+      <button
+        onClick={() => {
+          setLinkModalOpen(true);
+          console.log(
+            editor.state.doc.textBetween(
+              editor.state.selection.to,
+              editor.state.selection.from
+            )
+          );
+        }}
+      >
+        <InsertLink />
+      </button>
+      <Modal open={linkModalOpen} onClose={() => setLinkModalOpen(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            outline: "none",
+          }}
+        >
+          <div className="flex w-full flex-col gap-4">
+            <TextField
+              InputProps={{ readOnly: true }}
+              label="Text"
+              defaultValue={editor.state.doc.textBetween(
+                editor.state.selection.from,
+                editor.state.selection.to
+              )}
+            />
+            <form
+              className="flex flex-col justify-center gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log(e);
+
+                const href = hrefTextField.current?.value ?? "";
+
+                if (!href) {
+                  editor.chain().focus().unsetLink().run();
+                } else {
+                  editor
+                    .chain()
+                    .focus()
+                    .toggleLink({ href: hrefTextField.current?.value ?? "" })
+                    .run();
+                }
+
+                setLinkModalOpen(false);
+              }}
+            >
+              <TextField
+                inputRef={hrefTextField}
+                label="Link"
+                variant="outlined"
+                defaultValue={
+                  (editor.getAttributes("link") as { href: string }).href
+                }
+              />
+
+              <Button type="submit">Submit</Button>
+            </form>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };
@@ -201,8 +276,11 @@ export default function TextEditor() {
       StarterKit,
       FontSize,
       TextStyle,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
       Color,
+      Link.configure({
+        HTMLAttributes: { class: "text-blue-500" },
+      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight.configure({ multicolor: true }),
     ],
     editorProps: {
