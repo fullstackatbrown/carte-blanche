@@ -15,6 +15,7 @@ import {
   Redo,
   StrikethroughS,
   Undo,
+  Image as ImageIcon,
 } from "@mui/icons-material";
 import Underline from "@tiptap/extension-underline";
 import FontSize from "tiptap-extension-font-size";
@@ -29,6 +30,7 @@ import { Box, Button, Menu, MenuItem, Modal, TextField } from "@mui/material";
 import Highlight from "@tiptap/extension-highlight";
 import ColorSwatches from "../ColorSwatches";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [textColorEl, setTextColorEl] = useState<HTMLElement | null>(null);
@@ -37,6 +39,8 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const textFillOpen = Boolean(textFillEl);
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const hrefTextField = useRef<HTMLInputElement>(null);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const imgSrcTextField = useRef<HTMLInputElement>(null);
 
   if (!editor) return null;
 
@@ -234,10 +238,8 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
               className="flex flex-col justify-center gap-2"
               onSubmit={(e) => {
                 e.preventDefault();
-                console.log(e);
 
                 const href = hrefTextField.current?.value ?? "";
-
                 if (!href) {
                   editor.chain().focus().unsetLink().run();
                 } else {
@@ -265,6 +267,45 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           </div>
         </Box>
       </Modal>
+      <button onClick={() => setImageModalOpen(true)}>
+        <ImageIcon />
+      </button>
+      <Modal open={imageModalOpen} onClose={() => setImageModalOpen(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            outline: "none",
+          }}
+        >
+          <form
+            className="flex  justify-center gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+
+              const href = imgSrcTextField.current?.value ?? "";
+              if (!href) return;
+
+              editor.chain().focus().setImage({ src: href }).run();
+
+              setImageModalOpen(false);
+            }}
+          >
+            <TextField
+              inputRef={imgSrcTextField}
+              label="Link to Image"
+              variant="outlined"
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Box>
+      </Modal>
     </div>
   );
 };
@@ -277,6 +318,7 @@ export default function TextEditor() {
       FontSize,
       TextStyle,
       Color,
+      Image,
       Link.configure({
         HTMLAttributes: { class: "text-blue-500" },
       }),
