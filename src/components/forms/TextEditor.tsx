@@ -11,26 +11,17 @@ import {
   FormatListNumbered,
   FormatQuote,
   FormatUnderlined,
+  Image as ImageIcon,
   InsertLink,
   Redo,
   StrikethroughS,
   Undo,
-  Image as ImageIcon,
 } from "@mui/icons-material";
-import Underline from "@tiptap/extension-underline";
-import FontSize from "tiptap-extension-font-size";
-import TextStyle from "@tiptap/extension-text-style";
-import { EditorContent, useEditor, type Editor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import TextAlign from "@tiptap/extension-text-align";
-import { type Level } from "@tiptap/extension-heading";
-import Color from "@tiptap/extension-color";
-import React, { useRef, useState } from "react";
 import { Box, Button, Menu, MenuItem, Modal, TextField } from "@mui/material";
-import Highlight from "@tiptap/extension-highlight";
+import { type Level } from "@tiptap/extension-heading";
+import { EditorContent, type Editor } from "@tiptap/react";
+import { useRef, useState } from "react";
 import ColorSwatches from "../ColorSwatches";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [textColorEl, setTextColorEl] = useState<HTMLElement | null>(null);
@@ -310,30 +301,14 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   );
 };
 
-export default function TextEditor() {
-  const editor = useEditor({
-    extensions: [
-      Underline,
-      StarterKit,
-      FontSize,
-      TextStyle,
-      Color,
-      Image,
-      Link.configure({
-        HTMLAttributes: { class: "text-blue-500" },
-      }),
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Highlight.configure({ multicolor: true }),
-    ],
-    editorProps: {
-      attributes: {
-        class:
-          "border-4 p-12 prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
-      },
-    },
-    content: `Write your article here...`,
-  });
+interface ITextEditor {
+  editor: Editor | null;
+}
 
+export default function TextEditor({ editor }: ITextEditor) {
+  if (!editor) {
+    return <div>Loading editor...</div>;
+  }
   return (
     <div className="flex w-full flex-col items-center">
       <MenuBar editor={editor} />

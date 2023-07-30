@@ -1,7 +1,7 @@
 import { api } from "@CarteBlanche/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -10,10 +10,20 @@ import { useUploadThing } from "@CarteBlanche/utils/uploadthing";
 import { FormInputText } from "@components/forms/input/FormInputText";
 import { Box, Button, DialogActions } from "@mui/material";
 import { ContentType } from "@prisma/client";
-import type { Editor as TinyMCEEditor } from "tinymce";
+import CircularSpinner from "../CircularSpinner";
 import { FormErrorMessage } from "./FormErrorMessage";
 import TextEditor from "./TextEditor";
-import CircularSpinner from "../CircularSpinner";
+
+import Color from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import Underline from "@tiptap/extension-underline";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import FontSize from "tiptap-extension-font-size";
 
 // Interface for the form input
 interface IFormInput {
@@ -37,7 +47,6 @@ const createImageContentValidator = createContentValidator.extend({
 
 const createTextContentValidator = createContentValidator.extend({
   type: z.literal(ContentType.TEXT),
-  content: z.string().min(1, "Content is required"),
 });
 
 const createAudioContentValidator = createContentValidator.extend({
@@ -73,6 +82,30 @@ export default function UploadForm({
   const [formErrorMessage, setFormErrorMessage] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
 
+  // Rich text editor
+  const editor = useEditor({
+    extensions: [
+      Underline,
+      StarterKit,
+      FontSize,
+      TextStyle,
+      Color,
+      Image,
+      Link.configure({
+        HTMLAttributes: { class: "text-blue-500" },
+      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Highlight.configure({ multicolor: true }),
+    ],
+    editorProps: {
+      attributes: {
+        class:
+          "border-4 p-12 prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
+      },
+    },
+    content: `Write your article here...`,
+  });
+
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res) => {
       console.log(res);
@@ -103,7 +136,6 @@ export default function UploadForm({
       },
     });
   const { data: session } = useSession();
-  const editorRef = useRef<TinyMCEEditor | null>(null);
 
   const isTextContent = watch("type") === ContentType.TEXT;
   const isAudioContent = watch("type") === ContentType.AUDIO;
@@ -116,6 +148,26 @@ export default function UploadForm({
       return;
     }
 
+    // Validate text content
+    if (isTextContent) {
+      if (!editor) {
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage("Error uploading content!");
+        setFormErrorMessage("No text content entered!");
+        return;
+      }
+      if (
+        editor.getHTML() === "<p></p>" ||
+        editor.getHTML() === "<p>Write your article here...</p>"
+      ) {
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage("Error uploading content!");
+        setFormErrorMessage("No text content entered!");
+        return;
+      }
+    }
+
+    // Validate image content
     // Enforce that the user has selected an image
     if (data.imgURL === "") {
       setOpenErrorSnackbar(true);
@@ -147,7 +199,7 @@ export default function UploadForm({
       type: data.type,
       caption: data.caption,
       imgURL: imgURL,
-      content: isTextContent ? editorRef.current?.getContent() : data.content,
+      content: isTextContent ? editor?.getHTML() : data.content,
     };
 
     createContent(contentToSave);
@@ -203,7 +255,7 @@ export default function UploadForm({
         {isAudioContent && (
           <FormInputText name="content" control={control} label="Spotify URL" />
         )}
-        {isTextContent && <TextEditor />}
+        {isTextContent && <TextEditor editor={editor} />}
       </Box>
       <DialogActions
         sx={{

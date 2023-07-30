@@ -3,19 +3,10 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
+import TextEditorView from "@CarteBlanche/components/TextEditorView";
 import TopNav from "@CarteBlanche/components/TopNav";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { ContentType } from "@prisma/client";
-import Color from "@tiptap/extension-color";
-import Highlight from "@tiptap/extension-highlight";
-import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import TextAlign from "@tiptap/extension-text-align";
-import TextStyle from "@tiptap/extension-text-style";
-import Underline from "@tiptap/extension-underline";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import FontSize from "tiptap-extension-font-size";
 
 /**
  * Handles formatting the date and time from a Date object
@@ -42,6 +33,8 @@ const Piece: NextPage = () => {
   const router = useRouter();
   const pieceId = router.query.id;
 
+  // TODO: A bug here where pieceId can be undefined for a split second before it gets the id from the router
+  // This is not breaking anything, but it causes an error in the console
   const { data, isLoading, error } = api.content.getContentById.useQuery(
     { id: pieceId as string },
     { refetchOnWindowFocus: false }
@@ -55,30 +48,6 @@ const Piece: NextPage = () => {
     { id: data?.authorId },
     { refetchOnWindowFocus: false }
   );
-
-  const editor = useEditor({
-    editable: false,
-    extensions: [
-      Underline,
-      StarterKit,
-      FontSize,
-      TextStyle,
-      Color,
-      Image,
-      Link.configure({
-        HTMLAttributes: { class: "text-blue-500" },
-      }),
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Highlight.configure({ multicolor: true }),
-    ],
-    editorProps: {
-      attributes: {
-        class:
-          "border-4 p-12 prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
-      },
-    },
-    content: data?.content,
-  });
 
   if (isLoading || isLoadingAuthor || !data || !author) {
     return <CircularSpinner />;
@@ -111,10 +80,7 @@ const Piece: NextPage = () => {
       <img src={data.imgURL} />
       <p>Caption: {data.caption}</p>
       {data.type === ContentType.TEXT && (
-        <EditorContent
-          editor={editor}
-          className="flex w-full items-center justify-center"
-        />
+        <TextEditorView content={data.content ?? ""} />
       )}
     </>
   );
