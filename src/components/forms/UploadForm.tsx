@@ -116,6 +116,14 @@ export default function UploadForm({
       return;
     }
 
+    // Enforce that the user has selected an image
+    if (data.imgURL === "") {
+      setOpenErrorSnackbar(true);
+      setErrorSnackbarMessage("Error uploading content!");
+      setFormErrorMessage("No image selected!");
+      return;
+    }
+
     let imgURL = "";
     setUploadingImage(true);
     if (typeof data.imgURL !== "string") {
@@ -124,6 +132,7 @@ export default function UploadForm({
         setOpenErrorSnackbar(true);
         setErrorSnackbarMessage("Error uploading content!");
         setFormErrorMessage("No image selected!");
+        setUploadingImage(false);
         return;
       }
       imgURL = uploadedFile[0].fileUrl;
@@ -138,7 +147,7 @@ export default function UploadForm({
       type: data.type,
       caption: data.caption,
       imgURL: imgURL,
-      textContent: editorRef.current?.getContent() ?? "",
+      content: isTextContent ? editorRef.current?.getContent() : data.content,
     };
 
     createContent(contentToSave);
