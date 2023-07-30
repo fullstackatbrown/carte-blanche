@@ -235,7 +235,7 @@ export default function UploadForm({
         <Button
           onClick={() => void handleSubmit(onSubmit)()}
           variant="contained"
-          style={{ backgroundColor: "#2196f3", color: "white" }}
+          style={{ backgroundColor: "#3576cb", color: "white" }}
         >
           Submit
         </Button>

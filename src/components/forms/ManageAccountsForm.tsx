@@ -200,7 +200,7 @@ export default function ManageAccountsForm({
         <Button
           onClick={() => void handleSubmit(onSubmit, (e) => console.log(e))()}
           variant="contained"
-          style={{ backgroundColor: "#2196f3", color: "white" }}
+          style={{ backgroundColor: "#3576cb", color: "white" }}
         >
           Submit
         </Button>
