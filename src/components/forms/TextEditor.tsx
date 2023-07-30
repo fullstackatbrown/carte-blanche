@@ -328,10 +328,10 @@ export default function TextEditor() {
     editorProps: {
       attributes: {
         class:
-          "border-4 p-12 prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
+          "border-4 p-12 prose-sm sm:prose-base lg:prose-lg xl:prose-2xl focus:outline-none marker:text-black w-full",
       },
     },
-    content: ``,
+    content: `Write your article here...`,
   });
 
   return (
