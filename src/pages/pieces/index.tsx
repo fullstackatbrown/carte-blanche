@@ -175,8 +175,8 @@ const Pieces: NextPage = () => {
               >
                 <Link href={`/pieces/${piece.id}`} key={piece.id}>
                   <img
-                    src={piece.contentURL}
-                    className="h-full w-full bg-gray-50 object-contain "
+                    src={piece.imgURL}
+                    className="h-full w-full bg-gray-50 object-cover "
                   />
                   {piece.type === "TEXT" && (
                     <p className="absolute bottom-0 right-0">Article</p>

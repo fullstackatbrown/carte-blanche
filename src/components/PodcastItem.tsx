@@ -12,7 +12,7 @@ export default function PodcastItem({ podcast }: IPodcastItemProps) {
   return (
     <>
       <div
-        onClick={() => void router.push(podcast.contentURL)}
+        onClick={() => void router.push(podcast.content ?? "/")}
         className="relative m-auto h-60 w-4/5 cursor-pointer lg:w-1/4"
       >
         <span className="absolute bottom-0 left-0 m-4 text-lg text-white">
@@ -28,7 +28,7 @@ export default function PodcastItem({ podcast }: IPodcastItemProps) {
           />
         </span>
         <img
-          src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+          src={podcast.imgURL}
           className="h-full w-full rounded-lg object-cover"
         />
       </div>
