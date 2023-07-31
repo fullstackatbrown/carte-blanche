@@ -1,8 +1,12 @@
+import type { NextPage } from "next";
 import Head from "next/head";
+
+import Footer from "@CarteBlanche/components/Footer";
 import TopNav from "@CarteBlanche/components/TopNav";
 import About from "@CarteBlanche/components/sections/About";
+import FeaturedContent from "@CarteBlanche/components/sections/FeaturedContent";
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
     <>
       <Head>
@@ -31,10 +35,20 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="featured-content">
+          <FeaturedContent />
+        </section>
+
         <section id="about">
           <About />
+        </section>
+
+        <section id="footer">
+          <Footer />
         </section>
       </main>
     </>
   );
-}
+};
+
+export default Home;
