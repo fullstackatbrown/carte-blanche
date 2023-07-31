@@ -26,7 +26,8 @@ const Upload: NextPage = () => {
       />
       <div className="m-10">
         <h1>Upload Content</h1>
-        <p>Please fill out the following information to upload content.</p>
+        <p>We are glad that you want to upload content to our platform.</p>
+        <p>Please fill out the form below to get started.</p>
         <UploadForm
           setOpenSuccessSnackbar={setOpenSuccessSnackbar}
           setSuccessSnackbarMessage={setSuccessSnackbarMessage}

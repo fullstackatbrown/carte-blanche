@@ -8,7 +8,7 @@ import { z } from "zod";
 import { UploadFormInputDropdown } from "@CarteBlanche/components/forms/input/uploadForm/UploadFormInputDropdown";
 import { useUploadThing } from "@CarteBlanche/utils/uploadthing";
 import { FormInputText } from "@components/forms/input/FormInputText";
-import { Box, Button, DialogActions } from "@mui/material";
+import { Box, Button, DialogActions, Modal } from "@mui/material";
 import { ContentType } from "@prisma/client";
 import CircularSpinner from "../CircularSpinner";
 import { FormErrorMessage } from "./FormErrorMessage";
@@ -212,7 +212,11 @@ export default function UploadForm({
 
   return (
     <>
-      {(uploadingContent || uploadingImage) && <CircularSpinner />}
+      {(uploadingContent || uploadingImage) && (
+        <Modal open={true}>
+          <CircularSpinner />
+        </Modal>
+      )}
       {formErrorMessage && (
         <FormErrorMessage errorMessage={`Error: ${formErrorMessage}`} />
       )}

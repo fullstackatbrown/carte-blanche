@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   DialogActions,
+  Modal,
   TextField,
 } from "@mui/material";
 import { Role } from "@prisma/client";
@@ -124,7 +125,11 @@ export default function ManageAccountsForm({
   const listOfUsers = users.map((user) => user.email);
   return (
     <>
-      {updatingUser && <CircularSpinner />}
+      {updatingUser && (
+        <Modal open={true}>
+          <CircularSpinner />
+        </Modal>
+      )}
       {formErrorMessage && (
         <FormErrorMessage errorMessage={`Error: ${formErrorMessage}`} />
       )}
