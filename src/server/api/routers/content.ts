@@ -7,6 +7,7 @@ import {
 import { ContentType } from "@prisma/client";
 
 export const contentRouter = createTRPCRouter({
+  /** CREATE ROUTES */
   createContent: publicProcedure
     .input(
       z.object({
@@ -31,14 +32,20 @@ export const contentRouter = createTRPCRouter({
       });
     }),
 
+  /** GET ROUTES */
   getAllContent: publicProcedure.input(z.object({})).query(({ ctx }) => {
-    return ctx.prisma.content.findMany();
+    return ctx.prisma.content.findMany({
+      where: {
+        isDeleted: false,
+      },
+    });
   }),
 
   getAllAudioContent: publicProcedure.input(z.object({})).query(({ ctx }) => {
     return ctx.prisma.content.findMany({
       where: {
         type: ContentType.AUDIO,
+        isDeleted: false,
       },
     });
   }),
@@ -51,20 +58,39 @@ export const contentRouter = createTRPCRouter({
           type: {
             in: [ContentType.IMAGE, ContentType.TEXT],
           },
+          isDeleted: false,
         },
       });
     }),
 
   getContentById: publicProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ input, ctx }) => {
-      return ctx.prisma.content.findUnique({
+    .query(async ({ input, ctx }) => {
+      const content = await ctx.prisma.content.findUnique({
         where: {
           id: input.id,
         },
       });
+      if (content) {
+        if (content.isDeleted) {
+          throw new Error("Content is deleted");
+        }
+      }
+      return content;
     }),
 
+  getAllFeaturedContent: publicProcedure
+    .input(z.object({}))
+    .query(({ ctx }) => {
+      return ctx.prisma.content.findMany({
+        where: {
+          isFeatured: true,
+          isDeleted: false,
+        },
+      });
+    }),
+
+  /** PUT ROUTES */
   editContent: protectedProcedure
     .input(
       z.object({
@@ -85,6 +111,23 @@ export const contentRouter = createTRPCRouter({
           caption: input.caption,
           imgURL: input.imgURL,
           content: input.content,
+        },
+      });
+    }),
+
+  deleteContent: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.content.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isDeleted: true,
         },
       });
     }),

@@ -68,6 +68,10 @@ model Content {
     content  String?
     authorId String      @db.ObjectId
     author   User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    
+    isFeatured Boolean   @default(false)
+    // Soft delete
+    isDeleted Boolean    @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
