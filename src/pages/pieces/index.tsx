@@ -77,8 +77,8 @@ const Pieces: NextPage = () => {
           <Button onClick={saveGridLayout}>Save</Button>
         </div>
       )}
-      <div className="flex">
-        <PiecesSidebar user={user ?? undefined} />
+      <div className="flex min-h-screen">
+        <PiecesSidebar user={user ?? undefined} setIsEditing={setIsEditing} />
         <ResponsiveGridLayout
           key={isEditing.toString()}
           className="layout basis-3/4"
@@ -92,8 +92,8 @@ const Pieces: NextPage = () => {
               <div
                 key={piece.id}
                 data-grid={{
-                  x: 4 + colScale * (idx % colScale),
-                  y: colScale * (idx / colScale),
+                  x: 0,
+                  y: 0,
                   w: 3,
                   h: 8,
                   maxW: 3,
@@ -102,15 +102,19 @@ const Pieces: NextPage = () => {
                 }}
                 className="cursor-pointer transition duration-500 hover:scale-110"
               >
-                <Link href={`/pieces/${piece.id}`} key={piece.id}>
+                {isEditing ? (
                   <img
                     src={piece.imgURL}
-                    className="h-full w-full bg-gray-50 object-cover "
+                    className="h-full w-full bg-gray-50 object-cover"
                   />
-                  {piece.type === "TEXT" && (
-                    <p className="absolute bottom-0 right-0">Article</p>
-                  )}
-                </Link>
+                ) : (
+                  <Link href={`/pieces/${piece.id}`} key={piece.id}>
+                    <img
+                      src={piece.imgURL}
+                      className="h-full w-full bg-gray-50 object-cover"
+                    />
+                  </Link>
+                )}
               </div>
             );
           })}

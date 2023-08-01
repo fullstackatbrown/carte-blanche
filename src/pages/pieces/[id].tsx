@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import TextEditorView from "@CarteBlanche/components/TextEditorView";
 import TopNav from "@CarteBlanche/components/TopNav";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { ContentType } from "@prisma/client";
+import PiecesSidebar from "@CarteBlanche/components/PiecesSidebar";
 
 /**
  * Handles formatting the date and time from a Date object
@@ -61,27 +61,30 @@ const Piece: NextPage = () => {
   return (
     <>
       <TopNav />
-      <div>
-        <ArrowBackIcon
-          onClick={() => {
-            router.back();
-          }}
-          style={{
-            height: "50px",
-            width: "50px",
-            cursor: "pointer",
-          }}
-        />
-        <h1>
-          <strong>{data.title}</strong> | {author.name}
-        </h1>
+      <div className="flex min-h-screen">
+        <PiecesSidebar backArrow />
+        <div className="mx-auto max-w-5xl basis-3/4 p-10">
+          <div className="flex items-baseline justify-between">
+            <h1 className="lowercase">
+              <strong>{data.title}</strong> | {author.name}
+            </h1>
+            <p className="text-sm text-zinc-700">
+              {formatDateTime(data.createdAt)}
+            </p>
+          </div>
+          <div className="h-[50vh] w-full overflow-hidden">
+            <img
+              className="w-full"
+              src={data.imgURL}
+              alt={`Image content for ${data.title}`}
+            />
+            <p>Caption: {data.caption}</p>
+          </div>
+          {data.type === ContentType.TEXT && (
+            <TextEditorView content={data.content ?? ""} />
+          )}
+        </div>
       </div>
-      <p>{formatDateTime(data.createdAt)}</p>
-      <img src={data.imgURL} alt={`Image content for ${data.title}`} />
-      <p>Caption: {data.caption}</p>
-      {data.type === ContentType.TEXT && (
-        <TextEditorView content={data.content ?? ""} />
-      )}
     </>
   );
 };
