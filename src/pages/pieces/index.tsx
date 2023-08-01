@@ -1,20 +1,13 @@
 import { api } from "@CarteBlanche/utils/api";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
+import PiecesSidebar from "@CarteBlanche/components/PiecesSidebar";
 import TopNav from "@CarteBlanche/components/TopNav";
-import CreateIcon from "@mui/icons-material/Create";
-import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -29,7 +22,6 @@ const Pieces: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const isWriterOrAdmin = user?.role === "ADMIN" || user?.role === "WRITER";
   const [isEditing, setIsEditing] = useState(false);
 
   const [colScale, setColScale] = useState(12);
@@ -51,33 +43,6 @@ const Pieces: NextPage = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const router = useRouter();
-
-  const actions = [
-    {
-      icon: <CreateIcon />,
-      name: "Create Content",
-      onClick: () => {
-        void router.push("/upload");
-      },
-      roles: ["ADMIN", "WRITER"],
-    },
-    {
-      icon: <ManageAccountsIcon />,
-      name: "Manage Accounts",
-      onClick: () => {
-        void router.push("/accounts");
-      },
-      roles: ["ADMIN"],
-    },
-    {
-      icon: <DashboardCustomizeIcon />,
-      name: "Customize Dashboard",
-      onClick: () => setIsEditing(!isEditing),
-      roles: ["ADMIN"],
-    },
-  ];
 
   /**
    * Handles saving of the grid layout
@@ -112,47 +77,11 @@ const Pieces: NextPage = () => {
           <Button onClick={saveGridLayout}>Save</Button>
         </div>
       )}
-      <div className="m-4 flex">
-        <div className="absolute top-1/2">
-          <p className="text-transform: lowercase">Vous Avez</p>
-          <h1 className="text-transform: uppercase">Carte Blanche</h1>
-          {isWriterOrAdmin && (
-            <Box
-              sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}
-            >
-              <SpeedDial
-                ariaLabel="SpeedDial basic example"
-                sx={{
-                  position: "absolute",
-                  bottom: 16,
-                  right: 16,
-                  "& .MuiFab-root": {
-                    backgroundColor: "#3576cb",
-                  },
-                  "& .MuiSpeedDialAction-fab": {
-                    backgroundColor: "#fff",
-                  },
-                }}
-                icon={<SpeedDialIcon />}
-              >
-                {actions.map(
-                  (action) =>
-                    action.roles.includes(user.role) && (
-                      <SpeedDialAction
-                        key={action.name}
-                        icon={action.icon}
-                        tooltipTitle={action.name}
-                        onClick={action.onClick}
-                      />
-                    )
-                )}
-              </SpeedDial>
-            </Box>
-          )}
-        </div>
+      <div className="flex">
+        <PiecesSidebar user={user ?? undefined} />
         <ResponsiveGridLayout
           key={isEditing.toString()}
-          className="layout"
+          className="layout basis-3/4"
           rowHeight={30}
           width={1200}
           breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}

@@ -8,33 +8,19 @@ import { Box, Container, Divider, Grid } from "@mui/material";
 export default function Footer() {
   return (
     <>
-      <Divider
+      {/* <Divider
         sx={{ borderBottomWidth: 1, borderColor: "black", marginTop: "1rem" }}
-      />
+      /> */}
       <Box
         sx={{
           width: "100%",
           height: "auto",
           padding: "1rem 0",
+          backgroundColor: "black",
         }}
       >
         <Container maxWidth="lg">
-          <Grid container direction="column" alignItems="center">
-            <Grid
-              item
-              xs={12}
-              style={{
-                fontSize: "1.5rem",
-              }}
-            >
-              Carte Blanche
-            </Grid>
-            <Grid item xs={12}>
-              Open to submissions at:{" "}
-              <Link href="mailto:carte-blanche@brown.edu">
-                carte-blanche@brown.edu
-              </Link>
-            </Grid>
+          <Grid container direction="column" alignItems="center" gap="0.2rem">
             <Grid item xs={12}>
               <Box
                 sx={{
@@ -42,6 +28,7 @@ export default function Footer() {
                   flexWrap: "wrap",
                   alignItems: "center",
                   gap: "10px",
+                  color: "white",
                 }}
               >
                 <Link href="https://www.instagram.com/" target="_blank">
@@ -56,7 +43,17 @@ export default function Footer() {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              2023 | Partnership with Full Stack at Brown
+              <span className="text-xs text-white md:text-lg">
+                2023 | Partnership with Full Stack at Brown
+              </span>
+            </Grid>
+            <Grid item xs={12}>
+              <span className="text-xs text-white md:text-lg">
+                Open to submissions at:{" "}
+                <Link href="mailto:carte-blanche@brown.edu">
+                  carte-blanche@brown.edu
+                </Link>
+              </span>
             </Grid>
           </Grid>
         </Container>

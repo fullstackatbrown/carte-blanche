@@ -3,8 +3,9 @@ import type { Content } from "@prisma/client";
 import { useState } from "react";
 import { config } from "react-spring";
 import CarouselItem from "./CarouselItem";
+// eslint-disable-next-line
+// @ts-ignore
 const Carousel = loadable(() => import("react-spring-3d-carousel"));
-
 interface IFeaturedCarouselProps {
   data: Content[];
 }
