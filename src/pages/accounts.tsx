@@ -1,9 +1,10 @@
+import type { NextPage } from "next";
+import { useState } from "react";
+
 import ManageAccountsForm from "@CarteBlanche/components/forms/ManageAccountsForm";
 import TopNav from "@components/TopNav";
 import { ErrorSnackbar } from "@components/forms/snackbars/ErrorSnackbar";
 import { SuccessSnackbar } from "@components/forms/snackbars/SuccessSnackbar";
-import { NextPage } from "next";
-import { useState } from "react";
 
 const Accounts: NextPage = () => {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);

@@ -77,7 +77,7 @@ const Piece: NextPage = () => {
         </h1>
       </div>
       <p>{formatDateTime(data.createdAt)}</p>
-      <img src={data.imgURL} />
+      <img src={data.imgURL} alt={`Image content for ${data.title}`} />
       <p>Caption: {data.caption}</p>
       {data.type === ContentType.TEXT && (
         <TextEditorView content={data.content ?? ""} />

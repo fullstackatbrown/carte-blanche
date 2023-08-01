@@ -1,9 +1,10 @@
+import type { NextPage } from "next";
+import { useState } from "react";
+
 import TopNav from "@components/TopNav";
 import UploadForm from "@components/forms/UploadForm";
 import { ErrorSnackbar } from "@components/forms/snackbars/ErrorSnackbar";
 import { SuccessSnackbar } from "@components/forms/snackbars/SuccessSnackbar";
-import { NextPage } from "next";
-import { useState } from "react";
 
 const Upload: NextPage = () => {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);

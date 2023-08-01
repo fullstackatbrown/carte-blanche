@@ -1,3 +1,6 @@
+import type { Content } from "@prisma/client";
+import Link from "next/link";
+
 import {
   Button,
   Card,
@@ -6,8 +9,6 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { Content } from "@prisma/client";
-import Link from "next/link";
 
 interface ICarouselItemProps {
   content: Content;

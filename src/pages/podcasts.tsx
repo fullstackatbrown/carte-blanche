@@ -1,5 +1,5 @@
 import { api } from "@CarteBlanche/utils/api";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import PodcastItem from "@CarteBlanche/components/PodcastItem";

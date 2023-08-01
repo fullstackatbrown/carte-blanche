@@ -30,6 +30,7 @@ export default function PodcastItem({ podcast }: IPodcastItemProps) {
         <img
           src={podcast.imgURL}
           className="h-full w-full rounded-lg object-cover"
+          alt={podcast.title}
         />
       </div>
       {/* <div className="m-auto flex w-4/5">

@@ -1,5 +1,5 @@
 import loadable from "@loadable/component";
-import { Content } from "@prisma/client";
+import type { Content } from "@prisma/client";
 import { useState } from "react";
 import { config } from "react-spring";
 import CarouselItem from "./CarouselItem";
