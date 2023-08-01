@@ -35,7 +35,7 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section id="featured-content">
+        <section id="featured-content" className="mb-10">
           <FeaturedContent />
         </section>
 
