@@ -30,6 +30,8 @@ export default function FeaturedCarousel({ data }: IFeaturedCarouselProps) {
   return (
     <div className="m-auto h-96 w-5/6">
       <Carousel
+        // eslint-disable-next-line
+        // @ts-ignore
         slides={newSlides}
         showNavigation={showNavigation}
         goToSlide={goToSlide}
