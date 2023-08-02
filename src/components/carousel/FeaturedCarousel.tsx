@@ -28,7 +28,7 @@ export default function FeaturedCarousel({ data }: IFeaturedCarouselProps) {
     };
   });
   return (
-    <div className="m-auto h-96 w-5/6">
+    <div className="m-auto flex h-[85%] w-[90vw] items-center">
       <Carousel
         // eslint-disable-next-line
         // @ts-ignore

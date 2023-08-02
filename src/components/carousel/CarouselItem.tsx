@@ -1,15 +1,6 @@
 import type { Content } from "@prisma/client";
 import Link from "next/link";
 
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
-
 interface ICarouselItemProps {
   content: Content;
   onClick: () => void;
@@ -17,54 +8,27 @@ interface ICarouselItemProps {
 
 export default function CarouselItem({ content, onClick }: ICarouselItemProps) {
   return (
-    <Card
-      sx={{ width: 300, height: 400, marginTop: "3rem" }}
+    <div
       onClick={onClick}
-      style={{
-        cursor: "pointer",
-      }}
+      className="h-full w-[200px] cursor-pointer sm:w-[300px] md:w-[400px] lg:w-[500px]"
     >
-      <CardMedia
-        sx={{ height: 250 }}
-        image={content.imgURL}
-        title={content.title}
-      />
-      <CardContent>
-        <Typography
-          variant="h5"
-          component="div"
-          gutterBottom
-          className="-webkit-box overflow-hidden text-ellipsis"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {content.title}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          className="-webkit-box overflow-hidden text-ellipsis"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {content.caption}
-        </Typography>
-      </CardContent>
-      <CardActions
+      <img
+        src={content.imgURL}
+        alt={content.title}
+        onClick={onClick}
+        className="h-[85%] w-full"
         style={{
-          padding: "0 0 0.5rem",
+          objectFit: "cover",
         }}
-      >
-        <Link href={`/pieces/${content.id}`}>
-          <Button size="small">View</Button>
-        </Link>
-      </CardActions>
-    </Card>
+      />
+      <Link href={`/pieces/${content.id}`}>
+        <p className="-webkit-box line-clamp-1 overflow-hidden text-ellipsis text-[2.5rem] font-medium text-white">
+          {content.title}
+        </p>
+      </Link>
+      <p className="-webkit-box line-clamp-2 overflow-hidden text-ellipsis text-[1rem] font-normal text-white">
+        {content.caption}
+      </p>
+    </div>
   );
 }

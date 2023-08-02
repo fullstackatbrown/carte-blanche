@@ -35,11 +35,14 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section id="featured-content" className="mb-10">
+        <section
+          id="featured-content"
+          className="flex h-[80vh] items-center bg-zinc-800"
+        >
           <FeaturedContent />
         </section>
 
-        <section id="about">
+        <section id="about" className="mt-10">
           <About />
         </section>
 
