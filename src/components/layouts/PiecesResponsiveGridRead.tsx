@@ -12,17 +12,34 @@ interface PiecesResponsiveGridReadProps {
   layout: Layouts | null;
 }
 
+/**
+ * Toggle static property of all pieces in the layout
+ * @param layout layout saved in the database
+ * @returns the layout with all pieces set to static
+ */
+const toggleStatic = (layout: Layouts) => {
+  const newLayout: Layouts = {};
+  Object.keys(layout).forEach((key) => {
+    newLayout[key] = layout[key]!.map((item) => {
+      return {
+        ...item,
+        static: true,
+      };
+    });
+  });
+  return newLayout;
+};
+
 export default function PiecesResponsiveGridRead({
   pieces,
   layout,
 }: PiecesResponsiveGridReadProps) {
-  console.log(layout);
   return (
     <ResponsiveGridLayout
       className="layout basis-full"
       rowHeight={300}
       width={1000}
-      layouts={layout ?? {}}
+      layouts={layout ? toggleStatic(layout) : {}}
       breakpoints={{ lg: 1200, md: 768, sm: 480, xs: 0 }}
       cols={{ lg: 6, md: 6, sm: 4, xs: 2 }}
     >
