@@ -9,7 +9,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface PiecesResponsiveGridReadProps {
   pieces: Content[];
-  layout: Layouts;
+  layout: Layouts | null;
 }
 
 export default function PiecesResponsiveGridRead({
@@ -22,7 +22,7 @@ export default function PiecesResponsiveGridRead({
       className="layout basis-full"
       rowHeight={300}
       width={1000}
-      layouts={layout}
+      layouts={layout ?? {}}
       breakpoints={{ lg: 1200, md: 768, sm: 480, xs: 0 }}
       cols={{ lg: 6, md: 6, sm: 4, xs: 2 }}
     >

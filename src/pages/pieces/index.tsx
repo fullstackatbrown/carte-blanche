@@ -95,6 +95,9 @@ const Pieces: NextPage = () => {
   if (errorLayout) {
     return <p>Oh no... {errorLayout.message}</p>;
   }
+  const piecesLayout = layout?.layout
+    ? (layout.layout as unknown as Layouts)
+    : null;
   return (
     <>
       <TopNav />
@@ -128,10 +131,7 @@ const Pieces: NextPage = () => {
         {isEditing ? (
           <PiecesResponsiveGridWrite pieces={pieces} />
         ) : (
-          <PiecesResponsiveGridRead
-            pieces={pieces}
-            layout={layout.layout as Layouts}
-          />
+          <PiecesResponsiveGridRead pieces={pieces} layout={piecesLayout} />
         )}
       </div>
     </>
