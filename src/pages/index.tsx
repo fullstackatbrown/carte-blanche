@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
         <section
           id="home"
-          className="flex min-h-screen items-center justify-center"
+          className="flex h-[calc(100vh-5rem)] items-center justify-center"
           style={{
             backgroundImage: `linear-gradient(
             120deg,

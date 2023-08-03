@@ -1,20 +1,32 @@
 import { api } from "@CarteBlanche/utils/api";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import PiecesSidebar from "@CarteBlanche/components/PiecesSidebar";
 import TopNav from "@CarteBlanche/components/TopNav";
-import { Button } from "@mui/material";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import PiecesResponsiveGridRead from "@CarteBlanche/components/layouts/PiecesResponsiveGridRead";
+import PiecesResponsiveGridWrite from "@CarteBlanche/components/layouts/PiecesResponsiveGridWrite";
+import { Button, Modal } from "@mui/material";
+
+import { ErrorSnackbar } from "@CarteBlanche/components/forms/snackbars/ErrorSnackbar";
+import { SuccessSnackbar } from "@CarteBlanche/components/forms/snackbars/SuccessSnackbar";
+import type { Layouts } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
+import { FormErrorMessage } from "@CarteBlanche/components/forms/FormErrorMessage";
 
 const Pieces: NextPage = () => {
+  // States
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
+  const [successSnackbarMessage, setSuccessSnackbarMessage] = useState("");
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  // API Calls
   const { data: session } = useSession();
 
   const { data: user } = api.user.getUser.useQuery(
@@ -22,34 +34,38 @@ const Pieces: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const [isEditing, setIsEditing] = useState(false);
-
-  const [colScale, setColScale] = useState(12);
-  const maxPiecesPerRow = 3;
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1200) {
-        setColScale(12 / maxPiecesPerRow);
-      } else if (window.innerWidth > 996) {
-        setColScale(10 / maxPiecesPerRow);
-      } else if (window.innerWidth > 768) {
-        setColScale(6 / maxPiecesPerRow);
-      } else if (window.innerWidth > 480) {
-        setColScale(4 / maxPiecesPerRow);
-      } else {
-        setColScale(2 / maxPiecesPerRow);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const { mutate: upsertLayout, isLoading: isUpsertingLayout } =
+    api.layout.upsertLayout.useMutation({
+      onError(error) {
+        setOpenErrorSnackbar(true);
+        setErrorSnackbarMessage(error.message);
+        setErrorMessage(error.message);
+      },
+      onSuccess() {
+        setOpenSuccessSnackbar(true);
+        setSuccessSnackbarMessage("Layout successfully saved!");
+        setIsEditing(false);
+        setErrorMessage("");
+      },
+    });
 
   /**
    * Handles saving of the grid layout
    */
   const saveGridLayout = () => {
-    alert("Not implemented yet!");
-    setIsEditing(false);
+    const layout = localStorage.getItem("layout");
+    if (!layout) {
+      setErrorMessage("Local storage for grid layout is empty!");
+      setOpenErrorSnackbar(true);
+      setErrorSnackbarMessage("Error saving layout!");
+      return;
+    }
+    const layoutToSave = {
+      name: "pieces",
+      layout: JSON.parse(layout) as Layouts,
+    };
+
+    upsertLayout(layoutToSave);
   };
 
   const {
@@ -61,64 +77,62 @@ const Pieces: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  if (isLoading || !pieces) {
+  const {
+    data: layout,
+    isLoading: isLoadingLayout,
+    error: errorLayout,
+  } = api.layout.getLayout.useQuery(
+    { name: "pieces" },
+    { refetchOnWindowFocus: false }
+  );
+
+  if (isLoading || isLoadingLayout || !pieces) {
     return <CircularSpinner />;
   }
   if (error) {
     return <p>Oh no... {error.message}</p>;
   }
+  if (errorLayout) {
+    return <p>Oh no... {errorLayout.message}</p>;
+  }
   return (
     <>
       <TopNav />
+      {isUpsertingLayout && (
+        <Modal open={true}>
+          <CircularSpinner />
+        </Modal>
+      )}
+      <SuccessSnackbar
+        isOpen={openSuccessSnackbar}
+        onClose={() => setOpenSuccessSnackbar(false)}
+        message={successSnackbarMessage}
+      />
+      <ErrorSnackbar
+        isOpen={openErrorSnackbar}
+        onClose={() => setOpenErrorSnackbar(false)}
+        message={errorSnackbarMessage}
+      />
       {isEditing && (
         <div className="bg-cyan-300">
           <h1>EDITING MODE</h1>
+          {errorMessage && (
+            <FormErrorMessage errorMessage={`Error: ${errorMessage}`} />
+          )}
           <Button onClick={() => setIsEditing(!isEditing)}>Cancel</Button>
           <Button onClick={saveGridLayout}>Save</Button>
         </div>
       )}
       <div className="flex min-h-screen">
         <PiecesSidebar user={user ?? undefined} setIsEditing={setIsEditing} />
-        <ResponsiveGridLayout
-          key={isEditing.toString()}
-          className="layout basis-3/4"
-          rowHeight={30}
-          width={1200}
-          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-        >
-          {pieces.map((piece, idx) => {
-            return (
-              <div
-                key={piece.id}
-                data-grid={{
-                  x: 0,
-                  y: 0,
-                  w: 3,
-                  h: 8,
-                  maxW: 3,
-                  maxH: 10,
-                  static: !isEditing,
-                }}
-                className="cursor-pointer transition duration-500 hover:scale-110"
-              >
-                {isEditing ? (
-                  <img
-                    src={piece.imgURL}
-                    className="h-full w-full bg-gray-50 object-cover"
-                  />
-                ) : (
-                  <Link href={`/pieces/${piece.id}`} key={piece.id}>
-                    <img
-                      src={piece.imgURL}
-                      className="h-full w-full bg-gray-50 object-cover"
-                    />
-                  </Link>
-                )}
-              </div>
-            );
-          })}
-        </ResponsiveGridLayout>
+        {isEditing ? (
+          <PiecesResponsiveGridWrite pieces={pieces} />
+        ) : (
+          <PiecesResponsiveGridRead
+            pieces={pieces}
+            layout={layout.layout as Layouts}
+          />
+        )}
       </div>
     </>
   );

@@ -3,14 +3,11 @@ import Link from "next/link";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { Box, Container, Divider, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 
 export default function Footer() {
   return (
     <>
-      {/* <Divider
-        sx={{ borderBottomWidth: 1, borderColor: "black", marginTop: "1rem" }}
-      /> */}
       <Box
         sx={{
           width: "100%",
