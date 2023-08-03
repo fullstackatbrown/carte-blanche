@@ -4,7 +4,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 ## Authors
 
-This is made by Full Stack at Brown. Abc
+This is made by Full Stack at Brown. Abcd
 
 ## What's next? How do I make an app with this?
 
