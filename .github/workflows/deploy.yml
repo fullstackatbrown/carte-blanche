@@ -31,6 +31,8 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          UPLOADTHING_SECRET=: ${{ secrets.UPLOADTHING_SECRET }}
+          UPLOADTHING_APP_ID: ${{ secrets.UPLOADTHING_APP_ID }}
 
       - name: ☁ Deploy to Vercel Git Repo
         uses: wei/git-sync@v3
