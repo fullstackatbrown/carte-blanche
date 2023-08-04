@@ -1,6 +1,8 @@
 import type { Content } from "@prisma/client";
 import Link from "next/link";
 
+import LaunchIcon from "@mui/icons-material/Launch";
+
 interface ICarouselItemProps {
   content: Content;
   onClick: () => void;
@@ -22,7 +24,12 @@ export default function CarouselItem({ content, onClick }: ICarouselItemProps) {
         }}
       />
       <Link href={`/pieces/${content.id}`}>
-        <p className="-webkit-box line-clamp-1 overflow-hidden text-ellipsis text-[2.5rem] font-medium text-white">
+        <p className="-webkit-box line-clamp-1 overflow-hidden text-ellipsis text-[2.5rem] font-medium text-white hover:text-slate-300">
+          <LaunchIcon
+            style={{
+              margin: "0 10px 0 0",
+            }}
+          />
           {content.title}
         </p>
       </Link>
