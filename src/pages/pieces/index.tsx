@@ -32,6 +32,18 @@ const Pieces: NextPage = () => {
     id: session?.user.id,
   });
 
+  const {
+    data: layout,
+    isLoading: isLoadingLayout,
+    error: errorLayout,
+    refetch: refetchLayout,
+  } = api.layout.getLayout.useQuery(
+    {
+      name: "pieces",
+    },
+    { refetchOnWindowFocus: false }
+  );
+
   const { mutate: upsertLayout, isLoading: isUpsertingLayout } =
     api.layout.upsertLayout.useMutation({
       onError(error) {
@@ -39,11 +51,12 @@ const Pieces: NextPage = () => {
         setErrorSnackbarMessage(error.message);
         setErrorMessage(error.message);
       },
-      onSuccess() {
+      onSuccess(data) {
         setOpenSuccessSnackbar(true);
         setSuccessSnackbarMessage("Layout successfully saved!");
         setIsEditing(false);
         setErrorMessage("");
+        void refetchLayout();
       },
     });
 
@@ -66,26 +79,7 @@ const Pieces: NextPage = () => {
     upsertLayout(layoutToSave);
   };
 
-  const {
-    data: pieces,
-    isLoading,
-    error,
-    refetch: refetchPieces,
-  } = api.content.getAllTextAndImageContent.useQuery(
-    {},
-    { refetchOnWindowFocus: false }
-  );
-
-  const {
-    data: layout,
-    isLoading: isLoadingLayout,
-    error: errorLayout,
-  } = api.layout.getLayout.useQuery(
-    { name: "pieces" },
-    { refetchOnWindowFocus: false }
-  );
-
-  if (isLoading || isLoadingLayout || !pieces) {
+  if (isLoadingLayout) {
     return (
       <div className="h-screen overflow-hidden">
         <TopNav />
@@ -104,9 +98,7 @@ const Pieces: NextPage = () => {
       </div>
     );
   }
-  if (error) {
-    return <p>Oh no... {error.message}</p>;
-  }
+
   if (errorLayout) {
     return <p>Oh no... {errorLayout.message}</p>;
   }
@@ -150,13 +142,9 @@ const Pieces: NextPage = () => {
       <div className="flex min-h-screen">
         <PiecesSidebar user={user ?? undefined} setIsEditing={setIsEditing} />
         {isEditing ? (
-          <PiecesResponsiveGridWrite pieces={pieces} />
+          <PiecesResponsiveGridWrite />
         ) : (
-          <PiecesResponsiveGridRead
-            pieces={pieces}
-            layout={piecesLayout}
-            refetchPieces={refetchPieces}
-          />
+          <PiecesResponsiveGridRead layout={piecesLayout} />
         )}
       </div>
     </>

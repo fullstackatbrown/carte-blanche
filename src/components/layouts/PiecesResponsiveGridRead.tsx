@@ -1,5 +1,4 @@
 import { api } from "@CarteBlanche/utils/api";
-import type { Content } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,13 +7,13 @@ import { Delete, Star } from "@mui/icons-material";
 
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { UseQueryResult } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { Responsive, WidthProvider, type Layouts } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
@@ -25,9 +24,7 @@ import { SuccessSnackbar } from "../forms/snackbars/SuccessSnackbar";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface PiecesResponsiveGridReadProps {
-  pieces: Content[];
   layout: Layouts | null;
-  refetchPieces: Promise<UseQueryResult>;
 }
 
 /**
@@ -49,9 +46,7 @@ const toggleStatic = (layout: Layouts) => {
 };
 
 export default function PiecesResponsiveGridRead({
-  pieces,
   layout,
-  refetchPieces,
 }: PiecesResponsiveGridReadProps) {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
   const [successSnackbarMessage, setSuccessSnackbarMessage] = useState("");
@@ -61,6 +56,16 @@ export default function PiecesResponsiveGridRead({
   const [deleteContentId, setDeleteContentId] = useState("");
 
   const { data: session } = useSession();
+
+  const {
+    data: pieces,
+    isLoading: piecesLoading,
+    error: piecesError,
+    refetch: refetchPieces,
+  } = api.content.getAllTextAndImageContent.useQuery(
+    {},
+    { refetchOnWindowFocus: false }
+  );
 
   const { mutate: toggleFeatured } =
     api.content.toggleFeaturedContent.useMutation({
@@ -73,7 +78,7 @@ export default function PiecesResponsiveGridRead({
         setOpenSuccessSnackbar(true);
         setSuccessSnackbarMessage(`Successfully toggled featured!`);
         setDeleteContentId("");
-        refetchPieces();
+        void refetchPieces();
       },
     });
 
@@ -89,7 +94,7 @@ export default function PiecesResponsiveGridRead({
       setSuccessSnackbarMessage("Successfully deleted content!");
       setDeleteContentId("");
       setOpenConfirmDeleteDialog(false);
-      refetchPieces();
+      void refetchPieces();
     },
   });
 
@@ -112,6 +117,18 @@ export default function PiecesResponsiveGridRead({
 
     deleteContent({ id });
   };
+
+  if (piecesLoading || piecesError) {
+    return (
+      <CircularProgress
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+        }}
+      />
+    );
+  }
 
   return (
     <>

@@ -1,4 +1,5 @@
-import type { Content } from "@prisma/client";
+import { api } from "@CarteBlanche/utils/api";
+import { CircularProgress } from "@mui/material";
 
 import {
   type Layout,
@@ -11,13 +12,7 @@ import "react-resizable/css/styles.css";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-interface PiecesResponsiveGridWriteProps {
-  pieces: Content[];
-}
-
-export default function PiecesResponsiveGridWrite({
-  pieces,
-}: PiecesResponsiveGridWriteProps) {
+export default function PiecesResponsiveGridWrite() {
   const getLayouts = (): Layouts => {
     const savedLayouts = localStorage.getItem("layout");
     return savedLayouts ? (JSON.parse(savedLayouts) as Layouts) : {};
@@ -26,6 +21,23 @@ export default function PiecesResponsiveGridWrite({
   const handleLayoutChange = (layout: Layout[], layouts: Layouts) => {
     localStorage.setItem("layout", JSON.stringify(layouts));
   };
+
+  const {
+    data: pieces,
+    isLoading: piecesLoading,
+    error: piecesError,
+  } = api.content.getAllTextAndImageContent.useQuery(
+    {},
+    { refetchOnWindowFocus: false }
+  );
+
+  if (piecesLoading || piecesError) {
+    return (
+      <CircularProgress
+        sx={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
+  }
 
   return (
     <ResponsiveGridLayout
