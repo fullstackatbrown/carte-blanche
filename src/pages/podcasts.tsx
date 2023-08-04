@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 
 import PodcastItem from "@CarteBlanche/components/PodcastItem";
 import TopNav from "@CarteBlanche/components/TopNav";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 
 const Podcasts: NextPage = () => {
   const {
@@ -35,13 +35,24 @@ const Podcasts: NextPage = () => {
   return (
     <>
       <TopNav />
-      <h1>Podcasts!</h1>
+      <h1 className="text-center text-[min(20vw,10rem)] font-bold uppercase">
+        Podcast
+      </h1>
 
-      <h1>Latest Episodes</h1>
-      <div className="flex flex-row flex-wrap justify-center">
-        {podcasts.map((podcast) => (
-          <PodcastItem key={podcast.id} podcast={podcast} />
-        ))}
+      <div className="mx-auto w-4/5">
+        <h2 className="text-[min(7vw,3rem)]">Latest Episodes</h2>
+        <Divider
+          sx={{
+            borderColor: "black",
+            borderBottomWidth: "2px",
+            margin: "2rem auto",
+          }}
+        />
+        <div className="mx-auto grid grid-cols-1 place-items-center gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+          {podcasts.map((podcast) => (
+            <PodcastItem key={podcast.id} podcast={podcast} />
+          ))}
+        </div>
       </div>
     </>
   );
