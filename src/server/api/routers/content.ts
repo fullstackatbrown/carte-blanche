@@ -115,6 +115,24 @@ export const contentRouter = createTRPCRouter({
       });
     }),
 
+  toggleFeaturedContent: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        isFeatured: z.boolean(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.content.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isFeatured: input.isFeatured,
+        },
+      });
+    }),
+
   deleteContent: protectedProcedure
     .input(
       z.object({
