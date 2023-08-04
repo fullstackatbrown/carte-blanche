@@ -28,10 +28,9 @@ const Pieces: NextPage = () => {
   // API Calls
   const { data: session } = useSession();
 
-  const { data: user } = api.user.getUser.useQuery(
-    { id: session?.user.id },
-    { refetchOnWindowFocus: false }
-  );
+  const { data: user } = api.user.getUser.useQuery({
+    id: session?.user.id,
+  });
 
   const { mutate: upsertLayout, isLoading: isUpsertingLayout } =
     api.layout.upsertLayout.useMutation({
@@ -71,6 +70,7 @@ const Pieces: NextPage = () => {
     data: pieces,
     isLoading,
     error,
+    refetch: refetchPieces,
   } = api.content.getAllTextAndImageContent.useQuery(
     {},
     { refetchOnWindowFocus: false }
@@ -152,7 +152,11 @@ const Pieces: NextPage = () => {
         {isEditing ? (
           <PiecesResponsiveGridWrite pieces={pieces} />
         ) : (
-          <PiecesResponsiveGridRead pieces={pieces} layout={piecesLayout} />
+          <PiecesResponsiveGridRead
+            pieces={pieces}
+            layout={piecesLayout}
+            refetchPieces={refetchPieces}
+          />
         )}
       </div>
     </>
