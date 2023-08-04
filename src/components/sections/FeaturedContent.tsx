@@ -13,11 +13,17 @@ export default function FeaturedContent() {
   );
 
   if (isLoading || !featuredContent) {
-    return <CircularSpinner />;
+    return (
+      <div className="absolute left-1/2">
+        <CircularSpinner />
+      </div>
+    );
   }
+
   if (error) {
     return <p>Oh no... {error.message}</p>;
   }
+
   return (
     <>
       <p className="relative left-[3%] top-[-35%] hidden w-0 text-6xl font-normal lowercase text-white lg:block xl:left-[7%]">

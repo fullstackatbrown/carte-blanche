@@ -37,7 +37,7 @@ const Home: NextPage = () => {
 
         <section
           id="featured-content"
-          className="flex h-[80vh] items-center bg-zinc-800"
+          className="relative flex h-[80vh] items-center bg-zinc-800"
         >
           <FeaturedContent />
         </section>
