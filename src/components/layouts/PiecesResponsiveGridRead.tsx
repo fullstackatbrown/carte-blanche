@@ -1,4 +1,6 @@
+import { Delete, Star } from "@mui/icons-material";
 import type { Content } from "@prisma/client";
+import clsx from "clsx";
 import Link from "next/link";
 
 import { type Layouts, Responsive, WidthProvider } from "react-grid-layout";
@@ -56,8 +58,22 @@ export default function PiecesResponsiveGridRead({
               maxH: 10,
               static: true,
             }}
-            className="cursor-pointer transition duration-500 hover:scale-110"
+            className="group relative transition duration-500 hover:scale-110"
           >
+            <div className="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+              <button
+                className={clsx(
+                  "rounded bg-black p-2",
+                  piece.isFeatured ? "text-yellow-200" : "text-white"
+                )}
+              >
+                <Star />
+              </button>
+              <button className="rounded bg-black p-2 text-white hover:text-red-200">
+                <Delete />
+              </button>
+            </div>
+
             <Link href={`/pieces/${piece.id}`} key={piece.id}>
               <img
                 src={piece.imgURL}
