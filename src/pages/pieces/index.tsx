@@ -3,12 +3,11 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import PiecesSidebar from "@CarteBlanche/components/PiecesSidebar";
 import TopNav from "@CarteBlanche/components/TopNav";
 import PiecesResponsiveGridRead from "@CarteBlanche/components/layouts/PiecesResponsiveGridRead";
 import PiecesResponsiveGridWrite from "@CarteBlanche/components/layouts/PiecesResponsiveGridWrite";
-import { Button, Modal } from "@mui/material";
+import { Button, CircularProgress, Modal } from "@mui/material";
 
 import { ErrorSnackbar } from "@CarteBlanche/components/forms/snackbars/ErrorSnackbar";
 import { SuccessSnackbar } from "@CarteBlanche/components/forms/snackbars/SuccessSnackbar";
@@ -87,7 +86,23 @@ const Pieces: NextPage = () => {
   );
 
   if (isLoading || isLoadingLayout || !pieces) {
-    return <CircularSpinner />;
+    return (
+      <div className="h-screen overflow-hidden">
+        <TopNav />
+        <div className="flex h-full">
+          <PiecesSidebar />
+          <div className="relative basis-3/4">
+            <CircularProgress
+              sx={{
+                position: "absolute",
+                top: "45%",
+                left: "50%",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
   if (error) {
     return <p>Oh no... {error.message}</p>;
@@ -103,7 +118,13 @@ const Pieces: NextPage = () => {
       <TopNav />
       {isUpsertingLayout && (
         <Modal open={true}>
-          <CircularSpinner />
+          <CircularProgress
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+            }}
+          />
         </Modal>
       )}
       <SuccessSnackbar

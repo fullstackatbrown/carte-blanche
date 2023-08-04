@@ -2,11 +2,11 @@ import { api } from "@CarteBlanche/utils/api";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
-import CircularSpinner from "@CarteBlanche/components/CircularSpinner";
 import TextEditorView from "@CarteBlanche/components/TextEditorView";
 import TopNav from "@CarteBlanche/components/TopNav";
 import { ContentType } from "@prisma/client";
 import PiecesSidebar from "@CarteBlanche/components/PiecesSidebar";
+import { CircularProgress } from "@mui/material";
 
 /**
  * Handles formatting the date and time from a Date object
@@ -50,7 +50,23 @@ const Piece: NextPage = () => {
   );
 
   if (isLoading || isLoadingAuthor || !data || !author) {
-    return <CircularSpinner />;
+    return (
+      <div className="h-screen overflow-hidden">
+        <TopNav />
+        <div className="flex h-full">
+          <PiecesSidebar backArrow />
+          <div className="relative basis-3/4">
+            <CircularProgress
+              sx={{
+                position: "absolute",
+                top: "45%",
+                left: "50%",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
   if (error) {
     return <p>Oh no... {error.message}</p>;

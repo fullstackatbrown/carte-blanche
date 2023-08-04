@@ -1,6 +1,6 @@
 import { api } from "@CarteBlanche/utils/api";
-import CircularSpinner from "../CircularSpinner";
 import FeaturedCarousel from "../carousel/FeaturedCarousel";
+import { CircularProgress } from "@mui/material";
 
 export default function FeaturedContent() {
   const {
@@ -14,9 +14,13 @@ export default function FeaturedContent() {
 
   if (isLoading || !featuredContent) {
     return (
-      <div className="absolute left-1/2">
-        <CircularSpinner />
-      </div>
+      <CircularProgress
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+        }}
+      />
     );
   }
 

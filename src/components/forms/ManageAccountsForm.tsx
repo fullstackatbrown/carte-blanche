@@ -9,12 +9,12 @@ import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   DialogActions,
   Modal,
   TextField,
 } from "@mui/material";
 import { Role } from "@prisma/client";
-import CircularSpinner from "../CircularSpinner";
 import { FormErrorMessage } from "./FormErrorMessage";
 import { ChangeRolesInputDropdown } from "./input/manageAccounts/ChangeRolesInputDropdown";
 
@@ -117,7 +117,15 @@ export default function ManageAccountsForm({
   };
 
   if (isLoading || !users) {
-    return <CircularSpinner />;
+    return (
+      <CircularProgress
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+        }}
+      />
+    );
   }
   if (error) {
     return <p>Oh no... {error.message}</p>;
@@ -127,7 +135,13 @@ export default function ManageAccountsForm({
     <>
       {updatingUser && (
         <Modal open={true}>
-          <CircularSpinner />
+          <CircularProgress
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+            }}
+          />
         </Modal>
       )}
       {formErrorMessage && (
