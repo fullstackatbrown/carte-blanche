@@ -51,7 +51,7 @@ const Pieces: NextPage = () => {
         setErrorSnackbarMessage(error.message);
         setErrorMessage(error.message);
       },
-      onSuccess(data) {
+      onSuccess() {
         setOpenSuccessSnackbar(true);
         setSuccessSnackbarMessage("Layout successfully saved!");
         setIsEditing(false);
@@ -102,9 +102,7 @@ const Pieces: NextPage = () => {
   if (errorLayout) {
     return <p>Oh no... {errorLayout.message}</p>;
   }
-  const piecesLayout = layout?.layout
-    ? (layout.layout as unknown as Layouts)
-    : null;
+  const piecesLayout = layout?.layout as unknown as Layouts;
   return (
     <>
       <TopNav />

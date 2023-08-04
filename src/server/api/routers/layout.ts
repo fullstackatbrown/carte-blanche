@@ -4,13 +4,29 @@ import {
 } from "@CarteBlanche/server/api/trpc";
 import { z } from "zod";
 
+const breakpointLayoutSchema = z.array(
+  z.object({
+    w: z.number(),
+    h: z.number(),
+    x: z.number(),
+    y: z.number(),
+    i: z.string(),
+    moved: z.boolean(),
+    static: z.boolean(),
+  })
+);
+
 export const layoutRouter = createTRPCRouter({
   /** UPSERT GRID LAYOUT */
   upsertLayout: publicProcedure
     .input(
       z.object({
         name: z.string(),
-        layout: z.any(),
+        layout: z.object({
+          lg: z.optional(breakpointLayoutSchema),
+          md: z.optional(breakpointLayoutSchema),
+          sm: z.optional(breakpointLayoutSchema),
+        }),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -19,12 +35,10 @@ export const layoutRouter = createTRPCRouter({
           name: input.name,
         },
         update: {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           layout: input.layout,
         },
         create: {
           name: input.name,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           layout: input.layout,
         },
       });
